@@ -1,6 +1,7 @@
 import java.util.Date;
 
 public class Task {
+    //TODO implement id uniqueness
     private int id;
     private String name;
     private String description;
@@ -12,6 +13,7 @@ public class Task {
     //suggestions
     //private List<Vote> votes;
     //private List<review> reviews;
+    //private Team team;
 
     public Task(int id, String name, String description, Date startDate,
                 Date deadline, Status status, boolean voteStarted) {
@@ -28,20 +30,24 @@ public class Task {
         return voteStarted;
     }
 
+    //TODO implement {only usable by PM} constraint
     public Task createTask(int id, String name, String description, Date startDate,
                         Date deadline, Status status, boolean voteStarted) {
         return null;
     }
 
+    //TODO implement {only usable by PM} constraint
     public void deleteTask() {
 
     }
 
+    //TODO implement {only usable by PM} constraint
     public Task updateTask(int id, String name, String description, Date startDate,
                            Date deadline, Status status, boolean voteStarted) {
         return null;
     }
 
+    //TODO implement {only usable by PM} constraint
     public void tiebreak() {
 
     }

@@ -1,4 +1,5 @@
 public class Review {
+    //TODO implement id uniqueness
     private int id;
     private boolean approved;
     private String description;

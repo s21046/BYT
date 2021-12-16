@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Assignee {
+    //TODO implement id uniqueness
     private int id;
     private String firstName;
     private String lastName;
@@ -33,11 +34,13 @@ public class Assignee {
             return null;
         }
         Task task = getTasks_list().get(taskId);
+
         //exception or smth
+        //can only cast vote if vote has been started
         if (!task.isVoteStarted()) {
             return null;
         }
-        //id would be generated later
+        //id would be generated later?
         return new Vote(id, explanation, person, taskId, this.id);
     }
 
@@ -48,7 +51,7 @@ public class Assignee {
         if (!(tasks_list.get(taskId) == null)) {
             return null;
         }
-        //id would be generated later
+        //id would be generated later?
         return new Review(id, approved, description, taskId, this.id);
     }
 }

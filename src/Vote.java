@@ -1,4 +1,5 @@
 public class Vote {
+    //TODO implement id uniqueness
     private int id;
     private String explanation;
     private Assignee person;
