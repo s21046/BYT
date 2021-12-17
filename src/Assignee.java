@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 public class Assignee {
@@ -8,8 +9,9 @@ public class Assignee {
     private String firstName;
     private String lastName;
     private List<Task> tasks_list = new ArrayList<>();
-    private List<Suggestion> suggestions_list = new ArrayList<>();
     private List<Reward> rewards_list = new ArrayList<>();
+
+    private HashSet<Suggestion> suggestions_list = new HashSet<>();
 
     public Assignee(int id, String firstName, String lastName) {
         this.id = id;
@@ -25,20 +27,20 @@ public class Assignee {
         this.tasks_list = tasks_list;
     }
 
-    public List<Suggestion> getSuggestions_list() {
-        return suggestions_list;
-    }
-
-    public void setSuggestions_list(List<Suggestion> suggestions_list) {
-        this.suggestions_list = suggestions_list;
-    }
-
     public List<Reward> getRewards_list() {
         return rewards_list;
     }
 
     public void setRewards_list(List<Reward> rewards_list) {
         this.rewards_list = rewards_list;
+    }
+
+    public HashSet<Suggestion> getSuggestions_list() {
+        return suggestions_list;
+    }
+
+    public void setSuggestions_list(HashSet<Suggestion> suggestions_list) {
+        this.suggestions_list = suggestions_list;
     }
 
     public void editProfile() {
@@ -80,5 +82,11 @@ public class Assignee {
         //TODO think of the way to get this assignee's pm
         //PM's id is the last required attribute (set to this.id temporarily)
         return new Help(id, date, description, this.id, this.id);
+    }
+
+    public Suggestion createSuggestion(int id, String name, String description) {
+        //TODO exception when id is not unique?
+        //id would be generated later?
+        return new Suggestion(id, name, description, this.id);
     }
 }

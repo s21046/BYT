@@ -1,4 +1,5 @@
 import java.util.Date;
+import java.util.List;
 
 public class Task {
     //TODO implement id uniqueness
@@ -10,10 +11,9 @@ public class Task {
     private Status status;
     private boolean voteStarted;
 
-    //suggestions
-    //private List<Vote> votes;
-    //private List<review> reviews;
-    //private Team team;
+    private List<Vote> votes_list;
+    private List<Review> reviews_list;
+    private List<Assignee> assignees_list;
 
     public Task(int id, String name, String description, Date startDate,
                 Date deadline, Status status, boolean voteStarted) {
@@ -24,6 +24,30 @@ public class Task {
         this.deadline = deadline;
         this.status = status;
         this.voteStarted = voteStarted;
+    }
+
+    public List<Vote> getVotes_list() {
+        return votes_list;
+    }
+
+    public void setVotes_list(List<Vote> votes_list) {
+        this.votes_list = votes_list;
+    }
+
+    public List<Review> getReviews_list() {
+        return reviews_list;
+    }
+
+    public void setReviews_list(List<Review> reviews_list) {
+        this.reviews_list = reviews_list;
+    }
+
+    public List<Assignee> getAssignees_list() {
+        return assignees_list;
+    }
+
+    public void setAssignees_list(List<Assignee> assignee_list) {
+        this.assignees_list = assignee_list;
     }
 
     public boolean isVoteStarted() {
