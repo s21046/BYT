@@ -124,7 +124,7 @@ public class AssigneeTest {
 
     /**
      * Get the given values belonging to Assignee object
-     * @result Help object values are returned accordingly for each getter
+     * @result Assignee object values are returned accordingly for each getter
      * @corner_cases None
      */
 
