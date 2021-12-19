@@ -8,6 +8,34 @@ public class Help {
 
     private int assigneeId, pmId, taskId;
 
+    public static int getUniqueId() {
+        return uniqueId;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getAssigneeId() {
+        return assigneeId;
+    }
+
+    public int getPmId() {
+        return pmId;
+    }
+
+    public int getTaskId() {
+        return taskId;
+    }
+
     public Help(Date date, String description,
                 int assigneeId, int pmId, int taskId) {
         this.id = uniqueId++;
