@@ -1,5 +1,6 @@
 import ApplicationExceptions.StringTooShortException;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,6 +29,9 @@ public class Task {
         this.teamAssigned = teamAssigned;
         this.teamAssigned.addTask(this);
         this.voteStarted = false;
+        this.votes_list = new ArrayList<>();
+        this.assignees_list = new ArrayList<>();
+        this.reviews_list = new ArrayList<>();
     }
 
     public int getId() {
@@ -80,12 +84,14 @@ public class Task {
     }
     public void setStartDate(Date startDate) {
         if(startDate == null) throw new IllegalArgumentException("Argument cannot be null");
-        else if(startDate.after(new Date(System.currentTimeMillis()))) throw new IllegalArgumentException("startDate cannot be in future");
-        else this.startDate = startDate;
+        else if (deadline.before(new Date(System.currentTimeMillis()))) throw new IllegalArgumentException("Start date cannot be in past.");
+        if(startDate.after(deadline)) throw new IllegalArgumentException("Start date cannot be after the deadline");
+        this.startDate = startDate;
     }
     public void setDeadline(Date deadline) {
         if(deadline == null) throw new IllegalArgumentException("Argument cannot be null");
-        else if(deadline.before(new Date(System.currentTimeMillis()))) throw new IllegalArgumentException("deadline cannot be in past");
+        else if (deadline.before(new Date(System.currentTimeMillis()))) throw new IllegalArgumentException("Deadline cannot be in past.");
+        if(deadline.before(startDate)) throw new IllegalArgumentException("Deadline cannot precede the start date.");
         else this.deadline = deadline;
     }
     public void setStatus(Status status) {
