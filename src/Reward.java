@@ -10,8 +10,6 @@ public class Reward {
     private RewardType type;
     private Date dateGiven;
 
-    private List<Assignee> assignees_list = new ArrayList<>();
-
     public Reward(String name, String description, RewardType type, Date dateGiven) {
         this.id = uniqueId++;
         this.name = name;
@@ -20,11 +18,23 @@ public class Reward {
         this.dateGiven = dateGiven;
     }
 
-    public List<Assignee> getAssignees_list() {
-        return assignees_list;
+    public int getId() {
+        return id;
     }
 
-    public void setAssignees_list(List<Assignee> assignees_list) {
-        this.assignees_list = assignees_list;
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public RewardType getType() {
+        return type;
+    }
+
+    public Date getDateGiven() {
+        return dateGiven;
     }
 }

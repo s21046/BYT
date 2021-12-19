@@ -2,11 +2,9 @@ import ApplicationExceptions.NoSuchTaskException;
 import ApplicationExceptions.NoSuchTeamException;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 
 public class ProjectManager extends Assignee {
     private HashSet<Help> helpRequests_list = new HashSet<>();
@@ -35,13 +33,6 @@ public class ProjectManager extends Assignee {
     public void deleteTask(int task_id, Team team) {
         team.deleteTask(task_id);
     }
-
-    // This method is too general and doesn't specifies what to change, so I don't think we need it.
-//    //TODO implement {only usable by PM} constraint
-//    public Task updateTask(int id, String name, String description, Date startDate,
-//                           Date deadline, Status status, boolean voteStarted) {
-//        return null;
-//    }
 
     //TODO implement {only usable by PM} constraint
     public void tiebreak(int teamId, int taskId, List<Assignee> assignee_list) {
