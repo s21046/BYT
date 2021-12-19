@@ -18,7 +18,8 @@ public class ProjectManager extends Assignee {
     }
 
     public void setHelpRequests_list(HashSet<Help> helpRequests_list) {
-        this.helpRequests_list = helpRequests_list;
+        if(helpRequests_list == null) throw new IllegalArgumentException("Argument cannot be null");
+        else this.helpRequests_list = helpRequests_list;
     }
 
     public void giveReward(int assigneeId, String name, String description, RewardType type) {

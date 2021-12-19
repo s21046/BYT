@@ -23,7 +23,8 @@ public class Assignee {
     }
 
     public void setId(int id){
-        this.id = id;
+        if(id<0) throw new IllegalArgumentException("id cannot be a negative integer.");
+        else this.id = id;
     }
 
     public String getFirstName() { return firstName; }
