@@ -1,3 +1,5 @@
+import ApplicationExceptions.StringTooShortException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,23 +27,28 @@ public class Team {
     }
 
     public void setId(int id){
-        this.id = id;
+        if(id<0) throw new IllegalArgumentException("id cannot be a negative integer.");
+        else this.id = id;
     }
 
     public String getName(){
         return name;
     }
 
-    public void setName(String name){
-        this.name = name;
+    public void setName(String name) throws StringTooShortException {
+        if(name == null) throw new IllegalArgumentException("Argument cannot be null");
+        else if(name.length()<3) throw new StringTooShortException();
+        else this.name = name;
     }
 
     public String getDescription(){
         return description;
     }
 
-    public void setDescription(String description){
-        this.description = description;
+    public void setDescription(String description) throws StringTooShortException {
+        if(description == null) throw new IllegalArgumentException("Argument cannot be null");
+        else if(description.length()<15) throw new StringTooShortException();
+        else this.description = description;
     }
 
     public ProjectManager getPM() {
@@ -49,7 +56,8 @@ public class Team {
     }
 
     public void setPM(ProjectManager pm) {
-        this.pm = pm;
+        if(pm == null) throw new IllegalArgumentException("Argument cannot be null");
+        else this.pm = pm;
     }
 
     public List<Assignee> getAssignees() {
@@ -57,7 +65,8 @@ public class Team {
     }
 
     public void setAssignees(List<Assignee> assignees) {
-        this.assignees = assignees;
+        if(assignees == null) throw new IllegalArgumentException("Argument cannot be null");
+        else this.assignees = assignees;
     }
 
     public List<Task> getTasks(){
@@ -65,7 +74,8 @@ public class Team {
     }
 
     public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
+        if(tasks == null) throw new IllegalArgumentException("Argument cannot be null");
+        else this.tasks = tasks;
     }
 
     public void addTask(Task task){
