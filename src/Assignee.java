@@ -26,13 +26,13 @@ public class Assignee {
         this.id = id;
     }
 
-    public HashSet<Team> getTeams_list() {
-        return teams_list;
-    }
+    public String getFirstName() { return firstName; }
 
-    public void setTeams_list(HashSet<Team> teams_list) {
-        this.teams_list = teams_list;
-    }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
+
+    public String getLastName() { return lastName; }
+
+    public void setLastName(String lastName) { this.lastName = lastName; }
 
     public List<Task> getTasks_list() {
         return tasks_list;
@@ -56,6 +56,14 @@ public class Assignee {
 
     public void setSuggestions_list(HashSet<Suggestion> suggestions_list) {
         this.suggestions_list = suggestions_list;
+    }
+
+    public HashSet<Team> getTeams_list() {
+        return teams_list;
+    }
+
+    public void setTeams_list(HashSet<Team> teams_list) {
+        this.teams_list = teams_list;
     }
 
     public void editProfile() {
@@ -105,7 +113,7 @@ public class Assignee {
 
     //adding this made sense too
     public Help requestHelp(Date date, String description, int taskId) {
-        //id would be generated later?
+        //id would be generated later? <- yeah
         int pmId = this.tasks_list.stream().filter(e -> e.getId() == taskId).findFirst().get().getTeamAssigned().getPM().getId();
         //PM's id is the last required attribute (set to this.id temporarily)
         return new Help(date, description, this.id, pmId, taskId);
