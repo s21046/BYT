@@ -3,7 +3,6 @@ import ApplicationExceptions.StringTooShortException;
 import java.util.Date;
 
 public class Help {
-    private static int uniqueId = 0;
     private int id;
     private Date date;
     private String description;
@@ -12,18 +11,13 @@ public class Help {
 
     private int taskId;
 
-    public Help(Date date, String description,
-                int assigneeId, int pmId, int taskId) {
-        this.id = uniqueId++;
+    public Help(int id, Date date, String description, int assigneeId, int pmId, int taskId) {
+        this.id = id;
         this.date = date;
         this.description = description;
         this.assigneeId = assigneeId;
         this.pmId = pmId;
         this.taskId = taskId;
-    }
-
-    public static int getUniqueId() {
-        return uniqueId;
     }
 
     public int getId() {
@@ -50,10 +44,6 @@ public class Help {
         return taskId;
     }
 
-    public static void setUniqueId(int uniqueId) {
-        Help.uniqueId = uniqueId;
-    }
-
     public void setId(int id) {
         if(id<0) throw new IllegalArgumentException("id cannot be a negative integer.");
         else this.id = id;
@@ -66,7 +56,7 @@ public class Help {
 
     public void setDescription(String description) throws StringTooShortException {
         if(description == null) throw new IllegalArgumentException("Argument cannot be null");
-        else if(description.length()<15) throw new StringTooShortException();
+        else if(description.length()<1) throw new StringTooShortException();
         else this.description = description;
     }
 

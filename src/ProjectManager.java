@@ -9,8 +9,8 @@ import java.util.List;
 public class ProjectManager extends Assignee {
     private HashSet<Help> helpRequests_list = new HashSet<>();
 
-    public ProjectManager(String firstName, String lastName) {
-        super(firstName, lastName);
+    public ProjectManager(int id, String firstName, String lastName) {
+        super(id, firstName, lastName);
     }
 
     public HashSet<Help> getHelpRequests_list() {
@@ -22,20 +22,19 @@ public class ProjectManager extends Assignee {
         else this.helpRequests_list = helpRequests_list;
     }
 
-    public void giveReward(int assigneeId, String name, String description, RewardType type) {
-        Reward reward = new Reward(name,description,type, Date.from(Instant.now()));
+    public void giveReward(int rewardId, int assigneeId, String name, String description, RewardType type) {
+        Reward reward = new Reward(rewardId, name,description,type, Date.from(Instant.now()));
     }
 
-    public Task createTask(String name, String description, Date startDate,
-                        Date deadline, Status status, Team team) {
-        return new Task(name, description, startDate, deadline, status, team);
+    public Task createTask(int taskId, String name, String description, Date startDate,
+                           Date deadline, Status status, Team team) {
+        return new Task(taskId, name, description, startDate, deadline, status, team);
     }
 
     public void deleteTask(int task_id, Team team) {
         team.deleteTask(task_id);
     }
 
-    //TODO implement {only usable by PM} constraint
     public void tiebreak(int teamId, int taskId, List<Assignee> assignee_list) {
         System.out.println("Tie broken!");
     }
