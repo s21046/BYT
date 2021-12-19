@@ -73,7 +73,7 @@ public class Assignee {
     //moved it here from Vote
     //made it so that now votes are cast on tasks from a particular Team,
     //as tasks_list in Assignee is for Tasks currently assigned to that Assignee
-    public Vote vote(int teamId, int taskId, String explanation) throws ApplicationExceptions.NoSuchTaskException, VoteNotStartedException, NoSuchTeamException, AlreadyVotedException {
+    public Vote vote(int teamId, int taskId, int votedForId, String explanation) throws ApplicationExceptions.NoSuchTaskException, VoteNotStartedException, NoSuchTeamException, AlreadyVotedException {
         Optional<Team> teamOptional = teams_list.stream().filter(t -> (t.getId() == teamId)).findFirst();
         if(teamOptional.isEmpty()) {
             throw new NoSuchTeamException();
@@ -90,11 +90,11 @@ public class Assignee {
             throw new VoteNotStartedException();
         }
 
-        if(task.getVotes_list().stream().anyMatch(v -> v.getAssignee().equals(this))) {
+        if(task.getVotes_list().stream().anyMatch(v -> v.getVoterId() == this.id)) {
             throw new AlreadyVotedException();
         }
 
-        return new Vote(explanation, this, taskId);
+        return new Vote(explanation, votedForId, this.id, taskId);
     }
 
     public Review review(int taskId, boolean approved, String description) throws NoSuchTaskException, CantReviewOwnTaskException {
