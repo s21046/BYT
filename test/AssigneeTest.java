@@ -61,15 +61,14 @@ public class AssigneeTest {
 
 
     /**
-     * All values are randomized except of uniqueId which is set to 1 because it is the first
-     *  and only instance of Help object created for the sake of testing
+     * All values are randomized for the sake of testing
      */
 
     @Before
     public void setUp() {
         id =11;
         id1 = 12;
-        firstName = "Jhon";
+        firstName = "John";
         firstName1 = "Adam";
         lastName = "Cena";
         lastName1 = "Stanowski";
