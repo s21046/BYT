@@ -1,4 +1,5 @@
 package ApplicationExceptions;
 
-public class VoteNotStartedException extends Exception{
+public class VoteNotStartedException extends Exception {
+    static final long serialVersionUID = 1L;
 }
