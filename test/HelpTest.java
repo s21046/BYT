@@ -37,7 +37,6 @@ public class HelpTest {
      * @corner_cases None
      */
 
-
     @Test
     public void testGetDate() {
         assertEquals(date, help.getDate());

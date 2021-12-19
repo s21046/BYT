@@ -17,34 +17,37 @@ public class Suggestion {
         return id;
     }
 
-    public void setId(int id) {
-        if (id < 0) throw new IllegalArgumentException("id cannot be a negative integer.");
-        else this.id = id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) throws StringTooShortException {
-        if (name == null) throw new IllegalArgumentException("Argument cannot be null");
-        else if (name.length() < 3) throw new StringTooShortException();
-        else this.name = name;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) throws StringTooShortException {
-        if (description == null) throw new IllegalArgumentException("Argument cannot be null");
-        else if (description.length() < 15) throw new StringTooShortException();
-        else this.description = description;
-    }
-
     public int getAssigneeId() {
         return assigneeId;
     }
+
+    public void setId(int id) {
+        if (id < 0) throw new IllegalArgumentException("id cannot be a negative integer.");
+        else this.id = id;
+    }
+
+
+    public void setName(String name) throws StringTooShortException {
+        if (name == null) throw new IllegalArgumentException("Argument cannot be null");
+        else if (name.length() < 1) throw new StringTooShortException();
+        else this.name = name;
+    }
+
+
+    public void setDescription(String description) throws StringTooShortException {
+        if (description == null) throw new IllegalArgumentException("Argument cannot be null");
+        else if (description.length() < 1) throw new StringTooShortException();
+        else this.description = description;
+    }
+
 
     public void setAssigneeId(int assigneeId) {
         if (assigneeId < 0) throw new IllegalArgumentException("assigneeId cannot be a negative integer.");
