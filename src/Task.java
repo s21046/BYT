@@ -35,7 +35,8 @@ public class Task {
     }
 
     public void setVotes_list(List<Vote> votes_list) {
-        this.votes_list = votes_list;
+        if(votes_list == null) throw new IllegalArgumentException("Argument cannot be null");
+        else this.votes_list = votes_list;
     }
 
     public List<Review> getReviews_list() {
@@ -43,7 +44,8 @@ public class Task {
     }
 
     public void setReviews_list(List<Review> reviews_list) {
-        this.reviews_list = reviews_list;
+        if(reviews_list == null) throw new IllegalArgumentException("Argument cannot be null");
+        else this.reviews_list = reviews_list;
     }
 
     public List<Assignee> getAssignees_list() {
@@ -51,39 +53,21 @@ public class Task {
     }
 
     public void setAssignees_list(List<Assignee> assignee_list) {
-        this.assignees_list = assignee_list;
+        if(assignee_list == null) throw new IllegalArgumentException("Argument cannot be null");
+        else this.assignees_list = assignee_list;
     }
 
     public Team getTeamAssigned(){return teamAssigned;}
 
-    public void setTeamAssigned(Team teamAssigned){this.teamAssigned = teamAssigned;}
+    public void setTeamAssigned(Team teamAssigned){
+        if(teamAssigned == null) throw new IllegalArgumentException("Argument cannot be null");
+        else this.teamAssigned = teamAssigned;
+    }
 
     public boolean isVoteStarted() {
         return voteStarted;
     }
 
-// Moved these methods to PM class as they make more sense there
-//    //TODO implement {only usable by PM} constraint
-//    public Task createTask(int id, String name, String description, Date startDate,
-//                        Date deadline, Status status, boolean voteStarted) {
-//        return null;
-//    }
-//
-//    //TODO implement {only usable by PM} constraint
-//    public void deleteTask() {
-//
-//    }
-//
-//    //TODO implement {only usable by PM} constraint
-//    public Task updateTask(int id, String name, String description, Date startDate,
-//                           Date deadline, Status status, boolean voteStarted) {
-//        return null;
-//    }
-//
-//    //TODO implement {only usable by PM} constraint
-//    public void tiebreak() {
-//
-//    }
 
     public int getId() {
         return id;
