@@ -8,6 +8,7 @@ public class VoteTest {
     private int votedForId;
     private int voterId;
     private Vote vote;
+    private Team team;
     private Task task;
 
     @Before
