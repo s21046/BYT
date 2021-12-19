@@ -28,18 +28,30 @@ public class Assignee {
 
     public String getFirstName() { return firstName; }
 
-    public void setFirstName(String firstName) { this.firstName = firstName; }
+    public void setFirstName(String firstName) throws StringTooShortException {
+        if(firstName == null) throw new IllegalArgumentException("Argument cannot be null");
+        else if(firstName.length()<3) throw new StringTooShortException();
+        else this.firstName = firstName;
+    }
 
-    public String getLastName() { return lastName; }
+    public String getLastName() {
+        return lastName;
+    }
 
-    public void setLastName(String lastName) { this.lastName = lastName; }
+    public void setLastName(String lastName) throws StringTooShortException {
+        if(lastName == null) throw new IllegalArgumentException("Argument cannot be null");
+        else if(lastName.length()<3) throw new StringTooShortException();
+        else this.lastName = lastName;
+    }
+
 
     public List<Task> getTasks_list() {
         return tasks_list;
     }
 
     public void setTasks_list(List<Task> tasks_list) {
-        this.tasks_list = tasks_list;
+        if(tasks_list == null) throw new IllegalArgumentException("Argument cannot be null");
+        else this.tasks_list = tasks_list;
     }
 
     public List<Reward> getRewards_list() {
@@ -47,7 +59,8 @@ public class Assignee {
     }
 
     public void setRewards_list(List<Reward> rewards_list) {
-        this.rewards_list = rewards_list;
+        if(rewards_list == null) throw new IllegalArgumentException("Argument cannot be null");
+        else this.rewards_list = rewards_list;
     }
 
     public HashSet<Suggestion> getSuggestions_list() {
@@ -55,7 +68,8 @@ public class Assignee {
     }
 
     public void setSuggestions_list(HashSet<Suggestion> suggestions_list) {
-        this.suggestions_list = suggestions_list;
+        if(suggestions_list == null) throw new IllegalArgumentException("Argument cannot be null");
+        else this.suggestions_list = suggestions_list;
     }
 
     public HashSet<Team> getTeams_list() {
@@ -63,7 +77,8 @@ public class Assignee {
     }
 
     public void setTeams_list(HashSet<Team> teams_list) {
-        this.teams_list = teams_list;
+        if(teams_list == null) throw new IllegalArgumentException("Argument cannot be null");
+        else this.teams_list = teams_list;
     }
 
     public void editProfile() {
