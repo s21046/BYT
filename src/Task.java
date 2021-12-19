@@ -11,6 +11,8 @@ public class Task {
     private Status status;
     private boolean voteStarted;
 
+    private Team teamAssigned;
+
     private List<Vote> votes_list;
     private List<Review> reviews_list;
     private List<Assignee> assignees_list;
@@ -49,6 +51,10 @@ public class Task {
     public void setAssignees_list(List<Assignee> assignee_list) {
         this.assignees_list = assignee_list;
     }
+
+    public Team getTeamAssigned(){return teamAssigned;}
+
+    public void setTeamAssigned(Team teamAssigned){this.teamAssigned = teamAssigned;}
 
     public boolean isVoteStarted() {
         return voteStarted;
