@@ -1,26 +1,23 @@
-import ApplicationExceptions.IdAlreadyExistsException;
 import ApplicationExceptions.StringTooShortException;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class Review {
-    private static final Set<Integer> ids = new HashSet<>();
+    private static int uniqueId = 0;
     private int id;
     private String description;
     private int assigneeId;
     private int taskId;
     private boolean approved;
 
-    public Review(int id, boolean approved, String description, int assigneeId, int taskId) throws IdAlreadyExistsException {
-        if (!ids.add(id)) {
-            throw new IdAlreadyExistsException();
-        }
-        this.id = id;
+    public Review(boolean approved, String description, int assigneeId, int taskId) {
+        this.id = uniqueId++;
         this.approved = approved;
         this.description = description;
         this.assigneeId = assigneeId;
         this.taskId = taskId;
+    }
+
+    public static int getUniqueId() {
+        return uniqueId;
     }
 
     public int getId() {
@@ -39,10 +36,12 @@ public class Review {
         return approved;
     }
 
-    public void setId(int id) throws IdAlreadyExistsException {
-        if (!ids.add(id)) {
-            throw new IdAlreadyExistsException();
-        }
+    public static void setUniqueId(int uniqueId){
+        if(uniqueId<0) throw new IllegalArgumentException("uniqueId cannot be a negative integer.");
+        else Review.uniqueId = uniqueId;
+    }
+
+    public void setId(int id) {
         if(id<0) throw new IllegalArgumentException("id cannot be a negative integer.");
         else this.id = id;
     }
@@ -62,4 +61,5 @@ public class Review {
     public void setApproved(boolean approved) {
         this.approved = approved;
     }
+
 }

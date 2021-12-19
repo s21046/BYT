@@ -1,13 +1,10 @@
-import ApplicationExceptions.IdAlreadyExistsException;
 import ApplicationExceptions.StringTooShortException;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class Task {
-    private static final Set<Integer> ids = new HashSet<>();
+    private static int uniqueId = 0;
     private int id;
     private String name;
     private String description;
@@ -22,12 +19,9 @@ public class Task {
     private List<Review> reviews_list;
     private List<Assignee> assignees_list;
 
-    public Task(int id, String name, String description, Date startDate,
-                Date deadline, Status status, Team teamAssigned) throws IdAlreadyExistsException {
-        if (!ids.add(id)) {
-            throw new IdAlreadyExistsException();
-        }
-        this.id = id;
+    public Task(String name, String description, Date startDate,
+                Date deadline, Status status, Team teamAssigned) {
+        this.id = uniqueId++;
         this.name = name;
         this.description = description;
         this.startDate = startDate;
@@ -74,10 +68,7 @@ public class Task {
 
 
 
-    public void setId(int id) throws IdAlreadyExistsException {
-        if (!ids.add(id)) {
-            throw new IdAlreadyExistsException();
-        }
+    public void setId(int id) {
         if(id<0) throw new IllegalArgumentException("id cannot be a negative integer.");
         else this.id = id;
     }
@@ -123,7 +114,12 @@ public class Task {
         else this.reviews_list = reviews_list;
     }
     public void setAssignees_list(List<Assignee> assignee_list) {
-        if (assignee_list == null) throw new IllegalArgumentException("Argument cannot be null");
+        if(assignee_list == null) throw new IllegalArgumentException("Argument cannot be null");
         else this.assignees_list = assignee_list;
     }
+
+
+
+
+
 }
