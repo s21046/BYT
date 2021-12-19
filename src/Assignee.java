@@ -11,7 +11,8 @@ public class Assignee {
     private HashSet<Suggestion> suggestions_list = new HashSet<>();
     private HashSet<Team> teams_list = new HashSet<>();
 
-    public Assignee(String firstName, String lastName) {
+    public Assignee(int id, String firstName, String lastName) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
     }

@@ -11,8 +11,8 @@ public class Help {
 
     private int taskId;
 
-    public Help(Date date, String description,
-                int assigneeId, int pmId, int taskId) {
+    public Help(int id, Date date, String description, int assigneeId, int pmId, int taskId) {
+        this.id = id;
         this.date = date;
         this.description = description;
         this.assigneeId = assigneeId;

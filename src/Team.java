@@ -12,7 +12,8 @@ public class Team {
     private List<Assignee> assignees;
     private List<Task> tasks;
 
-    public Team(String name, String description, ProjectManager pm, List<Assignee> assignees) {
+    public Team(int id, String name, String description, ProjectManager pm, List<Assignee> assignees) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.pm = pm;

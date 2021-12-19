@@ -7,7 +7,8 @@ public class Vote {
     private int voterId;
     private Task task;
 
-    public Vote(String explanation, int votedForId, int voterId, Task task) {
+    public Vote(int id, String explanation, int votedForId, int voterId, Task task) {
+        this.id = id;
         this.explanation = explanation;
         this.votedForId = votedForId;
         this.voterId = voterId;

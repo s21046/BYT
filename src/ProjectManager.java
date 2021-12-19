@@ -9,8 +9,8 @@ import java.util.List;
 public class ProjectManager extends Assignee {
     private HashSet<Help> helpRequests_list = new HashSet<>();
 
-    public ProjectManager(String firstName, String lastName) {
-        super(firstName, lastName);
+    public ProjectManager(int id, String firstName, String lastName) {
+        super(id, firstName, lastName);
     }
 
     public HashSet<Help> getHelpRequests_list() {

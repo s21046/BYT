@@ -18,8 +18,8 @@ public class Task {
     private List<Review> reviews_list;
     private List<Assignee> assignees_list;
 
-    public Task(String name, String description, Date startDate,
-                Date deadline, Status status, Team teamAssigned) {
+    public Task(int id, String name, String description, Date startDate, Date deadline, Status status, Team teamAssigned) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.startDate = startDate;
@@ -63,8 +63,6 @@ public class Task {
     public List<Assignee> getAssignees_list() {
         return assignees_list;
     }
-
-
 
     public void setId(int id) {
         if(id<0) throw new IllegalArgumentException("id cannot be a negative integer.");

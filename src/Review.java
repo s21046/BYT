@@ -7,7 +7,8 @@ public class Review {
     private int taskId;
     private boolean approved;
 
-    public Review(boolean approved, String description, int assigneeId, int taskId) {
+    public Review(int id, boolean approved, String description, int assigneeId, int taskId) {
+        this.id = id;
         this.approved = approved;
         this.description = description;
         this.assigneeId = assigneeId;
