@@ -177,6 +177,11 @@ public class AssigneeTest {
         assertEquals(14, assignee.getId());
     }
 
+    @Test(expected=IllegalArgumentException.class)
+    public void setIdIllegalArgumentException() {
+        assignee.setId(-1);
+    }
+
     /**
      * Set the FirstName value to Assignee object
      * @result Assignee object FirstName is set anew and returned accordingly for each setter
@@ -217,12 +222,12 @@ public class AssigneeTest {
 
     @Test(expected=StringTooShortException.class)
     public void setLastNameTooShortException() throws StringTooShortException {
-        assignee.setFirstName("");
+        assignee.setLastName("");
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void setLastNameToNullException() throws StringTooShortException {
-        assignee.setFirstName(null);
+        assignee.setLastName(null);
     }
 
     /**
