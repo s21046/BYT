@@ -109,7 +109,7 @@ public class Assignee {
             throw new AlreadyVotedException();
         }
 
-        return new Vote(explanation, votedForId, this.id, taskId);
+        return new Vote(explanation, votedForId, this.id, task);
     }
 
     public Review review(int taskId, boolean approved, String description) throws NoSuchTaskException, CantReviewOwnTaskException {
