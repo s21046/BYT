@@ -18,16 +18,16 @@ public class Task {
     private List<Assignee> assignees_list;
 
     public Task(String name, String description, Date startDate,
-                Date deadline, Status status, boolean voteStarted, Team teamAssigned) {
+                Date deadline, Status status, Team teamAssigned) {
         this.id = uniqueId++;
         this.name = name;
         this.description = description;
         this.startDate = startDate;
         this.deadline = deadline;
         this.status = status;
-        this.voteStarted = voteStarted;
         this.teamAssigned = teamAssigned;
         this.teamAssigned.addTask(this);
+        this.voteStarted = false;
     }
 
     public List<Vote> getVotes_list() {

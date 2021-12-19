@@ -1,11 +1,6 @@
-import ApplicationExceptions.CantReviewOwnTaskException;
-import ApplicationExceptions.NoSuchTaskException;
-import ApplicationExceptions.VoteNotStartedException;
+import ApplicationExceptions.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class Assignee {
     private static int uniqueId = 0;
@@ -14,8 +9,8 @@ public class Assignee {
     private String lastName;
     private List<Task> tasks_list = new ArrayList<>();
     private List<Reward> rewards_list = new ArrayList<>();
-
     private HashSet<Suggestion> suggestions_list = new HashSet<>();
+    private HashSet<Team> teams_list = new HashSet<>();
 
     public Assignee(String firstName, String lastName) {
         this.id = uniqueId++;
@@ -29,6 +24,14 @@ public class Assignee {
 
     public void setId(int id){
         this.id = id;
+    }
+
+    public HashSet<Team> getTeams_list() {
+        return teams_list;
+    }
+
+    public void setTeams_list(HashSet<Team> teams_list) {
+        this.teams_list = teams_list;
     }
 
     public List<Task> getTasks_list() {
@@ -56,18 +59,33 @@ public class Assignee {
     }
 
     public void editProfile() {
-
+        System.out.println("Profile data saved!");
     }
 
     //moved it here from Vote
-    public Vote vote(int taskId, String explanation) throws ApplicationExceptions.NoSuchTaskException, VoteNotStartedException {
-        if (getTasks_list().isEmpty() || getTasks_list().stream().noneMatch(task -> task.getId() == taskId)) {
+    //made it so that now votes are cast on tasks from a particular Team,
+    //as tasks_list in Assignee is for Tasks currently assigned to that Assignee
+    public Vote vote(int teamId, int taskId, String explanation) throws ApplicationExceptions.NoSuchTaskException, VoteNotStartedException, NoSuchTeamException, AlreadyVotedException {
+        Optional<Team> teamOptional = teams_list.stream().filter(t -> (t.getId() == teamId)).findFirst();
+        if(teamOptional.isEmpty()) {
+            throw new NoSuchTeamException();
+        }
+
+        Team team = teamOptional.get();
+        List<Task> tasks = team.getTasks();
+        if (tasks.isEmpty() || tasks.stream().noneMatch(task -> task.getId() == taskId)) {
             throw new NoSuchTaskException();
         }
 
-        if (!getTasks_list().stream().filter(task -> task.getId() == taskId).findFirst().get().isVoteStarted()) {
+        Task task = tasks.stream().filter(t -> t.getId() == taskId).findFirst().get();
+        if (!task.isVoteStarted()) {
             throw new VoteNotStartedException();
         }
+
+        if(task.getVotes_list().stream().anyMatch(v -> v.getAssignee().equals(this))) {
+            throw new AlreadyVotedException();
+        }
+
         return new Vote(explanation, this, taskId);
     }
 

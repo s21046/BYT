@@ -21,6 +21,14 @@ public class Team {
         this.tasks = new ArrayList<>();
     }
 
+    public int getId(){
+        return id;
+    }
+
+    public void setId(int id){
+        this.id = id;
+    }
+
     public ProjectManager getPM() {
         return pm;
     }

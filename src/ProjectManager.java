@@ -2,19 +2,10 @@ import java.util.Date;
 import java.util.HashSet;
 
 public class ProjectManager extends Assignee {
-    private HashSet<Team> teams_list = new HashSet<>();
     private HashSet<Help> helpRequests_list = new HashSet<>();
 
     public ProjectManager(String firstName, String lastName) {
         super(firstName, lastName);
-    }
-
-    public HashSet<Team> getTeams_list() {
-        return teams_list;
-    }
-
-    public void setTeams_list(HashSet<Team> teams_list) {
-        this.teams_list = teams_list;
     }
 
     public HashSet<Help> getHelpRequests_list() {
@@ -30,8 +21,8 @@ public class ProjectManager extends Assignee {
     }
 
     public Task createTask(String name, String description, Date startDate,
-                        Date deadline, Status status, boolean voteStarted, Team team) {
-        return new Task(name, description, startDate, deadline, status, voteStarted, team);
+                        Date deadline, Status status, Team team) {
+        return new Task(name, description, startDate, deadline, status, team);
     }
 
     public void deleteTask(int task_id, Team team) {
