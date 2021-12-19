@@ -1,3 +1,5 @@
+import ApplicationExceptions.StringTooShortException;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Date;
@@ -18,6 +20,7 @@ public class ReviewTest {
     private ProjectManager pm;
     private Review rev;
 
+    @Before
     public void setUp(){
         id = 5;
         description = "Quack";
@@ -38,7 +41,6 @@ public class ReviewTest {
      * @result Review object values are returned accordingly for each getter
      * @corner_cases None
      */
-
 
     @Test
     public void testGetId() {
@@ -65,6 +67,7 @@ public class ReviewTest {
         assertEquals(approved, rev.isApproved());
     }
 
+
     /**
      * Set the given values to fields belonging to Review object
      * @result Review object values are set anew and returned accordingly for each setter
@@ -72,22 +75,85 @@ public class ReviewTest {
      */
 
     @Test
-    public void setId() {
+    public void testSetId() {
+        rev.setId(2);
+        assertEquals(2, rev.getId());
     }
 
-    @Test
-    public void setDescription() {
+    @Test(expected=IllegalArgumentException.class)
+    public void testSetIdToNegative() {
+        rev.setId(-2);
     }
+
+
+    /**
+     * Set the given values to fields belonging to Help object
+     * @result Help object id is set anew and returned accordingly for each setter
+     * @corner_case setDescription is tested on the matter of invalid input:
+     *               1) Null
+     *               2) Empty String
+     */
+
+    @Test
+    public void setDescription() throws StringTooShortException {
+        rev.setDescription("New description");
+        assertEquals("New description", rev.getDescription());
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void setDescriptionToNull() throws StringTooShortException {
+        rev.setDescription(null);
+    }
+
+    @Test(expected=StringTooShortException.class)
+    public void setDescriptionToEmpty() throws StringTooShortException {
+        rev.setDescription("");
+    }
+
+
+    /**
+     * Set the given values to fields belonging to Review object
+     * @result Review object values are set anew and returned accordingly for each setter
+     * @corner_cases setAssigneeId is tested on the matter of invalid input id (negative argument)
+     */
 
     @Test
     public void setAssigneeId() {
+        rev.setAssigneeId(2);
+        assertEquals(2, rev.getAssigneeId());
     }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testSetAssigneeIdToNegative() {
+        rev.setAssigneeId(-2);
+    }
+
+    /**
+     * Set the given values to fields belonging to Review object
+     * @result Review object values are set anew and returned accordingly for each setter
+     * @corner_cases setTaskId is tested on the matter of invalid input id (negative argument)
+     */
 
     @Test
     public void setTaskId() {
+        rev.setTaskId(2);
+        assertEquals(2, rev.getTaskId());
     }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void setTaskIdToNegative() {
+        rev.setTaskId(-2);
+    }
+
+
+    /**
+     * Set the given values to fields belonging to Review object
+     * @result Review object value approved is set anew and returned
+     */
 
     @Test
     public void setApproved() {
+        rev.setApproved(false);
+        assertFalse(rev.isApproved());
     }
 }
