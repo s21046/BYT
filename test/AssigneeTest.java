@@ -61,14 +61,15 @@ public class AssigneeTest {
 
 
     /**
-     * All values are randomized for the sake of testing
+     * All values are randomized except of uniqueId which is set to 1 because it is the first
+     *  and only instance of Help object created for the sake of testing
      */
 
     @Before
     public void setUp() {
         id =11;
         id1 = 12;
-        firstName = "John";
+        firstName = "Jhon";
         firstName1 = "Adam";
         lastName = "Cena";
         lastName1 = "Stanowski";
@@ -124,42 +125,42 @@ public class AssigneeTest {
 
     /**
      * Get the given values belonging to Assignee object
-     * @result Assignee object values are returned accordingly for each getter
+     * @result Help object values are returned accordingly for each getter
      * @corner_cases None
      */
 
     @Test
-    public void testGetId() {
+    public void getId() {
         assertEquals(11, assignee.getId());
     }
 
     @Test
-    public void testGetFirstName() {
+    public void getFirstName() {
         assertEquals(firstName, assignee.getFirstName());
     }
 
     @Test
-    public void testGetLastName() {
+    public void getLastName() {
         assertEquals(lastName, assignee.getLastName());
     }
 
     @Test
-    public void testGetTasks_list() {
+    public void getTasks_list() {
         assertEquals(tasks_list, assignee.getTasks_list());
     }
 
     @Test
-    public void testGetRewards_list() {
+    public void getRewards_list() {
         assertEquals(rewards_list, assignee.getRewards_list());
     }
 
     @Test
-    public void testGetTeams_list() {
+    public void getTeams_list() {
         assertEquals(teams_list, assignee.getTeams_list());
     }
 
     @Test
-    public void testGetSuggestions_list() {
+    public void getSuggestions_list() {
         assertEquals(suggestions_list, assignee.getSuggestions_list());
     }
 
@@ -171,9 +172,14 @@ public class AssigneeTest {
      */
 
     @Test
-    public void testSetId() {
+    public void setId() {
         assignee.setId(14);
         assertEquals(14, assignee.getId());
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void setIdIllegalArgumentException() {
+        assignee.setId(-1);
     }
 
     /**
@@ -184,20 +190,20 @@ public class AssigneeTest {
      *                         2) Null
      */
     @Test
-    public void testSetFirstName() throws StringTooShortException {
+    public void setFirstName() throws StringTooShortException {
         assignee.setFirstName("Bobinator");
         assertEquals("Bobinator", assignee.getFirstName());
 
     }
 
     @Test(expected=StringTooShortException.class)
-    public void testSetFirstNameTooShortException() throws StringTooShortException {
+    public void setFirstNameTooShortException() throws StringTooShortException {
         assignee.setFirstName("");
 
     }
 
     @Test(expected=IllegalArgumentException.class)
-    public void testSetFirstNameToNullException() throws StringTooShortException {
+    public void setFirstNameToNullException() throws StringTooShortException {
         assignee.setFirstName(null);
     }
 
@@ -209,19 +215,19 @@ public class AssigneeTest {
      *                         2) Null
      */
     @Test
-    public void testSetLastName() throws StringTooShortException {
+    public void setLastName() throws StringTooShortException {
         assignee.setLastName("Jason");
         assertEquals("Jason", assignee.getLastName());
     }
 
     @Test(expected=StringTooShortException.class)
-    public void testSetLastNameTooShortException() throws StringTooShortException {
-        assignee.setFirstName("");
+    public void setLastNameTooShortException() throws StringTooShortException {
+        assignee.setLastName("");
     }
 
     @Test(expected=IllegalArgumentException.class)
-    public void testSetLastNameToNullException() throws StringTooShortException {
-        assignee.setFirstName(null);
+    public void setLastNameToNullException() throws StringTooShortException {
+        assignee.setLastName(null);
     }
 
     /**
@@ -235,32 +241,32 @@ public class AssigneeTest {
      */
 
     @Test
-    public void testSetTasks_listFromNotEmptyToEmpty() {
+    public void setTasks_listFromNotEmptyToEmpty() {
         assignee.setTasks_list(tasks_list2);
         assertEquals(tasks_list2, assignee.getTasks_list());
     }
 
     @Test
-    public void testSetTasks_listFromEmptyToNotEmpty() {
+    public void setTasks_listFromEmptyToNotEmpty() {
         assignee1.setTasks_list(tasks_list);
         assertEquals(tasks_list, assignee1.getTasks_list());
     }
 
     @Test
-    public void testSetTasks_listFromEmptyToEmpty() {
+    public void setTasks_listFromEmptyToEmpty() {
         assignee.setTasks_list(tasks_list_2_short);
         assertEquals(tasks_list_2_short, assignee.getTasks_list());
     }
 
     @Test
-    public void testSetTasks_listFromNotEmptyToNotEmpty() {
+    public void setTasks_listFromNotEmptyToNotEmpty() {
         assignee.setTasks_list(tasks_list_short);
         assertEquals(tasks_list_short, assignee.getTasks_list());
     }
 
 
     @Test(expected=IllegalArgumentException.class)
-    public void testSetTasks_listToNullException() {
+    public void setTasks_listToNullException() {
         assignee.setTasks_list(null);
     }
 
@@ -276,32 +282,32 @@ public class AssigneeTest {
 
 
     @Test
-    public void testSetRewards_listFromNotEmptyToEmpty() {
+    public void setRewards_listFromNotEmptyToEmpty() {
         assignee.setRewards_list(rewards_list2);
         assertEquals(rewards_list2, assignee.getRewards_list());
     }
 
     @Test
-    public void testSetRewards_listFromEmptyToNotEmpty() {
+    public void setRewards_listFromEmptyToNotEmpty() {
         assignee1.setRewards_list(rewards_list);
         assertEquals(rewards_list, assignee1.getRewards_list());
     }
 
     @Test
-    public void testSetRewards_listFromEmptyToEmpty() {
+    public void setRewards_listFromEmptyToEmpty() {
         assignee1.setRewards_list(rewards_list2_short);
         assertEquals(rewards_list2_short, assignee1.getRewards_list());
     }
 
     @Test
-    public void testSetRewards_listFromNotEmptyToNotEmpty() {
+    public void setRewards_listFromNotEmptyToNotEmpty() {
         assignee.setRewards_list(rewards_list_short);
         assertEquals(rewards_list_short, assignee.getRewards_list());
     }
 
 
     @Test(expected=IllegalArgumentException.class)
-    public void testSetRewards_listToNullException() {
+    public void setRewards_listToNullException() {
         assignee.setRewards_list(null);
     }
 
@@ -317,31 +323,31 @@ public class AssigneeTest {
      */
 
     @Test
-    public void testSetSuggestions_listFromNotEmptyToEmpty() {
+    public void setSuggestions_listFromNotEmptyToEmpty() {
         assignee.setSuggestions_list(suggestions_list2);
         assertEquals(suggestions_list2, assignee.getSuggestions_list());
     }
 
     @Test
-    public void testSetSuggestions_listFromEmptyToNotEmpty() {
+    public void setSuggestions_listFromEmptyToNotEmpty() {
         assignee1.setSuggestions_list(suggestions_list);
         assertEquals(suggestions_list, assignee1.getSuggestions_list());
     }
 
     @Test
-    public void testSetSuggestions_listFromEmptyToEmpty() {
+    public void setSuggestions_listFromEmptyToEmpty() {
         assignee1.setSuggestions_list(suggestions_list2_short);
         assertEquals(suggestions_list2_short, assignee1.getSuggestions_list());
     }
 
     @Test
-    public void testSetSuggestions_listFromNotEmptyToNotEmpty() {
+    public void setSuggestions_listFromNotEmptyToNotEmpty() {
         assignee.setSuggestions_list(suggestions_list_short);
         assertEquals(suggestions_list_short, assignee.getSuggestions_list());
     }
 
     @Test(expected=IllegalArgumentException.class)
-    public void testSetSuggestions_listToNullException() {
+    public void setSuggestions_listToNullException() {
         assignee.setSuggestions_list(null);
     }
 
@@ -357,31 +363,31 @@ public class AssigneeTest {
      */
 
     @Test
-    public void testSetTeams_listFromNotEmptyToEmpty() {
+    public void setTeams_listFromNotEmptyToEmpty() {
         assignee.setTeams_list(teams_list2);
         assertEquals(teams_list2, assignee.getTeams_list());
     }
 
     @Test
-    public void testSetTeams_listFromEmptyToNotEmpty() {
+    public void setTeams_listFromEmptyToNotEmpty() {
         assignee1.setTeams_list(teams_list);
         assertEquals(teams_list, assignee1.getTeams_list());
     }
 
     @Test
-    public void testSetTeams_listFromEmptyToEmpty() {
+    public void setTeams_listFromEmptyToEmpty() {
         assignee1.setTeams_list(teams_list2_short);
         assertEquals(teams_list2_short, assignee1.getTeams_list());
     }
 
     @Test
-    public void testSetTeams_listFromNotEmptyToNotEmpty() {
+    public void setTeams_listFromNotEmptyToNotEmpty() {
         assignee.setTeams_list(teams_list_short);
         assertEquals(teams_list_short, assignee.getTeams_list());
     }
 
     @Test(expected=IllegalArgumentException.class)
-    public void testSetTeams_listToNull() {
+    public void setTeams_listToNull() {
         assignee.setTeams_list(null);
     }
 }
