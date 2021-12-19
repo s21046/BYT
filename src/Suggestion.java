@@ -1,3 +1,5 @@
+import ApplicationExceptions.StringTooShortException;
+
 public class Suggestion {
     private int id;
     private String name;
@@ -28,18 +30,27 @@ public class Suggestion {
     }
 
     public void setId(int id) {
-        this.id = id;
+        if (id < 0) throw new IllegalArgumentException("id cannot be a negative integer.");
+        else this.id = id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+
+    public void setName(String name) throws StringTooShortException {
+        if (name == null) throw new IllegalArgumentException("Argument cannot be null");
+        else if (name.length() < 1) throw new StringTooShortException();
+        else this.name = name;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+
+    public void setDescription(String description) throws StringTooShortException {
+        if (description == null) throw new IllegalArgumentException("Argument cannot be null");
+        else if (description.length() < 1) throw new StringTooShortException();
+        else this.description = description;
     }
+
 
     public void setAssigneeId(int assigneeId) {
-        this.assigneeId = assigneeId;
+        if (assigneeId < 0) throw new IllegalArgumentException("assigneeId cannot be a negative integer.");
+        else this.assigneeId = assigneeId;
     }
 }

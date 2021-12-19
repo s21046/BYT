@@ -61,14 +61,15 @@ public class AssigneeTest {
 
 
     /**
-     * All values are randomized for the sake of testing
+     * All values are randomized except of uniqueId which is set to 1 because it is the first
+     *  and only instance of Help object created for the sake of testing
      */
 
     @Before
     public void setUp() {
         id =11;
         id1 = 12;
-        firstName = "John";
+        firstName = "Jhon";
         firstName1 = "Adam";
         lastName = "Cena";
         lastName1 = "Stanowski";
@@ -124,7 +125,7 @@ public class AssigneeTest {
 
     /**
      * Get the given values belonging to Assignee object
-     * @result Assignee object values are returned accordingly for each getter
+     * @result Help object values are returned accordingly for each getter
      * @corner_cases None
      */
 
@@ -176,6 +177,11 @@ public class AssigneeTest {
         assertEquals(14, assignee.getId());
     }
 
+    @Test(expected=IllegalArgumentException.class)
+    public void setIdIllegalArgumentException() {
+        assignee.setId(-1);
+    }
+
     /**
      * Set the FirstName value to Assignee object
      * @result Assignee object FirstName is set anew and returned accordingly for each setter
@@ -216,12 +222,12 @@ public class AssigneeTest {
 
     @Test(expected=StringTooShortException.class)
     public void setLastNameTooShortException() throws StringTooShortException {
-        assignee.setFirstName("");
+        assignee.setLastName("");
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void setLastNameToNullException() throws StringTooShortException {
-        assignee.setFirstName(null);
+        assignee.setLastName(null);
     }
 
     /**
