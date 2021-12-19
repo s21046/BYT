@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Team {
@@ -8,6 +9,7 @@ public class Team {
 
     private ProjectManager pm;
     private List<Assignee> assignees;
+    private List<Task> tasks;
 
     public Team(String name, String description,
                 ProjectManager pm, List<Assignee> assignees) {
@@ -16,6 +18,7 @@ public class Team {
         this.description = description;
         this.pm = pm;
         this.assignees = assignees;
+        this.tasks = new ArrayList<>();
     }
 
     public ProjectManager getPM() {
@@ -32,5 +35,21 @@ public class Team {
 
     public void setAssignees(List<Assignee> assignees) {
         this.assignees = assignees;
+    }
+
+    public List<Task> getTasks(){
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
+
+    public void addTask(Task task){
+        this.tasks.add(task);
+    }
+
+    public void deleteTask(int task_id){
+        this.tasks.removeIf(t -> (t.getId() == task_id));
     }
 }

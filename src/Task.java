@@ -18,7 +18,7 @@ public class Task {
     private List<Assignee> assignees_list;
 
     public Task(String name, String description, Date startDate,
-                Date deadline, Status status, boolean voteStarted) {
+                Date deadline, Status status, boolean voteStarted, Team teamAssigned) {
         this.id = uniqueId++;
         this.name = name;
         this.description = description;
@@ -26,6 +26,8 @@ public class Task {
         this.deadline = deadline;
         this.status = status;
         this.voteStarted = voteStarted;
+        this.teamAssigned = teamAssigned;
+        this.teamAssigned.addTask(this);
     }
 
     public List<Vote> getVotes_list() {

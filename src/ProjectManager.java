@@ -30,13 +30,12 @@ public class ProjectManager extends Assignee {
     }
 
     public Task createTask(String name, String description, Date startDate,
-                        Date deadline, Status status, boolean voteStarted) {
-        return new Task(name, description, startDate, deadline, status, voteStarted);
+                        Date deadline, Status status, boolean voteStarted, Team team) {
+        return new Task(name, description, startDate, deadline, status, voteStarted, team);
     }
 
-    //TODO implement {only usable by PM} constraint
-    public void deleteTask() {
-
+    public void deleteTask(int task_id, Team team) {
+        team.deleteTask(task_id);
     }
 
     // This method is too general and doesn't specifies what to change, so I don't think we need it.
@@ -50,5 +49,4 @@ public class ProjectManager extends Assignee {
     public void tiebreak() {
 
     }
-
 }
