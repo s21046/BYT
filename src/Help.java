@@ -6,14 +6,15 @@ public class Help {
     private Date date;
     private String description;
 
-    private int assigneeId, pmId;
+    private int assigneeId, pmId, taskId;
 
     public Help(Date date, String description,
-                int assigneeId, int pmId) {
+                int assigneeId, int pmId, int taskId) {
         this.id = uniqueId++;
         this.date = date;
         this.description = description;
         this.assigneeId = assigneeId;
         this.pmId = pmId;
+        this.taskId = taskId;
     }
 }

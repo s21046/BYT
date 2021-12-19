@@ -23,6 +23,14 @@ public class Assignee {
         this.lastName = lastName;
     }
 
+    public int getId(){
+        return this.id;
+    }
+
+    public void setId(int id){
+        this.id = id;
+    }
+
     public List<Task> getTasks_list() {
         return tasks_list;
     }
@@ -78,11 +86,11 @@ public class Assignee {
     }
 
     //adding this made sense too
-    public Help requestHelp(Date date, String description) {
+    public Help requestHelp(Date date, String description, int taskId) {
         //id would be generated later?
-        //TODO think of the way to get this assignee's pm
+        int pmId = this.tasks_list.stream().filter(e -> e.getId() == taskId).findFirst().get().getTeamAssigned().getPM().getId();
         //PM's id is the last required attribute (set to this.id temporarily)
-        return new Help(date, description, this.id, this.id);
+        return new Help(date, description, this.id, pmId, taskId);
     }
 
     public Suggestion createSuggestion(String name, String description) {
