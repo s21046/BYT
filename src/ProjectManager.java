@@ -1,6 +1,3 @@
-import ApplicationExceptions.NoSuchTaskException;
-import ApplicationExceptions.NoSuchTeamException;
-
 import java.time.Instant;
 import java.util.Date;
 import java.util.HashSet;
@@ -18,15 +15,20 @@ public class ProjectManager extends Assignee {
     }
 
     public void setHelpRequests_list(HashSet<Help> helpRequests_list) {
-        if(helpRequests_list == null) throw new IllegalArgumentException("Argument cannot be null");
+        if (helpRequests_list == null) throw new IllegalArgumentException("Argument cannot be null");
         else this.helpRequests_list = helpRequests_list;
     }
 
     public void giveReward(int rewardId, int assigneeId, String name, String description, RewardType type) {
-        Reward reward = new Reward(rewardId, name,description,type, Date.from(Instant.now()));
+        Reward reward = new Reward(rewardId, name, description,type, Date.from(Instant.now()));
     }
 
     public Task createTask(int taskId, String name, String description, Date startDate,
+                           Date deadline, Status status, Team team) {
+        return new Task(taskId, name, description, startDate, deadline, status, team);
+    }
+
+    public Task updateTask(int taskId, String name, String description, Date startDate,
                            Date deadline, Status status, Team team) {
         return new Task(taskId, name, description, startDate, deadline, status, team);
     }

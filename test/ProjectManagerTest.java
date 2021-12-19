@@ -64,7 +64,7 @@ public class ProjectManagerTest {
      */
 
     @Test
-    public void getHelpRequests_list() {
+    public void testGetHelpRequests_list() {
         assertEquals(helpRequests_list, pm.getHelpRequests_list());
     }
 
@@ -79,30 +79,30 @@ public class ProjectManagerTest {
      */
 
     @Test
-    public void setHelpRequests_listFromNotEmptyToEmpty() {
+    public void testSetHelpRequests_listFromNotEmptyToEmpty() {
         pm.setHelpRequests_list(helpRequests_list2);
         assertEquals(helpRequests_list2, pm.getHelpRequests_list());
     }
 
     @Test
-    public void setHelpRequests_listFromEmptyToNotEmpty() {
+    public void testSetHelpRequests_listFromEmptyToNotEmpty() {
         pm2.setHelpRequests_list(helpRequests_list);
         assertEquals(helpRequests_list, pm2.getHelpRequests_list());
     }
 
     @Test
-    public void setHelpRequests_listFromEmptyToEmpty() {
+    public void testSetHelpRequests_listFromEmptyToEmpty() {
         pm2.setHelpRequests_list(helpRequests_list2_short);
         assertEquals(helpRequests_list2_short, pm2.getHelpRequests_list());
     }
     @Test
-    public void setHelpRequests_listFromNotEmptyToNotEmpty() {
+    public void testSetHelpRequests_listFromNotEmptyToNotEmpty() {
         pm.setHelpRequests_list(helpRequests_list_short);
         assertEquals(helpRequests_list_short, pm.getHelpRequests_list());
     }
 
     @Test(expected=IllegalArgumentException.class)
-    public void setHelpRequests_listToNull() {
+    public void testSetHelpRequests_listToNull() {
         pm.setHelpRequests_list(null);
     }
 
