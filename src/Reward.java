@@ -1,3 +1,5 @@
+import ApplicationExceptions.StringTooShortException;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -44,13 +46,15 @@ public class Reward {
         else this.id = id;
     }
 
-    public void setName(String name) {
+    public void setName(String name) throws StringTooShortException {
         if(name == null) throw new IllegalArgumentException("Argument cannot be null");
+        else if(name.length()<3) throw new StringTooShortException();
         else this.name = name;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(String description) throws StringTooShortException {
         if(description == null) throw new IllegalArgumentException("Argument cannot be null");
+        else if(description.length()<15) throw new StringTooShortException();
         else this.description = description;
     }
 
