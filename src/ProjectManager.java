@@ -35,7 +35,6 @@ public class ProjectManager extends Assignee {
         team.deleteTask(task_id);
     }
 
-    //TODO implement {only usable by PM} constraint
     public void tiebreak(int teamId, int taskId, List<Assignee> assignee_list) {
         System.out.println("Tie broken!");
     }
