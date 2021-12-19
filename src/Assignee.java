@@ -31,7 +31,7 @@ public class Assignee {
 
     public void setFirstName(String firstName) throws StringTooShortException {
         if(firstName == null) throw new IllegalArgumentException("Argument cannot be null");
-        else if(firstName.length()<3) throw new StringTooShortException();
+        else if(firstName.length()<1) throw new StringTooShortException();
         else this.firstName = firstName;
     }
 
@@ -41,7 +41,7 @@ public class Assignee {
 
     public void setLastName(String lastName) throws StringTooShortException {
         if(lastName == null) throw new IllegalArgumentException("Argument cannot be null");
-        else if(lastName.length()<3) throw new StringTooShortException();
+        else if(lastName.length()<1) throw new StringTooShortException();
         else this.lastName = lastName;
     }
 
