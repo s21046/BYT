@@ -1,10 +1,14 @@
+import ApplicationExceptions.CantReviewOwnTaskException;
+import ApplicationExceptions.NoSuchTaskException;
+import ApplicationExceptions.VoteNotStartedException;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
 public class Assignee {
-    //TODO implement id uniqueness
+    private static int uniqueId = 0;
     private int id;
     private String firstName;
     private String lastName;
@@ -13,8 +17,8 @@ public class Assignee {
 
     private HashSet<Suggestion> suggestions_list = new HashSet<>();
 
-    public Assignee(int id, String firstName, String lastName) {
-        this.id = id;
+    public Assignee(String firstName, String lastName) {
+        this.id = uniqueId++;
         this.firstName = firstName;
         this.lastName = lastName;
     }
@@ -48,45 +52,40 @@ public class Assignee {
     }
 
     //moved it here from Vote
-    public Vote vote(int taskId, int id, String explanation, Assignee person) {
-        //exception or smth
-        //can't vote on a task if there is no task / it's not your task
-        if (getTasks_list().isEmpty() || getTasks_list().get(taskId) == null) {
-            return null;
+    public Vote vote(int taskId, String explanation) throws ApplicationExceptions.NoSuchTaskException, VoteNotStartedException {
+        if (getTasks_list().isEmpty() || getTasks_list().stream().noneMatch(task -> task.getId() == taskId)) {
+            throw new NoSuchTaskException();
         }
-        Task task = getTasks_list().get(taskId);
 
-        //exception or smth
-        //can only cast vote if vote has been started
-        if (!task.isVoteStarted()) {
-            return null;
+        if (!getTasks_list().stream().filter(task -> task.getId() == taskId).findFirst().get().isVoteStarted()) {
+            throw new VoteNotStartedException();
         }
-        //id would be generated later?
-        return new Vote(id, explanation, person, taskId, this.id);
+        return new Vote(explanation, this, taskId);
     }
 
-    //adding this made sense
-    public Review review(int taskId, int id, boolean approved, String description) {
-        //exception or smth
-        //can't review their own task
-        if (!(tasks_list.get(taskId) == null)) {
-            return null;
+    public Review review(int taskId, boolean approved, String description) throws NoSuchTaskException, CantReviewOwnTaskException {
+
+        if (getTasks_list().stream().noneMatch(task -> task.getId() == taskId)) {
+            throw new NoSuchTaskException();
         }
-        //id would be generated later?
-        return new Review(id, approved, description, taskId, this.id);
+
+        //can't review their own task
+        if (getTasks_list().stream().filter(task -> task.getId() == taskId).findFirst().get().getAssignees_list().contains(this)) {
+            throw new CantReviewOwnTaskException();
+        }
+
+        return new Review(approved, description, this.id, taskId);
     }
 
     //adding this made sense too
-    public Help requestHelp(int id, Date date, String description) {
+    public Help requestHelp(Date date, String description) {
         //id would be generated later?
         //TODO think of the way to get this assignee's pm
         //PM's id is the last required attribute (set to this.id temporarily)
-        return new Help(id, date, description, this.id, this.id);
+        return new Help(date, description, this.id, this.id);
     }
 
-    public Suggestion createSuggestion(int id, String name, String description) {
-        //TODO exception when id is not unique?
-        //id would be generated later?
-        return new Suggestion(id, name, description, this.id);
+    public Suggestion createSuggestion(String name, String description) {
+        return new Suggestion(name, description, this.id);
     }
 }

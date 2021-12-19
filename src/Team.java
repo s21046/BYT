@@ -1,7 +1,7 @@
 import java.util.List;
 
 public class Team {
-    //TODO implement id uniqueness
+    private static int uniqueId = 0;
     private int id;
     private String name;
     private String description;
@@ -9,9 +9,9 @@ public class Team {
     private ProjectManager pm;
     private List<Assignee> assignees;
 
-    public Team(int id, String name, String description,
+    public Team(String name, String description,
                 ProjectManager pm, List<Assignee> assignees) {
-        this.id = id;
+        this.id = uniqueId;
         this.name = name;
         this.description = description;
         this.pm = pm;

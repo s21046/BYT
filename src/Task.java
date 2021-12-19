@@ -2,7 +2,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Task {
-    //TODO implement id uniqueness
+    private static int uniqueId = 0;
     private int id;
     private String name;
     private String description;
@@ -15,9 +15,9 @@ public class Task {
     private List<Review> reviews_list;
     private List<Assignee> assignees_list;
 
-    public Task(int id, String name, String description, Date startDate,
+    public Task(String name, String description, Date startDate,
                 Date deadline, Status status, boolean voteStarted) {
-        this.id = id;
+        this.id = uniqueId++;
         this.name = name;
         this.description = description;
         this.startDate = startDate;
@@ -54,25 +54,30 @@ public class Task {
         return voteStarted;
     }
 
-    //TODO implement {only usable by PM} constraint
-    public Task createTask(int id, String name, String description, Date startDate,
-                        Date deadline, Status status, boolean voteStarted) {
-        return null;
-    }
+// Moved these methods to PM class as they make more sense there
+//    //TODO implement {only usable by PM} constraint
+//    public Task createTask(int id, String name, String description, Date startDate,
+//                        Date deadline, Status status, boolean voteStarted) {
+//        return null;
+//    }
+//
+//    //TODO implement {only usable by PM} constraint
+//    public void deleteTask() {
+//
+//    }
+//
+//    //TODO implement {only usable by PM} constraint
+//    public Task updateTask(int id, String name, String description, Date startDate,
+//                           Date deadline, Status status, boolean voteStarted) {
+//        return null;
+//    }
+//
+//    //TODO implement {only usable by PM} constraint
+//    public void tiebreak() {
+//
+//    }
 
-    //TODO implement {only usable by PM} constraint
-    public void deleteTask() {
-
-    }
-
-    //TODO implement {only usable by PM} constraint
-    public Task updateTask(int id, String name, String description, Date startDate,
-                           Date deadline, Status status, boolean voteStarted) {
-        return null;
-    }
-
-    //TODO implement {only usable by PM} constraint
-    public void tiebreak() {
-
+    public int getId() {
+        return id;
     }
 }
