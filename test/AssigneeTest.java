@@ -168,7 +168,7 @@ public class AssigneeTest {
     /**
      * Set the Id value to Assignee object
      * @result Assignee object id is set anew and returned accordingly for each setter
-     * @corner_cases setId is tested on the matter of invalid input id (negative argument)
+     * @corner_case setId is tested on the matter of invalid input id (negative argument)
      */
 
     @Test
