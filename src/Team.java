@@ -1,10 +1,13 @@
+import ApplicationExceptions.IdAlreadyExistsException;
 import ApplicationExceptions.StringTooShortException;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Team {
-    private static int uniqueId = 0;
+    private static final Set<Integer> ids = new HashSet<>();
     private int id;
     private String name;
     private String description;
@@ -13,8 +16,11 @@ public class Team {
     private List<Assignee> assignees;
     private List<Task> tasks;
 
-    public Team(String name, String description, ProjectManager pm, List<Assignee> assignees) {
-        this.id = uniqueId;
+    public Team(int id, String name, String description, ProjectManager pm, List<Assignee> assignees) throws IdAlreadyExistsException {
+        if (!ids.add(id)) {
+            throw new IdAlreadyExistsException();
+        }
+        this.id = id;
         this.name = name;
         this.description = description;
         this.pm = pm;
@@ -41,7 +47,10 @@ public class Team {
         return tasks;
     }
 
-    public void setId(int id){
+    public void setId(int id) throws IdAlreadyExistsException {
+        if (!ids.add(id)) {
+            throw new IdAlreadyExistsException();
+        }
         if(id<0) throw new IllegalArgumentException("id cannot be a negative integer.");
         else this.id = id;
     }

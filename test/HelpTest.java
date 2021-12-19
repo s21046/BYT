@@ -5,7 +5,6 @@ import java.util.Date;
 import static org.junit.Assert.*;
 
 public class HelpTest {
-    private static int uniqueId;
     private int id;
     private Date date;
     private String description;
@@ -18,14 +17,13 @@ public class HelpTest {
      */
     @Before
     public void setUp() {
-        uniqueId = 1;
-        id = uniqueId;
+        id = 1;
         date = new Date();
         description = "Just for testing purposes";
         assigneeId = 2;
         pmId = 3;
         taskId = 2;
-        help= new Help(date, description, assigneeId, pmId, taskId);
+        help= new Help(id, date, description, assigneeId, pmId, taskId);
 
     }
 

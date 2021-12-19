@@ -1,20 +1,23 @@
+import ApplicationExceptions.IdAlreadyExistsException;
 import ApplicationExceptions.StringTooShortException;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Reward {
-    private static int uniqueId = 0;
-
+    private static final Set<Integer> ids = new HashSet<>();
     private int id;
     private String name;
     private String description;
     private RewardType type;
     private Date dateGiven;
 
-    public Reward(String name, String description, RewardType type, Date dateGiven) {
-        this.id = uniqueId++;
+    public Reward(int id, String name, String description, RewardType type, Date dateGiven) throws IdAlreadyExistsException {
+        if (!ids.add(id)) {
+            throw new IdAlreadyExistsException();
+        }
+        this.id = id;
         this.name = name;
         this.description = description;
         this.type = type;
@@ -41,7 +44,10 @@ public class Reward {
         return dateGiven;
     }
 
-    public void setId(int id) {
+    public void setId(int id) throws IdAlreadyExistsException {
+        if (!ids.add(id)) {
+            throw new IdAlreadyExistsException();
+        }
         if(id<0) throw new IllegalArgumentException("id cannot be a negative integer.");
         else this.id = id;
     }

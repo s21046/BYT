@@ -1,15 +1,22 @@
+import ApplicationExceptions.IdAlreadyExistsException;
 import ApplicationExceptions.StringTooShortException;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class Vote {
-    private static int uniqueId = 0;
+    private static final Set<Integer> ids = new HashSet<>();
     private int id;
     private String explanation;
     private int votedForId;
     private int voterId;
     private Task task;
 
-    public Vote(String explanation, int votedForId, int voterId, Task task) {
-        this.id = uniqueId++;
+    public Vote(int id, String explanation, int votedForId, int voterId, Task task) throws IdAlreadyExistsException {
+        if (!ids.add(id)) {
+            throw new IdAlreadyExistsException();
+        }
+        this.id = id;
         this.explanation = explanation;
         this.votedForId = votedForId;
         this.voterId = voterId;
@@ -26,23 +33,15 @@ public class Vote {
         return explanation;
     }
 
-    public static int getUniqueId() {
-        return uniqueId;
-    }
-
-    public static void setUniqueId(int uniqueId) {
-        if(uniqueId < 0) throw new IllegalArgumentException("Argument cannot be a negative integer.");
-        Vote.uniqueId = uniqueId;
-    }
-
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(int id) throws IdAlreadyExistsException {
+        if (!ids.add(id)) {
+            throw new IdAlreadyExistsException();
+        }
         if(id < 0) throw new IllegalArgumentException("Argument cannot be a negative integer.");
-        if(task.getVotes_list().stream().anyMatch(v -> v.getId() == id))
-            throw new IllegalArgumentException("Vote with this id already exists.");
         this.id = id;
     }
 

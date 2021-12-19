@@ -1,9 +1,12 @@
+import ApplicationExceptions.IdAlreadyExistsException;
 import ApplicationExceptions.StringTooShortException;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Help {
-    private static int uniqueId = 0;
+    private static final Set<Integer> ids = new HashSet<>();
     private int id;
     private Date date;
     private String description;
@@ -12,18 +15,17 @@ public class Help {
 
     private int taskId;
 
-    public Help(Date date, String description,
-                int assigneeId, int pmId, int taskId) {
-        this.id = uniqueId++;
+    public Help(int id, Date date, String description,
+                int assigneeId, int pmId, int taskId) throws IdAlreadyExistsException {
+        if (!ids.add(id)) {
+            throw new IdAlreadyExistsException();
+        }
+        this.id = id;
         this.date = date;
         this.description = description;
         this.assigneeId = assigneeId;
         this.pmId = pmId;
         this.taskId = taskId;
-    }
-
-    public static int getUniqueId() {
-        return uniqueId;
     }
 
     public int getId() {
@@ -50,11 +52,10 @@ public class Help {
         return taskId;
     }
 
-    public static void setUniqueId(int uniqueId) {
-        Help.uniqueId = uniqueId;
-    }
-
-    public void setId(int id) {
+    public void setId(int id) throws IdAlreadyExistsException {
+        if (!ids.add(id)) {
+            throw new IdAlreadyExistsException();
+        }
         if(id<0) throw new IllegalArgumentException("id cannot be a negative integer.");
         else this.id = id;
     }
