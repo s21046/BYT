@@ -1,5 +1,12 @@
+import ApplicationExceptions.NoSuchTaskException;
+import ApplicationExceptions.NoSuchTeamException;
+
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 
 public class ProjectManager extends Assignee {
     private HashSet<Help> helpRequests_list = new HashSet<>();
@@ -16,8 +23,8 @@ public class ProjectManager extends Assignee {
         this.helpRequests_list = helpRequests_list;
     }
 
-    public void giveReward(int assigneeId, int rewardId) {
-
+    public void giveReward(int assigneeId, String name, String description, RewardType type) {
+        Reward reward = new Reward(name,description,type, Date.from(Instant.now()));
     }
 
     public Task createTask(String name, String description, Date startDate,
@@ -37,7 +44,7 @@ public class ProjectManager extends Assignee {
 //    }
 
     //TODO implement {only usable by PM} constraint
-    public void tiebreak() {
-
+    public void tiebreak(int teamId, int taskId, List<Assignee> assignee_list) {
+        System.out.println("Tie broken!");
     }
 }
