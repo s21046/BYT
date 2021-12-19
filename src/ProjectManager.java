@@ -22,13 +22,13 @@ public class ProjectManager extends Assignee {
         else this.helpRequests_list = helpRequests_list;
     }
 
-    public void giveReward(int assigneeId, String name, String description, RewardType type) {
-        Reward reward = new Reward(name,description,type, Date.from(Instant.now()));
+    public void giveReward(int rewardId, int assigneeId, String name, String description, RewardType type) {
+        Reward reward = new Reward(rewardId, name,description,type, Date.from(Instant.now()));
     }
 
-    public Task createTask(String name, String description, Date startDate,
+    public Task createTask(int taskId, String name, String description, Date startDate,
                            Date deadline, Status status, Team team) {
-        return new Task(name, description, startDate, deadline, status, team);
+        return new Task(taskId, name, description, startDate, deadline, status, team);
     }
 
     public void deleteTask(int task_id, Team team) {
