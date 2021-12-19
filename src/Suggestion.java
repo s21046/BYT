@@ -1,24 +1,17 @@
 public class Suggestion {
-    private static int uniqueId = 0;
     private int id;
     private String name;
     private String description;
     private int assigneeId;
 
     public Suggestion(String name, String description, int assigneeId) {
-        this.id = uniqueId++;
         this.name = name;
         this.description = description;
         this.assigneeId = assigneeId;
     }
 
-
     public int getId() {
         return id;
-    }
-
-    public static int getUniqueId() {
-        return uniqueId;
     }
 
     public String getName() {
@@ -35,10 +28,6 @@ public class Suggestion {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public static void setUniqueId(int uniqueId) {
-        Suggestion.uniqueId = uniqueId;
     }
 
     public void setName(String name) {

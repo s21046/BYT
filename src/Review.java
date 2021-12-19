@@ -1,7 +1,6 @@
 import ApplicationExceptions.StringTooShortException;
 
 public class Review {
-    private static int uniqueId = 0;
     private int id;
     private String description;
     private int assigneeId;
@@ -9,15 +8,10 @@ public class Review {
     private boolean approved;
 
     public Review(boolean approved, String description, int assigneeId, int taskId) {
-        this.id = uniqueId++;
         this.approved = approved;
         this.description = description;
         this.assigneeId = assigneeId;
         this.taskId = taskId;
-    }
-
-    public static int getUniqueId() {
-        return uniqueId;
     }
 
     public int getId() {
@@ -34,11 +28,6 @@ public class Review {
     }
     public boolean isApproved() {
         return approved;
-    }
-
-    public static void setUniqueId(int uniqueId){
-        if(uniqueId<0) throw new IllegalArgumentException("uniqueId cannot be a negative integer.");
-        else Review.uniqueId = uniqueId;
     }
 
     public void setId(int id) {

@@ -3,7 +3,6 @@ import ApplicationExceptions.*;
 import java.util.*;
 
 public class Assignee {
-    private static int uniqueId = 0;
     private int id;
     private String firstName;
     private String lastName;
@@ -13,7 +12,6 @@ public class Assignee {
     private HashSet<Team> teams_list = new HashSet<>();
 
     public Assignee(String firstName, String lastName) {
-        this.id = uniqueId++;
         this.firstName = firstName;
         this.lastName = lastName;
     }

@@ -3,7 +3,6 @@ import ApplicationExceptions.StringTooShortException;
 import java.util.Date;
 
 public class Help {
-    private static int uniqueId = 0;
     private int id;
     private Date date;
     private String description;
@@ -14,16 +13,11 @@ public class Help {
 
     public Help(Date date, String description,
                 int assigneeId, int pmId, int taskId) {
-        this.id = uniqueId++;
         this.date = date;
         this.description = description;
         this.assigneeId = assigneeId;
         this.pmId = pmId;
         this.taskId = taskId;
-    }
-
-    public static int getUniqueId() {
-        return uniqueId;
     }
 
     public int getId() {
@@ -48,10 +42,6 @@ public class Help {
 
     public int getTaskId() {
         return taskId;
-    }
-
-    public static void setUniqueId(int uniqueId) {
-        Help.uniqueId = uniqueId;
     }
 
     public void setId(int id) {

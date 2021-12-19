@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Team {
-    private static int uniqueId = 0;
     private int id;
     private String name;
     private String description;
@@ -14,7 +13,6 @@ public class Team {
     private List<Task> tasks;
 
     public Team(String name, String description, ProjectManager pm, List<Assignee> assignees) {
-        this.id = uniqueId;
         this.name = name;
         this.description = description;
         this.pm = pm;

@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 public class Task {
-    private static int uniqueId = 0;
     private int id;
     private String name;
     private String description;
@@ -21,7 +20,6 @@ public class Task {
 
     public Task(String name, String description, Date startDate,
                 Date deadline, Status status, Team teamAssigned) {
-        this.id = uniqueId++;
         this.name = name;
         this.description = description;
         this.startDate = startDate;
@@ -50,7 +48,7 @@ public class Task {
     public Status getStatus() {
         return status;
     }
-    public boolean getVoteStarted() {
+    public boolean isVoteStarted() {
         return voteStarted;
     }
 
@@ -117,9 +115,4 @@ public class Task {
         if(assignee_list == null) throw new IllegalArgumentException("Argument cannot be null");
         else this.assignees_list = assignee_list;
     }
-
-
-
-
-
 }
