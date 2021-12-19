@@ -1,21 +1,24 @@
+import ApplicationExceptions.StringTooShortException;
+
 public class Vote {
     private static int uniqueId = 0;
     private int id;
     private String explanation;
     private int votedForId;
     private int voterId;
-    private int taskId;
+    private Task task;
 
-    public Vote(String explanation, int votedForId, int voterId, int taskId) {
+    public Vote(String explanation, int votedForId, int voterId, Task task) {
         this.id = uniqueId++;
         this.explanation = explanation;
         this.votedForId = votedForId;
         this.voterId = voterId;
-        this.taskId = taskId;
+        this.task = task;
     }
 
-
-    public void setExplanation(String explanation){
+    public void setExplanation(String explanation) throws StringTooShortException {
+        if(explanation == null) throw new IllegalArgumentException("Argument cannot be null");
+        if(explanation.length()<7) throw new StringTooShortException();
         this.explanation = explanation;
     }
 
@@ -28,6 +31,7 @@ public class Vote {
     }
 
     public static void setUniqueId(int uniqueId) {
+        if(uniqueId < 0) throw new IllegalArgumentException("Argument cannot be a negative integer.");
         Vote.uniqueId = uniqueId;
     }
 
@@ -36,14 +40,10 @@ public class Vote {
     }
 
     public void setId(int id) {
+        if(id < 0) throw new IllegalArgumentException("Argument cannot be a negative integer.");
+        if(task.getVotes_list().stream().anyMatch(v -> v.getId() == id))
+            throw new IllegalArgumentException("Vote with this id already exists.");
         this.id = id;
-    }
-    public int getTaskId() {
-        return taskId;
-    }
-
-    public void setTaskId(int taskId) {
-        this.taskId = taskId;
     }
 
     public int getVotedForId() {
@@ -51,6 +51,8 @@ public class Vote {
     }
 
     public void setVotedForId(int votedForId) {
+        if(task.getTeamAssigned().getAssignees().stream().noneMatch(a -> a.getId() == votedForId))
+            throw new IllegalArgumentException("No such Assignee with such ID found in the Task's Team.");
         this.votedForId = votedForId;
     }
 
@@ -59,6 +61,17 @@ public class Vote {
     }
 
     public void setVoterId(int voterId) {
+        if(task.getTeamAssigned().getAssignees().stream().noneMatch(a -> a.getId() == voterId))
+            throw new IllegalArgumentException("No such Assignee with such ID found in the Task's Team.");
         this.voterId = voterId;
+    }
+
+    public Task getTask() {
+        return task;
+    }
+
+    public void setTask(Task task) {
+        if(task == null) throw new IllegalArgumentException("Argument cannot be null.");
+        this.task = task;
     }
 }
