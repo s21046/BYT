@@ -46,25 +46,30 @@ public class ReviewTest {
     }
 
     @Test
-    public void getDescription() {
+    public void testGetDescription() {
         assertEquals(description, rev.getDescription());
     }
 
     @Test
-    public void getAssigneeId() {
+    public void testGetAssigneeId() {
         assertEquals(assigneeId, rev.getAssigneeId());
     }
 
     @Test
-    public void getTaskId() {
+    public void testGetTaskId() {
         assertEquals(taskId, rev.getTaskId());
     }
 
     @Test
-    public void isApproved() {
+    public void testIsApproved(){
         assertEquals(approved, rev.isApproved());
     }
 
+    /**
+     * Set the given values to fields belonging to Review object
+     * @result Review object values are set anew and returned accordingly for each setter
+     * @corner_cases setId is tested on the matter of invalid input id (negative argument)
+     */
 
     @Test
     public void setId() {
