@@ -15,18 +15,27 @@ public class Vote {
         this.task = task;
     }
 
-    public void setExplanation(String explanation) throws StringTooShortException {
-        if(explanation == null) throw new IllegalArgumentException("Argument cannot be null");
-        if(explanation.length()<7) throw new StringTooShortException();
-        this.explanation = explanation;
+    public int getId() {
+        return id;
     }
+
 
     public String getExplanation(){
         return explanation;
     }
 
-    public int getId() {
-        return id;
+
+    public int getVotedForId() {
+        return votedForId;
+    }
+
+
+    public int getVoterId() {
+        return voterId;
+    }
+
+    public Task getTask() {
+        return task;
     }
 
     public void setId(int id) {
@@ -36,9 +45,14 @@ public class Vote {
         this.id = id;
     }
 
-    public int getVotedForId() {
-        return votedForId;
+
+    public void setExplanation(String explanation) throws StringTooShortException {
+        if(explanation == null) throw new IllegalArgumentException("Argument cannot be null");
+        if(explanation.length()<1) throw new StringTooShortException();
+        this.explanation = explanation;
     }
+
+
 
     public void setVotedForId(int votedForId) {
         if(task.getTeamAssigned().getAssignees().stream().noneMatch(a -> a.getId() == votedForId))
@@ -46,9 +60,7 @@ public class Vote {
         this.votedForId = votedForId;
     }
 
-    public int getVoterId() {
-        return voterId;
-    }
+
 
     public void setVoterId(int voterId) {
         if(task.getTeamAssigned().getAssignees().stream().noneMatch(a -> a.getId() == voterId))
@@ -56,9 +68,7 @@ public class Vote {
         this.voterId = voterId;
     }
 
-    public Task getTask() {
-        return task;
-    }
+
 
     public void setTask(Task task) {
         if(task == null) throw new IllegalArgumentException("Argument cannot be null.");

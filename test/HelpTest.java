@@ -14,8 +14,7 @@ public class HelpTest {
     private Help help;
 
     /**
-     * All values are randomized except of uniqueId which is set to 1 because it is the first
-     *  and only instance of Help object created for the sake of testing
+     * All values are randomized for the sake of testing
      */
     @Before
     public void setUp() {
@@ -33,13 +32,9 @@ public class HelpTest {
     /**
      * Get the given values belonging to Help object
      * @result Help object values are returned accordingly for each getter
-     * @warning getUniqueId is not tested as part of the Help instance but as a reference to Help.class
+     * @corner_cases None
      */
 
-    @Test
-    public void testUniqueId() {
-        assertEquals(uniqueId, Help.getUniqueId());
-    }
 
     @Test
     public void testGetDate() {
@@ -74,19 +69,18 @@ public class HelpTest {
     /**
      * Set the given values to fields belonging to Help object
      * @result Help object values are set anew and returned accordingly for each setter
-     * @warning getUniqueId is not tested as part of the Help instance but as a reference to Help.class
+     * @corner_cases setId is tested on the matter of invalid input id (negative argument)
      */
-
-    @Test
-    public void setUniqueId() {
-        Help.setUniqueId(2);
-        assertEquals(2, Help.getUniqueId());
-    }
 
     @Test
     public void setId() {
         help.setId(3);
         assertEquals(3, help.getId());
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void setIdIsInvalidException() {
+        help.setId(-2);
     }
 
     @Test
