@@ -67,7 +67,7 @@ public class Help {
 
     public void setDescription(String description) throws StringTooShortException {
         if(description == null) throw new IllegalArgumentException("Argument cannot be null");
-        else if(description.length()<15) throw new StringTooShortException();
+        else if(description.length()<1) throw new StringTooShortException();
         else this.description = description;
     }
 

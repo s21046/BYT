@@ -1,3 +1,4 @@
+import ApplicationExceptions.StringTooShortException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -7,6 +8,7 @@ import static org.junit.Assert.*;
 public class HelpTest {
     private int id;
     private Date date;
+    private Date secDate;
     private String description;
     private int assigneeId, pmId, taskId;
     private Help help;
@@ -19,6 +21,7 @@ public class HelpTest {
     public void setUp() {
         id = 1;
         date = new Date();
+        secDate = new Date();
         description = "Just for testing purposes";
         assigneeId = 2;
         pmId = 3;
@@ -32,6 +35,11 @@ public class HelpTest {
      * @result Help object values are returned accordingly for each getter
      * @warning getUniqueId is not tested as part of the Help instance but as a reference to Help.class
      */
+
+    @Test
+    public void testUniqueId() {
+        assertEquals(uniqueId, Help.getUniqueId());
+    }
 
     @Test
     public void testGetDate() {
@@ -63,8 +71,52 @@ public class HelpTest {
         assertEquals(id, help.getId());
     }
 
+    /**
+     * Set the given values to fields belonging to Help object
+     * @result Help object values are set anew and returned accordingly for each setter
+     * @warning getUniqueId is not tested as part of the Help instance but as a reference to Help.class
+     */
+
     @Test
-    public void testUniqueId() {
-        assertEquals(uniqueId, Help.getUniqueId());
+    public void setUniqueId() {
+        Help.setUniqueId(2);
+        assertEquals(2, Help.getUniqueId());
+    }
+
+    @Test
+    public void setId() {
+        help.setId(3);
+        assertEquals(3, help.getId());
+    }
+
+    @Test
+    public void setDate() {
+
+        help.setDate(secDate);
+        assertEquals(secDate, help.getDate());
+    }
+
+    @Test
+    public void setDescription() throws StringTooShortException {
+        help.setDescription("New description");
+        assertEquals("New description", help.getDescription());
+    }
+
+    @Test
+    public void setAssigneeId() {
+        help.setAssigneeId(15);
+        assertEquals(15, help.getAssigneeId());
+    }
+
+    @Test
+    public void setPmId() {
+        help.setPmId(42);
+        assertEquals(42, help.getPmId());
+    }
+
+    @Test
+    public void setTaskId() {
+        help.setTaskId(12);
+        assertEquals(12, help.getTaskId());
     }
 }
