@@ -73,43 +73,43 @@ public class HelpTest {
      */
 
     @Test
-    public void setId() {
+    public void testSetId() {
         help.setId(3);
         assertEquals(3, help.getId());
     }
 
     @Test(expected=IllegalArgumentException.class)
-    public void setIdIsInvalidException() {
+    public void testSetIdIsInvalidException() {
         help.setId(-2);
     }
 
     @Test
-    public void setDate() {
+    public void testSetDate() {
 
         help.setDate(secDate);
         assertEquals(secDate, help.getDate());
     }
 
     @Test
-    public void setDescription() throws StringTooShortException {
+    public void testSetDescription() throws StringTooShortException {
         help.setDescription("New description");
         assertEquals("New description", help.getDescription());
     }
 
     @Test
-    public void setAssigneeId() {
+    public void testSetAssigneeId() {
         help.setAssigneeId(15);
         assertEquals(15, help.getAssigneeId());
     }
 
     @Test
-    public void setPmId() {
+    public void testSetPmId() {
         help.setPmId(42);
         assertEquals(42, help.getPmId());
     }
 
     @Test
-    public void setTaskId() {
+    public void testSetTaskId() {
         help.setTaskId(12);
         assertEquals(12, help.getTaskId());
     }
