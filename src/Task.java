@@ -109,14 +109,22 @@ public class Task {
 
     public void setVotes_list(List<Vote> votes_list) {
         if(votes_list == null) throw new IllegalArgumentException("Argument cannot be null");
-        else this.votes_list = votes_list;
+        if (votes_list.stream().allMatch(v -> v.getTask().getId() == this.id)) {
+            this.votes_list = votes_list;
+        } else throw new IllegalArgumentException("All votes in the list should belong to this task.");
     }
     public void setReviews_list(List<Review> reviews_list) {
         if(reviews_list == null) throw new IllegalArgumentException("Argument cannot be null");
-        else this.reviews_list = reviews_list;
+        if (reviews_list.stream().allMatch(r -> r.getTaskId() == this.id)) {
+            this.reviews_list = reviews_list;
+        } else throw new IllegalArgumentException("All reviews in the list should belong to this task.");
     }
     public void setAssignees_list(List<Assignee> assignee_list) {
         if(assignee_list == null) throw new IllegalArgumentException("Argument cannot be null");
-        else this.assignees_list = assignee_list;
+        if (assignee_list.stream().allMatch(
+                a -> a.getTeams_list().stream().anyMatch(
+                        t -> t.getId() == this.teamAssigned.getId()))) {
+            this.assignees_list = assignee_list;
+        } else throw new IllegalArgumentException("Assignees in the list should belong to this task's team.");
     }
 }
