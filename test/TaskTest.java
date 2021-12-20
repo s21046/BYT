@@ -94,7 +94,7 @@ public class TaskTest {
 	}
 	
 	@Test
-	public void getStatus() {
+	public void testGetStatus() {
 		assertEquals(createUI.getStatus(), status);
 		assertEquals(vacuumRoom.getStatus(), status);
 		assertEquals(getSleep.getStatus(), status);
@@ -108,14 +108,14 @@ public class TaskTest {
 	}
 	
 	@Test
-	public void getTeamAssigned() {
+	public void testGetTeamAssigned() {
 		assertEquals(createUI.getTeamAssigned(), programmers);
 		assertEquals(vacuumRoom.getTeamAssigned(), programmers);
 		assertEquals(getSleep.getTeamAssigned(), programmers);
 	}
 	
 	@Test
-	public void getVotes_list() {
+	public void testGetVotes_list() {
 		assertEquals(createUI.getVotes_list().size(), 0);
 		Vote vote = new Vote(1, "Because I say so", 1,2, vacuumRoom);
 		ArrayList<Vote> votes = new ArrayList<>();
@@ -125,7 +125,7 @@ public class TaskTest {
 	}
 	
 	@Test
-	public void getReviews_list() {
+	public void testGetReviews_list() {
 		assertEquals(createUI.getReviews_list().size(), 0);
 		Review review = new Review(1, true, "Very nicely done", 3, 3);
 		ArrayList<Review> reviews = new ArrayList<>();
@@ -135,7 +135,7 @@ public class TaskTest {
 	}
 	
 	@Test
-	public void getAssignees_list() {
+	public void testGetAssignees_list() {
 		assertEquals(createUI.getAssignees_list().size(), 0);
 		getSleep.setAssignees_list(assignees);
 		assertEquals(getSleep.getAssignees_list(), assignees);
@@ -332,7 +332,7 @@ public class TaskTest {
 	}
 
 	@Test
-	public void setReviews_list() {
+	public void testSetReviews_list() {
 		Review review = new Review(1, true, "Very nicely done", 3, 3);
 		ArrayList<Review> reviews = new ArrayList<>();
 		reviews.add(review);
