@@ -16,7 +16,6 @@ public class RewardTest {
     private Date dateGiven;
     private Reward reward;
 
-    //Corner cases to be added
     @Before
     public void setUp() {
         id = 1;
@@ -61,36 +60,96 @@ public class RewardTest {
     /**
      * Set the given values to fields belonging to Team object
      * @result Team object values are set anew and returned accordingly for each setter
-     * @corner_cases setId is tested on the matter of invalid input id (negative argument)
+     * @corner_cases
+     * Methods are tested on the matter of invalid input id:
+     * 	setId: negative argument
+     * 	setName: null argument, name shorter than 3 characters
+     * 	setDescription: null argument, description shorter than 15 characters
+     * 	setType: null argument
+     * 	setDateGiven: null argument, date from the future
      */
 
     @Test
     public void testSetId() {
         reward.setId(15);
         assertEquals(15, reward.getId());
+
+        try {
+            reward.setId(-4);
+            fail();
+        } catch (IllegalArgumentException e) {
+            // should be thrown
+        }
     }
 
     @Test
     public void testSetName() throws StringTooShortException {
         reward.setName("FFF");
         assertEquals("FFF", reward.getName());
+        try {
+            reward.setName(null);
+            fail();
+        } catch (IllegalArgumentException e) {
+            // should be thrown
+        }
+        try {
+            reward.setName("no");
+            fail();
+        } catch (StringTooShortException e) {
+            // should be thrown
+        }
     }
 
     @Test
     public void testSetDescription() throws StringTooShortException {
         reward.setDescription("Very gooooooooooood");
         assertEquals("Very gooooooooooood", reward.getDescription());
+        try {
+            reward.setDescription(null);
+            fail();
+        } catch (IllegalArgumentException e) {
+            // should be thrown
+        }
+        try {
+            reward.setDescription("gud");
+            fail();
+        } catch (StringTooShortException e) {
+            // should be thrown
+        }
     }
 
     @Test
     public void testSetType() {
         reward.setType(RewardType.TITLE);
         assertEquals(RewardType.TITLE, reward.getType());
+        try {
+            reward.setType(null);
+            fail();
+        } catch (IllegalArgumentException e) {
+            // should be thrown
+        }
     }
 
     @Test
     public void testSetDateGiven() {
         reward.setDateGiven(new Date());
         assertEquals(new Date(), reward.getDateGiven());
+        try {
+            reward.setDateGiven(null);
+            fail();
+        } catch (IllegalArgumentException e) {
+            assertEquals(e.getMessage(), "Argument cannot be null");
+        }
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.DATE, 30);
+        Date badDate = cal.getTime();
+        try {
+            reward.setDateGiven(badDate);
+            fail();
+        } catch (IllegalArgumentException e) {
+            assertEquals(e.getMessage(), "dateGiven cannot be in future");
+        }
     }
 }
