@@ -84,7 +84,7 @@ public class Task {
     }
     public void setStartDate(Date startDate) {
         if(startDate == null) throw new IllegalArgumentException("Argument cannot be null");
-        else if (deadline.before(new Date(System.currentTimeMillis()))) throw new IllegalArgumentException("Start date cannot be in past.");
+        else if (startDate.before(new Date(System.currentTimeMillis()))) throw new IllegalArgumentException("Start date cannot be in past.");
         if(startDate.after(deadline)) throw new IllegalArgumentException("Start date cannot be after the deadline");
         this.startDate = startDate;
     }
