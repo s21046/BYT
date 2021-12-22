@@ -6,7 +6,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 public class RewardTest {
     private int id;
@@ -17,7 +16,7 @@ public class RewardTest {
     private Reward reward;
 
     @Before
-    public void setUp() {
+    public void setUp() throws StringTooShortException {
         id = 1;
         name = "Best Reward";
         description = "Just for testing purposes";
@@ -27,9 +26,32 @@ public class RewardTest {
     }
 
     /**
-     * Get the given values belonging to Team object
-     * @result Team object values are returned accordingly for each getter
-     * @corner_cases None
+     * Initiate constructor with various values
+     * Corner cases:
+     * - values < 0 passed to the id field, null description/name/type/dateGiven, date from the future
+     * - description.length < 15 / name.length < 3
+     */
+
+    @Test
+    public void testConstructor() throws StringTooShortException {
+        new Reward(1, "Name", "BIIIIIIiiiiiigggggggg", RewardType.TITLE, new Date());
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testConstructorIllegalArguments() throws StringTooShortException {
+        new Reward(-1, null, null, null, new Date(new Date().getTime() + 10));
+        new Reward(-1, null, null, null, null);
+    }
+
+    @Test(expected=StringTooShortException.class)
+    public void testConstructorStringTooShort() throws StringTooShortException {
+        new Reward(0, "N", "", RewardType.BADGE, new Date());
+    }
+
+    /**
+     * Get the given values belonging to Reward object
+     * Reward object values are returned accordingly for each getter
+     * Corner cases: None
      */
 
     @Test
@@ -58,98 +80,89 @@ public class RewardTest {
     }
 
     /**
-     * Set the given values to fields belonging to Team object
-     * @result Team object values are set anew and returned accordingly for each setter
-     * @corner_cases
-     * Methods are tested on the matter of invalid input id:
-     * 	setId: negative argument
-     * 	setName: null argument, name shorter than 3 characters
-     * 	setDescription: null argument, description shorter than 15 characters
-     * 	setType: null argument
-     * 	setDateGiven: null argument, date from the future
+     * Set the {attribute} value of Reward object
+     * Reward object {attribute} is set anew and returned accordingly for each setter
+     * Corner cases:
+     * - values < 0 passed to the id field, null description/name/type/dateGiven, date from the future
+     * - description.length < 15 / name.length < 3
      */
 
     @Test
     public void testSetId() {
+        assertEquals(1, reward.getId());
         reward.setId(15);
         assertEquals(15, reward.getId());
+    }
 
-        try {
-            reward.setId(-4);
-            fail();
-        } catch (IllegalArgumentException e) {
-            // should be thrown
-        }
+    @Test(expected=IllegalArgumentException.class)
+    public void testSetIdToNegative() {
+        reward.setId(-2);
     }
 
     @Test
     public void testSetName() throws StringTooShortException {
+        assertEquals("Best Reward", reward.getName());
         reward.setName("FFF");
         assertEquals("FFF", reward.getName());
-        try {
-            reward.setName(null);
-            fail();
-        } catch (IllegalArgumentException e) {
-            // should be thrown
-        }
-        try {
-            reward.setName("no");
-            fail();
-        } catch (StringTooShortException e) {
-            // should be thrown
-        }
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testSetNameToNull() throws StringTooShortException {
+        reward.setName(null);
+    }
+
+    @Test(expected=StringTooShortException.class)
+    public void testSetNameStringTooShort() throws StringTooShortException {
+        reward.setName("N");
     }
 
     @Test
     public void testSetDescription() throws StringTooShortException {
+        assertEquals(description, reward.getDescription());
         reward.setDescription("Very gooooooooooood");
         assertEquals("Very gooooooooooood", reward.getDescription());
-        try {
-            reward.setDescription(null);
-            fail();
-        } catch (IllegalArgumentException e) {
-            // should be thrown
-        }
-        try {
-            reward.setDescription("gud");
-            fail();
-        } catch (StringTooShortException e) {
-            // should be thrown
-        }
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testSetDescriptionToNull() throws StringTooShortException {
+        reward.setDescription(null);
+    }
+
+    @Test(expected=StringTooShortException.class)
+    public void testSetDescriptionStringTooShort() throws StringTooShortException {
+        reward.setDescription("Descr");
     }
 
     @Test
     public void testSetType() {
+        assertEquals(type, reward.getType());
         reward.setType(RewardType.TITLE);
         assertEquals(RewardType.TITLE, reward.getType());
-        try {
-            reward.setType(null);
-            fail();
-        } catch (IllegalArgumentException e) {
-            // should be thrown
-        }
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testSetTypeToNull() {
+        reward.setType(null);
     }
 
     @Test
     public void testSetDateGiven() {
+        assertEquals(dateGiven, reward.getDateGiven());
         reward.setDateGiven(new Date());
         assertEquals(new Date(), reward.getDateGiven());
-        try {
-            reward.setDateGiven(null);
-            fail();
-        } catch (IllegalArgumentException e) {
-            assertEquals(e.getMessage(), "Argument cannot be null");
-        }
+    }
 
+    @Test(expected=IllegalArgumentException.class)
+    public void testSetDateGivenToNull() {
+        reward.setDateGiven(null);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testSetDateGivenToLaterThanCurrent() {
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
         cal.add(Calendar.DATE, 30);
         Date badDate = cal.getTime();
-        try {
-            reward.setDateGiven(badDate);
-            fail();
-        } catch (IllegalArgumentException e) {
-            assertEquals(e.getMessage(), "dateGiven cannot be in future");
-        }
+        reward.setDateGiven(badDate);
     }
 }

@@ -6,7 +6,11 @@ public class Review {
     private boolean approved;
     private int assigneeId, taskId;
 
-    public Review(int id, boolean approved, String description, int assigneeId, int taskId) {
+    public Review(int id, String description, boolean approved, int assigneeId, int taskId) throws StringTooShortException {
+        if (id < 0 || assigneeId < 0 || taskId < 0) { throw new IllegalArgumentException("id cannot be a negative integer"); }
+        if (description == null) { throw new IllegalArgumentException("Argument cannot be null"); }
+        if (description.length() < 15) { throw new StringTooShortException(); }
+
         this.id = id;
         this.approved = approved;
         this.description = description;
@@ -18,34 +22,31 @@ public class Review {
         return id;
     }
 
+    public void setId(int id) {
+        if (id < 0) throw new IllegalArgumentException("id cannot be a negative integer.");
+        else this.id = id;
+    }
 
     public String getDescription() {
         return description;
     }
 
-    public int getAssigneeId() {
-        return assigneeId;
-    }
-
-
-    public int getTaskId() {
-        return taskId;
+    public void setDescription(String description) throws StringTooShortException {
+        if (description == null) throw new IllegalArgumentException("Argument cannot be null");
+        if (description.length() < 15) throw new StringTooShortException();
+        else this.description = description;
     }
 
     public boolean isApproved() {
         return approved;
     }
 
-    public void setId(int id) {
-        if (id < 0) throw new IllegalArgumentException("id cannot be a negative integer.");
-        else this.id = id;
+    public void setApproved(boolean approved) {
+        this.approved = approved;
     }
 
-
-    public void setDescription(String description) throws StringTooShortException {
-        if (description == null) throw new IllegalArgumentException("Argument cannot be null");
-        else if (description.length() < 15) throw new StringTooShortException();
-        else this.description = description;
+    public int getAssigneeId() {
+        return assigneeId;
     }
 
     public void setAssigneeId(int assigneeId) {
@@ -53,15 +54,12 @@ public class Review {
         else this.assigneeId = assigneeId;
     }
 
+    public int getTaskId() {
+        return taskId;
+    }
 
     public void setTaskId(int taskId) {
         if (taskId < 0) throw new IllegalArgumentException("taskId cannot be a negative integer.");
         else this.taskId = taskId;
-    }
-
-
-
-    public void setApproved(boolean approved) {
-        this.approved = approved;
     }
 }

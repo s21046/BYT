@@ -2,10 +2,7 @@ import ApplicationExceptions.StringTooShortException;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -17,16 +14,16 @@ public class TaskTest {
     Date deadline1, deadline2, deadline3;
     Status status;
     Team programmers;
-    List<Assignee> assignees;
+    HashSet<Assignee> assignees;
     ProjectManager pm;
 	Task createUI;
 	Task vacuumRoom;
 	Task getSleep;
 	
 	@Before
-	public void setUp() {
+	public void setUp() throws StringTooShortException {
 		pm = new ProjectManager(1, "Hana", "Busa");
-		assignees = new ArrayList<>();
+		assignees = new HashSet<>();
 		assignees.add(pm);
 		assignees.add(new Assignee(2, "Kuka", "Racza"));
 		assignees.add(new Assignee(3, "Dalai", "Lama"));
@@ -47,9 +44,9 @@ public class TaskTest {
 		deadline2 = new Date();
 		deadline3 = new Date();
 		status = Status.APPROVED;
-		createUI = new Task(id1, name1, desc1, startDate1, deadline1, status, programmers);
-		vacuumRoom = new Task(id2, name2, desc2, startDate2, deadline2, status, programmers);
-		getSleep = new Task(id3, name3, desc3, startDate3, deadline3, status, programmers);
+		createUI = new Task(id1, name1, desc1, startDate1, null, deadline1, status, programmers);
+		vacuumRoom = new Task(id2, name2, desc2, startDate2, null, deadline2, status, programmers);
+		getSleep = new Task(id3, name3, desc3, startDate3, null, deadline3, status, programmers);
 	}
 	
 	  /**
@@ -115,20 +112,20 @@ public class TaskTest {
 	}
 	
 	@Test
-	public void testGetVotes_list() {
+	public void testGetVotes_list() throws StringTooShortException {
 		assertEquals(createUI.getVotes_list().size(), 0);
-		Vote vote = new Vote(1, "Because I say so", 1,2, vacuumRoom);
-		ArrayList<Vote> votes = new ArrayList<>();
+		Vote vote = new Vote(1, vacuumRoom, "Because I say so", 1,2);
+		HashSet<Vote> votes = new HashSet<>();
 		votes.add(vote);
 		vacuumRoom.setVotes_list(votes);
 		assertEquals(vacuumRoom.getVotes_list(), votes);
 	}
 	
 	@Test
-	public void testGetReviews_list() {
+	public void testGetReviews_list() throws StringTooShortException {
 		assertEquals(createUI.getReviews_list().size(), 0);
-		Review review = new Review(1, true, "Very nicely done", 3, 3);
-		ArrayList<Review> reviews = new ArrayList<>();
+		Review review = new Review(1,"Very nicely done", true, 3, 3);
+		HashSet<Review> reviews = new HashSet<>();
 		reviews.add(review);
 		vacuumRoom.setReviews_list(reviews);
 		assertEquals(vacuumRoom.getReviews_list(), reviews);
@@ -309,10 +306,10 @@ public class TaskTest {
 	}
 
 	@Test
-	public void testSetVotes_list() {
-		Vote goodVote = new Vote(1, "Because yes", 1, 2, createUI);
-		Vote badVote = new Vote(2, "Yes because", 1, 2, vacuumRoom);
-		ArrayList<Vote> votes = new ArrayList<>();
+	public void testSetVotes_list() throws StringTooShortException {
+		Vote goodVote = new Vote(1, createUI, "Because yes", 1, 2);
+		Vote badVote = new Vote(2, vacuumRoom, "Yes because", 1, 2);
+		HashSet<Vote> votes = new HashSet<>();
 		votes.add(goodVote);
 		createUI.setVotes_list(votes);
 		votes.add(badVote);
@@ -332,9 +329,9 @@ public class TaskTest {
 	}
 
 	@Test
-	public void testSetReviews_list() {
-		Review review = new Review(1, true, "Very nicely done", 3, 3);
-		ArrayList<Review> reviews = new ArrayList<>();
+	public void testSetReviews_list() throws StringTooShortException {
+		Review review = new Review(1,"Very nicely done", true, 3, 3);
+		HashSet<Review> reviews = new HashSet<>();
 		reviews.add(review);
 		getSleep.setReviews_list(reviews);
 		assertEquals(getSleep.getReviews_list(), reviews);
@@ -353,9 +350,9 @@ public class TaskTest {
 	}
 
 	@Test
-	public void testSetAssignees_list() {
+	public void testSetAssignees_list() throws StringTooShortException {
 		Assignee badAssignee = new Assignee(4, "Voldo", "Italian");
-		ArrayList<Assignee> badAssignees = new ArrayList<>();
+		HashSet<Assignee> badAssignees = new HashSet<>();
 		badAssignees.add(badAssignee);
 		try {
 			createUI.setAssignees_list(badAssignees);
@@ -364,7 +361,7 @@ public class TaskTest {
 			assertEquals(e.getMessage(), "Assignees in the list should belong to this task's team.");
 		}
 
-		ArrayList<Assignee> goodAssignees = (ArrayList<Assignee>) assignees;
+		HashSet<Assignee> goodAssignees = assignees;
 		vacuumRoom.setAssignees_list(goodAssignees);
 
 		try {

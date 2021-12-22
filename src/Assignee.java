@@ -6,12 +6,17 @@ public class Assignee {
     private int id;
     private String firstName;
     private String lastName;
-    private List<Task> tasks_list = new ArrayList<>();
+
+    private HashSet<Task> tasks_list = new HashSet<>();
     private List<Reward> rewards_list = new ArrayList<>();
     private HashSet<Suggestion> suggestions_list = new HashSet<>();
     private HashSet<Team> teams_list = new HashSet<>();
 
-    public Assignee(int id, String firstName, String lastName) {
+    public Assignee(int id, String firstName, String lastName) throws StringTooShortException {
+        if (id < 0) { throw new IllegalArgumentException("id cannot be a negative integer"); }
+        if (firstName == null || lastName == null) { throw new IllegalArgumentException("Argument cannot be null"); }
+        if (firstName.isEmpty() || lastName.isEmpty()) { throw new StringTooShortException(); }
+
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -22,15 +27,15 @@ public class Assignee {
     }
 
     public void setId(int id){
-        if(id<0) throw new IllegalArgumentException("id cannot be a negative integer.");
+        if (id < 0) throw new IllegalArgumentException("id cannot be a negative integer.");
         else this.id = id;
     }
 
     public String getFirstName() { return firstName; }
 
     public void setFirstName(String firstName) throws StringTooShortException {
-        if(firstName == null) throw new IllegalArgumentException("Argument cannot be null");
-        else if(firstName.length()<1) throw new StringTooShortException();
+        if (firstName == null) throw new IllegalArgumentException("Argument cannot be null");
+        else if (firstName.isEmpty()) throw new StringTooShortException();
         else this.firstName = firstName;
     }
 
@@ -39,18 +44,17 @@ public class Assignee {
     }
 
     public void setLastName(String lastName) throws StringTooShortException {
-        if(lastName == null) throw new IllegalArgumentException("Argument cannot be null");
-        else if(lastName.length()<1) throw new StringTooShortException();
+        if (lastName == null) throw new IllegalArgumentException("Argument cannot be null");
+        else if (lastName.isEmpty()) throw new StringTooShortException();
         else this.lastName = lastName;
     }
 
-
-    public List<Task> getTasks_list() {
+    public HashSet<Task> getTasks_list() {
         return tasks_list;
     }
 
-    public void setTasks_list(List<Task> tasks_list) {
-        if(tasks_list == null) throw new IllegalArgumentException("Argument cannot be null");
+    public void setTasks_list(HashSet<Task> tasks_list) {
+        if (tasks_list == null) throw new IllegalArgumentException("Argument cannot be null");
         else this.tasks_list = tasks_list;
     }
 
@@ -59,7 +63,7 @@ public class Assignee {
     }
 
     public void setRewards_list(List<Reward> rewards_list) {
-        if(rewards_list == null) throw new IllegalArgumentException("Argument cannot be null");
+        if (rewards_list == null) throw new IllegalArgumentException("Argument cannot be null");
         else this.rewards_list = rewards_list;
     }
 
@@ -68,7 +72,7 @@ public class Assignee {
     }
 
     public void setSuggestions_list(HashSet<Suggestion> suggestions_list) {
-        if(suggestions_list == null) throw new IllegalArgumentException("Argument cannot be null");
+        if (suggestions_list == null) throw new IllegalArgumentException("Argument cannot be null");
         else this.suggestions_list = suggestions_list;
     }
 
@@ -77,7 +81,7 @@ public class Assignee {
     }
 
     public void setTeams_list(HashSet<Team> teams_list) {
-        if(teams_list == null) throw new IllegalArgumentException("Argument cannot be null");
+        if (teams_list == null) throw new IllegalArgumentException("Argument cannot be null");
         else this.teams_list = teams_list;
     }
 
@@ -85,56 +89,45 @@ public class Assignee {
         System.out.println("Profile data saved!");
     }
 
-    //moved it here from Vote
-    //made it so that now votes are cast on tasks from a particular Team,
+    //votes are cast on tasks from a particular Team,
     //as tasks_list in Assignee is for Tasks currently assigned to that Assignee
-    public Vote vote(int voteId, int teamId, int taskId, int votedForId, String explanation) throws ApplicationExceptions.NoSuchTaskException, VoteNotStartedException, NoSuchTeamException, AlreadyVotedException {
-        Optional<Team> teamOptional = teams_list.stream().filter(t -> (t.getId() == teamId)).findFirst();
-        if(teamOptional.isEmpty()) {
-            throw new NoSuchTeamException();
-        }
+    public Vote vote(int voteId, int teamId, int taskId, int votedForId, String explanation)
+            throws NoSuchTaskException, VoteNotStartedException, NoSuchTeamException, AlreadyVotedException, StringTooShortException {
 
-        Team team = teamOptional.get();
-        List<Task> tasks = team.getTasks();
-        if (tasks.isEmpty() || tasks.stream().noneMatch(task -> task.getId() == taskId)) {
-            throw new NoSuchTaskException();
-        }
+        Team team = getTeams_list().stream().filter(t -> (t.getId() == teamId)).findFirst().orElse(null);
+        if (team == null) { throw new NoSuchTeamException(); }
 
-        Task task = tasks.stream().filter(t -> t.getId() == taskId).findFirst().get();
-        if (!task.isVoteStarted()) {
-            throw new VoteNotStartedException();
-        }
+        HashSet<Task> tasks = team.getTasks();
+        Task task = tasks.stream().filter(t -> t.getId() == taskId).findFirst().orElse(null);
 
-        if(task.getVotes_list().stream().anyMatch(v -> v.getVoterId() == this.id)) {
+        if (tasks.isEmpty() || task == null) { throw new NoSuchTaskException(); }
+        if (!task.isVoteStarted()) { throw new VoteNotStartedException(); }
+        if (task.getVotes_list().stream().anyMatch(v -> v.getVoterId() == this.id)) {
             throw new AlreadyVotedException();
         }
 
-        return new Vote(voteId, explanation, votedForId, this.id, task);
+        return new Vote(voteId, task, explanation, votedForId, this.id);
     }
 
-    public Review review(int reviewId, int taskId, boolean approved, String description) throws NoSuchTaskException, CantReviewOwnTaskException {
+    public Review review(int reviewId, int taskId, boolean approved, String description)
+            throws NoSuchTaskException, CantReviewOwnTaskException, StringTooShortException {
 
-        if (getTasks_list().stream().noneMatch(task -> task.getId() == taskId)) {
-            throw new NoSuchTaskException();
-        }
-
-        //can't review their own task
-        if (getTasks_list().stream().filter(task -> task.getId() == taskId).findFirst().get().getAssignees_list().contains(this)) {
+        Task task = getTasks_list().stream().filter(t -> t.getId() == taskId).findFirst().orElse(null);
+        if (task == null) { throw new NoSuchTaskException(); }
+        if (task.getAssignees_list().contains(this)) {
             throw new CantReviewOwnTaskException();
         }
 
-        return new Review(reviewId, approved, description, this.id, taskId);
+        return new Review(reviewId, description, approved, this.id, taskId);
     }
 
-    //adding this made sense too
-    public Help requestHelp(int helpId, Date date, String description, int taskId) {
-        //id would be generated later? <- yeah
-        int pmId = this.tasks_list.stream().filter(e -> e.getId() == taskId).findFirst().get().getTeamAssigned().getPM().getId();
-        //PM's id is the last required attribute (set to this.id temporarily)
+    public Help requestHelp(int helpId, Date date, String description, int taskId) throws StringTooShortException {
+        int pmId = this.tasks_list.stream().filter(e -> e.getId() == taskId).findFirst().get()
+                .getTeamAssigned().getPM().getId();
         return new Help(helpId, date, description, this.id, pmId, taskId);
     }
 
-    public Suggestion createSuggestion(int suggestId, String name, String description) {
+    public Suggestion createSuggestion(int suggestId, String name, String description) throws StringTooShortException {
         return new Suggestion(suggestId, name, description, this.id);
     }
 }

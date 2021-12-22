@@ -1,3 +1,4 @@
+import ApplicationExceptions.StringTooShortException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,16 +13,13 @@ import static org.junit.Assert.*;
  */
 
 public class ProjectManagerTest {
-    private ProjectManager pm;
-    private ProjectManager pm2;
+    private ProjectManager pm, pm2;
     private String firstName;
     private String lastName;
-    private Date date;
-    private Date secDate;
+    private Date date, secDate;
     private String description;
     private int assigneeId, pmId, taskId;
-    private Help help;
-    private Help help2;
+    private Help help, help2;
     //New not empty helpRequest lists
     private HashSet<Help> helpRequests_list = new HashSet<>();
     private HashSet<Help> helpRequests_list_short = new HashSet<>();
@@ -29,12 +27,8 @@ public class ProjectManagerTest {
     private HashSet<Help> helpRequests_list2 = new HashSet<>();
     private HashSet<Help> helpRequests_list2_short = new HashSet<>();
 
-    /**
-     * All values are randomized for the sake of testing
-     */
-
     @Before
-    public void setUp(){
+    public void setUp() throws StringTooShortException {
         pmId = 5;
         firstName = "Jerycho";
         lastName = "Swain";
@@ -59,51 +53,51 @@ public class ProjectManagerTest {
 
     /**
      * Get the given values belonging to ProjectManager object
-     * @result ProjectManager object values are returned accordingly for each getter
-     * @corner_cases None
+     * ProjectManager object values are returned accordingly for each getter
+     * Corner cases: None
      */
 
     @Test
-    public void getHelpRequests_list() {
+    public void testGetHelpRequests_list() {
         assertEquals(helpRequests_list, pm.getHelpRequests_list());
     }
 
     /**
      * Set the given values to fields belonging to ProjectManager object
-     * @result ProjectManager object values are set anew and returned accordingly for each setter
-     * @cases  1) The helpRequests_list in Assignee is not empty and is set to a new empty list
+     * ProjectManager object values are set anew and returned accordingly for each setter
+     * Cases:  1) The helpRequests_list in Assignee is not empty and is set to a new empty list
      *         2) The helpRequests_list in Assignee is empty and is set to a new not empty list
      *         3) The helpRequests_list in Assignee is empty and is set to a new empty list
      *         4) The helpRequests_list in Assignee is not empty and is set to a new not empty list
-     * @corner_case setHelpRequests_list is tested on the matter of invalid input list (null)
+     * Corner cases: setHelpRequests_list is tested on the matter of invalid input list (null)
      */
 
     @Test
-    public void setHelpRequests_listFromNotEmptyToEmpty() {
+    public void testSetHelpRequests_listFromNotEmptyToEmpty() {
         pm.setHelpRequests_list(helpRequests_list2);
         assertEquals(helpRequests_list2, pm.getHelpRequests_list());
     }
 
     @Test
-    public void setHelpRequests_listFromEmptyToNotEmpty() {
+    public void testSetHelpRequests_listFromEmptyToNotEmpty() {
         pm2.setHelpRequests_list(helpRequests_list);
         assertEquals(helpRequests_list, pm2.getHelpRequests_list());
     }
 
     @Test
-    public void setHelpRequests_listFromEmptyToEmpty() {
+    public void testSetHelpRequests_listFromEmptyToEmpty() {
         pm2.setHelpRequests_list(helpRequests_list2_short);
         assertEquals(helpRequests_list2_short, pm2.getHelpRequests_list());
     }
+
     @Test
-    public void setHelpRequests_listFromNotEmptyToNotEmpty() {
+    public void testSetHelpRequests_listFromNotEmptyToNotEmpty() {
         pm.setHelpRequests_list(helpRequests_list_short);
         assertEquals(helpRequests_list_short, pm.getHelpRequests_list());
     }
 
     @Test(expected=IllegalArgumentException.class)
-    public void setHelpRequests_listToNull() {
+    public void testSetHelpRequests_listToNull() {
         pm.setHelpRequests_list(null);
     }
-
 }

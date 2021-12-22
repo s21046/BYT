@@ -10,36 +10,24 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class AssigneeTest {
-    private int id;
-    private int id1;
-    private Assignee assignee;
-    private Assignee assignee1;
-    private String firstName;
-    private String lastName;
-    private String firstName1;
-    private String lastName1;
+    private int id, id1;
+    private Assignee assignee, assignee1;
+    private String firstName, firstName1;
+    private String lastName, lastName1;
     private ProjectManager pm;
-    private Date day1;
-    private Date day2;
-    private Date day3;
-    private Task task1;
-    private Task task2;
-    private Reward rew1;
-    private Reward rew2;
-    private RewardType rtype1;
-    private RewardType rtype2;
-    private Status stat1;
-    private Status stat2;
-    private Suggestion sug1;
-    private Suggestion sug2;
-    private Team team1;
-    private Team team2;
+    private Date day1, day2, day3;
+    private Task task1, task2;
+    private Reward rew1, rew2;
+    private RewardType rtype1, rtype2;
+    private Status stat1, stat2;
+    private Suggestion sug1, sug2;
+    private Team team1, team2;
     //Two not empty tasks lists
-    private List<Task> tasks_list = new ArrayList<>();
-    private List<Task> tasks_list_short = new ArrayList<>();
+    private HashSet<Task> tasks_list = new HashSet<>();
+    private HashSet<Task> tasks_list_short = new HashSet<>();
     //Two empty tasks lists
-    private List<Task> tasks_list2 = new ArrayList<>();
-    private List<Task> tasks_list_2_short = new ArrayList<>();
+    private HashSet<Task> tasks_list2 = new HashSet<>();
+    private HashSet<Task> tasks_list_2_short = new HashSet<>();
     //Two not empty rewards lists
     private List<Reward> rewards_list = new ArrayList<>();
     private List<Reward> rewards_list_short = new ArrayList<>();
@@ -59,17 +47,11 @@ public class AssigneeTest {
     private HashSet<Team> teams_list2 = new HashSet<>();
     private HashSet<Team> teams_list2_short = new HashSet<>();
 
-
-    /**
-     * All values are randomized except of uniqueId which is set to 1 because it is the first
-     *  and only instance of Help object created for the sake of testing
-     */
-
     @Before
-    public void setUp() {
-        id =11;
+    public void setUp() throws StringTooShortException {
+        id = 11;
         id1 = 12;
-        firstName = "Jhon";
+        firstName = "John";
         firstName1 = "Adam";
         lastName = "Cena";
         lastName1 = "Stanowski";
@@ -92,8 +74,8 @@ public class AssigneeTest {
         teams_list.add(team2);
         teams_list_short.add(team1);
 
-        task1 = new Task(1,"Run", "Just runnin", day1, day2, stat1, team1);
-        task2 = new Task( 2,"Stop", "Just stoppin", day2, day3, stat2, team2);
+        task1 = new Task(1,"Run", "Just runnin", day1, null, day2, stat1, team1);
+        task2 = new Task( 2,"Stop", "Just stoppin", day2, null, day3, stat2, team2);
         tasks_list.add(task1);
         tasks_list.add(task2);
         tasks_list_short.add(task1);
@@ -124,136 +106,150 @@ public class AssigneeTest {
     }
 
     /**
-     * Get the given values belonging to Assignee object
-     * @result Help object values are returned accordingly for each getter
-     * @corner_cases None
+     * Initiate constructor with various values
+     * Corner cases:
+     * - values < 0 passed to the id field, null firstName/lastName;
+     * - empty firstName/lastName
      */
 
     @Test
-    public void getId() {
+    public void testConstructor() throws StringTooShortException {
+        new Assignee(1, "Me", "Assignee");
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testConstructorIllegalArguments() throws StringTooShortException {
+        new Assignee(-1, null, null);
+    }
+
+    @Test(expected=StringTooShortException.class)
+    public void testConstructorStringTooShort() throws StringTooShortException {
+        new Assignee(0, "", "");
+    }
+
+    /**
+     * Get the given values belonging to Assignee object
+     * Assignee object values are returned accordingly for each getter
+     * Corner cases: None
+     */
+
+    @Test
+    public void testGetId() {
         assertEquals(11, assignee.getId());
+        assertEquals(2, pm.getId());
     }
 
     @Test
-    public void getFirstName() {
+    public void testGetFirstName() {
         assertEquals(firstName, assignee.getFirstName());
+        assertEquals("Jerycho", pm.getFirstName());
     }
 
     @Test
-    public void getLastName() {
+    public void testGetLastName() {
         assertEquals(lastName, assignee.getLastName());
+        assertEquals("Swain", pm.getLastName());
     }
 
     @Test
-    public void getTasks_list() {
+    public void testGetTasks_list() {
         assertEquals(tasks_list, assignee.getTasks_list());
     }
 
     @Test
-    public void getRewards_list() {
+    public void testGetRewards_list() {
         assertEquals(rewards_list, assignee.getRewards_list());
     }
 
     @Test
-    public void getTeams_list() {
+    public void testGetTeams_list() {
         assertEquals(teams_list, assignee.getTeams_list());
     }
 
     @Test
-    public void getSuggestions_list() {
+    public void testGetSuggestions_list() {
         assertEquals(suggestions_list, assignee.getSuggestions_list());
     }
 
 
     /**
-     * Set the Id value to Assignee object
-     * @result Assignee object id is set anew and returned accordingly for each setter
-     * @corner_case setId is tested on the matter of invalid input id (negative argument)
+     * Set the {attribute} value of Assignee object
+     * Assignee object {attribute} is set anew and returned accordingly for each setter
+     * Corner cases:
+     * - values < 0 passed to the id field, null firstName/lastName;
+     * - empty firstName/lastName
      */
 
     @Test
-    public void setId() {
+    public void testSetId() {
+        assertEquals(11, assignee.getId());
         assignee.setId(14);
         assertEquals(14, assignee.getId());
     }
 
     @Test(expected=IllegalArgumentException.class)
-    public void setIdIllegalArgumentException() {
+    public void testSetIdIllegalArgument() {
         assignee.setId(-1);
     }
 
-    /**
-     * Set the FirstName value to Assignee object
-     * @result Assignee object FirstName is set anew and returned accordingly for each setter
-     * @corner_cases setFirstName is tested on the matter of invalid input:
-     *                         1) Empty String
-     *                         2) Null
-     */
     @Test
-    public void setFirstName() throws StringTooShortException {
+    public void testSetFirstName() throws StringTooShortException {
+        assertEquals("John", assignee.getFirstName());
         assignee.setFirstName("Bobinator");
         assertEquals("Bobinator", assignee.getFirstName());
-
     }
 
     @Test(expected=StringTooShortException.class)
-    public void setFirstNameTooShortException() throws StringTooShortException {
+    public void testSetFirstNameStringTooShort() throws StringTooShortException {
         assignee.setFirstName("");
-
     }
 
     @Test(expected=IllegalArgumentException.class)
-    public void setFirstNameToNullException() throws StringTooShortException {
+    public void testSetFirstNameIllegalArgument() throws StringTooShortException {
         assignee.setFirstName(null);
     }
 
-    /**
-     * Set the LastName value to Assignee object
-     * @result Assignee object LastName is set anew and returned accordingly for each setter
-     * @corner_cases setLastName is tested on the matter of invalid input:
-     *                         1) Empty String
-     *                         2) Null
-     */
     @Test
-    public void setLastName() throws StringTooShortException {
+    public void testSetLastName() throws StringTooShortException {
+        assertEquals("Cena", assignee.getLastName());
         assignee.setLastName("Jason");
         assertEquals("Jason", assignee.getLastName());
     }
 
     @Test(expected=StringTooShortException.class)
-    public void setLastNameTooShortException() throws StringTooShortException {
+    public void testSetLastNameStringTooShort() throws StringTooShortException {
         assignee.setLastName("");
     }
 
     @Test(expected=IllegalArgumentException.class)
-    public void setLastNameToNullException() throws StringTooShortException {
+    public void testSetLastNameIllegalArgument() throws StringTooShortException {
         assignee.setLastName(null);
     }
 
     /**
-     * Set the tasks_list value to Assignee object
-     * @result Assignee object Tasks_list is set anew and returned accordingly for each setter
-     * @cases  1) The tasks_list in Assignee is not empty and is set to a new empty list
-     *         2) The tasks_list in Assignee is empty and is set to a new not empty list
-     *         3) The tasks_list in Assignee is empty and is set to a new empty list
-     *         4) The tasks_list in Assignee is not empty and is set to a new not empty list
-     * @corner_case setTasks_list is tested on the matter of invalid input list (null)
+     * Set the {objects}_list value of Assignee object
+     * Assignee object {objects}_list is set anew and returned accordingly for each setter
+     * Cases:  1) The {objects}_list in Assignee is not empty and is set to a new empty list
+     *         2) The {objects}_list in Assignee is empty and is set to a new not empty list
+     *         3) The {objects}_list in Assignee is empty and is set to a new empty list
+     *         4) The {objects}_list in Assignee is not empty and is set to a new not empty list
+     * Corner cases: input list is null
      */
 
     @Test
-    public void setTasks_listFromNotEmptyToEmpty() {
+    public void testSetTasks_listFromNotEmptyToEmpty() {
         assignee.setTasks_list(tasks_list2);
         assertEquals(tasks_list2, assignee.getTasks_list());
     }
 
     @Test
-    public void setTasks_listFromEmptyToNotEmpty() {
+    public void testSetTasks_listFromEmptyToNotEmpty() {
         assignee1.setTasks_list(tasks_list);
         assertEquals(tasks_list, assignee1.getTasks_list());
     }
 
     @Test
-    public void setTasks_listFromEmptyToEmpty() {
+    public void testSetTasks_listFromEmptyToEmpty() {
         assignee.setTasks_list(tasks_list_2_short);
         assertEquals(tasks_list_2_short, assignee.getTasks_list());
     }
@@ -266,128 +262,94 @@ public class AssigneeTest {
 
 
     @Test(expected=IllegalArgumentException.class)
-    public void setTasks_listToNullException() {
+    public void testSetTasks_listToNullException() {
         assignee.setTasks_list(null);
     }
 
-    /**
-     * Set the rewards_list value to Assignee object
-     * @result Assignee object rewards_list is set anew and returned accordingly for each setter
-     * @cases  1) The rewards_list in Assignee is not empty and is set to a new empty list
-     *         2) The rewards_list in Assignee is empty and is set to a new not empty list
-     *         3) The rewards_list in Assignee is empty and is set to a new empty list
-     *         4) The rewards_list in Assignee is not empty and is set to a new not empty list
-     * @corner_case setRewards_list is tested on the matter of invalid input list (null)
-     */
-
-
     @Test
-    public void setRewards_listFromNotEmptyToEmpty() {
+    public void testSetRewards_listFromNotEmptyToEmpty() {
         assignee.setRewards_list(rewards_list2);
         assertEquals(rewards_list2, assignee.getRewards_list());
     }
 
     @Test
-    public void setRewards_listFromEmptyToNotEmpty() {
+    public void testSetRewards_listFromEmptyToNotEmpty() {
         assignee1.setRewards_list(rewards_list);
         assertEquals(rewards_list, assignee1.getRewards_list());
     }
 
     @Test
-    public void setRewards_listFromEmptyToEmpty() {
+    public void testSetRewards_listFromEmptyToEmpty() {
         assignee1.setRewards_list(rewards_list2_short);
         assertEquals(rewards_list2_short, assignee1.getRewards_list());
     }
 
     @Test
-    public void setRewards_listFromNotEmptyToNotEmpty() {
+    public void testSetRewards_listFromNotEmptyToNotEmpty() {
         assignee.setRewards_list(rewards_list_short);
         assertEquals(rewards_list_short, assignee.getRewards_list());
     }
 
-
     @Test(expected=IllegalArgumentException.class)
-    public void setRewards_listToNullException() {
+    public void testSetRewards_listToNullException() {
         assignee.setRewards_list(null);
     }
 
-
-    /**
-     * Set the suggestions_list value to Assignee object
-     * @result Assignee object suggestions_list is set anew and returned accordingly for each setter
-     * @cases  1) The suggestions_list in Assignee is not empty and is set to a new empty list
-     *         2) The suggestions_list in Assignee is empty and is set to a new not empty list
-     *         3) The suggestions_list in Assignee is empty and is set to a new empty list
-     *         4) The suggestions_list in Assignee is not empty and is set to a new not empty list
-     * @corner_case setSuggestions_list is tested on the matter of invalid input list (null)
-     */
-
     @Test
-    public void setSuggestions_listFromNotEmptyToEmpty() {
+    public void testSetSuggestions_listFromNotEmptyToEmpty() {
         assignee.setSuggestions_list(suggestions_list2);
         assertEquals(suggestions_list2, assignee.getSuggestions_list());
     }
 
     @Test
-    public void setSuggestions_listFromEmptyToNotEmpty() {
+    public void testSetSuggestions_listFromEmptyToNotEmpty() {
         assignee1.setSuggestions_list(suggestions_list);
         assertEquals(suggestions_list, assignee1.getSuggestions_list());
     }
 
     @Test
-    public void setSuggestions_listFromEmptyToEmpty() {
+    public void testSetSuggestions_listFromEmptyToEmpty() {
         assignee1.setSuggestions_list(suggestions_list2_short);
         assertEquals(suggestions_list2_short, assignee1.getSuggestions_list());
     }
 
     @Test
-    public void setSuggestions_listFromNotEmptyToNotEmpty() {
+    public void testSetSuggestions_listFromNotEmptyToNotEmpty() {
         assignee.setSuggestions_list(suggestions_list_short);
         assertEquals(suggestions_list_short, assignee.getSuggestions_list());
     }
 
     @Test(expected=IllegalArgumentException.class)
-    public void setSuggestions_listToNullException() {
+    public void testSetSuggestions_listToNullException() {
         assignee.setSuggestions_list(null);
     }
 
-
-    /**
-     * Set the teams_list value to Assignee object
-     * @result Assignee object Tasks_list is set anew and returned accordingly for each setter
-     * @cases  1) The teams_list in Assignee is not empty and is set to a new empty list
-     *         2) The teams_list in Assignee is empty and is set to a new not empty list
-     *         3) The teams_list in Assignee is empty and is set to a new empty list
-     *         4) The teams_list in Assignee is not empty and is set to a new not empty list
-     * @corner_case setTeams_list is tested on the matter of invalid input list (null)
-     */
-
     @Test
-    public void setTeams_listFromNotEmptyToEmpty() {
+    public void testSetTeams_listFromNotEmptyToEmpty() {
         assignee.setTeams_list(teams_list2);
         assertEquals(teams_list2, assignee.getTeams_list());
     }
 
     @Test
-    public void setTeams_listFromEmptyToNotEmpty() {
+    public void testSetTeams_listFromEmptyToNotEmpty() {
         assignee1.setTeams_list(teams_list);
         assertEquals(teams_list, assignee1.getTeams_list());
     }
 
     @Test
-    public void setTeams_listFromEmptyToEmpty() {
+    public void testSetTeams_listFromEmptyToEmpty() {
         assignee1.setTeams_list(teams_list2_short);
         assertEquals(teams_list2_short, assignee1.getTeams_list());
     }
 
     @Test
-    public void setTeams_listFromNotEmptyToNotEmpty() {
+    public void testSetTeams_listFromNotEmptyToNotEmpty() {
         assignee.setTeams_list(teams_list_short);
         assertEquals(teams_list_short, assignee.getTeams_list());
     }
 
     @Test(expected=IllegalArgumentException.class)
-    public void setTeams_listToNull() {
+    public void testSetTeams_listToNull() {
         assignee.setTeams_list(null);
     }
 }

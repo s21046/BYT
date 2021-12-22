@@ -7,18 +7,13 @@ import static org.junit.Assert.*;
 
 public class HelpTest {
     private int id;
-    private Date date;
-    private Date secDate;
-    private Date thirdDate;
+    private Date date, secDate, thirdDate;
     private String description;
     private int assigneeId, pmId, taskId;
     private Help help;
 
-    /**
-     * All values are randomized for the sake of testing
-     */
     @Before
-    public void setUp() {
+    public void setUp() throws StringTooShortException {
         id = 1;
         date = new Date();
         secDate = new Date();
@@ -27,15 +22,42 @@ public class HelpTest {
         assigneeId = 2;
         pmId = 3;
         taskId = 2;
-        help= new Help(id, date, description, assigneeId, pmId, taskId);
+        help = new Help(id, date, description, assigneeId, pmId, taskId);
+    }
 
+    /**
+     * Initiate constructor with various values
+     * Corner cases:
+     * - values < 0 passed to the id field, null description/date, date from the past;
+     * - empty description
+     */
+
+    @Test
+    public void testConstructor() throws StringTooShortException {
+        new Help(1, new Date(), "Help", 1, 1, 1);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testConstructorIllegalArguments() throws StringTooShortException {
+        new Help(-1, new Date(new Date().getTime() - 10), null, -1, -1, -1);
+        new Help(-1, null, null, -1, -1, -1);
+    }
+
+    @Test(expected=StringTooShortException.class)
+    public void testConstructorStringTooShort() throws StringTooShortException {
+        new Help(0, new Date(), "", 0, 0, 0);
     }
 
     /**
      * Get the given values belonging to Help object
-     * @result Help object values are returned accordingly for each getter
-     * @corner_cases None
+     * Help object values are returned accordingly for each getter
+     * Corner cases: None
      */
+
+    @Test
+    public void testGetId() {
+        assertEquals(id, help.getId());
+    }
 
     @Test
     public void testGetDate() {
@@ -62,19 +84,17 @@ public class HelpTest {
         assertEquals(taskId, help.getTaskId());
     }
 
-    @Test
-    public void testGetId() {
-        assertEquals(id, help.getId());
-    }
-
     /**
-     * Set the given values to fields belonging to Help object
-     * @result Help object id is set anew and returned accordingly for each setter
-     * @corner_case setId is tested on the matter of invalid input id (negative argument)
+     * Set the {attribute} value of Help object
+     * Help object {attribute} is set anew and returned accordingly for each setter
+     * Corner cases:
+     * - values < 0 passed to the id field, null description/date, date from the past;
+     * - empty description
      */
 
     @Test
     public void testSetId() {
+        assertEquals(1, help.getId());
         help.setId(3);
         assertEquals(3, help.getId());
     }
@@ -84,16 +104,16 @@ public class HelpTest {
         help.setId(-2);
     }
 
-    /**
-     * Set the given values to fields belonging to Help object
-     * @result Help object date is set anew and returned accordingly for each setter
-     * @corner_case setDate is tested on the matter of invalid input date - one before current date
-     */
-
     @Test
     public void testSetDate() {
+        assertEquals(date, help.getDate());
         help.setDate(secDate);
         assertEquals(secDate, help.getDate());
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testSetDateToNull() {
+        help.setDate(null);
     }
 
     @Test(expected=IllegalArgumentException.class)
@@ -101,13 +121,6 @@ public class HelpTest {
         help.setDate(thirdDate);
     }
 
-    /**
-     * Set the given values to fields belonging to Help object
-     * @result Help object id is set anew and returned accordingly for each setter
-     * @corner_case setDescription is tested on the matter of invalid input:
-     *               1) Null
-     *               2) Empty String
-     */
     @Test
     public void testSetDescription() throws StringTooShortException {
         help.setDescription("New description");
@@ -119,51 +132,38 @@ public class HelpTest {
         help.setDescription(null);
     }
 
-    @Test(expected =StringTooShortException.class)
+    @Test(expected=StringTooShortException.class)
     public void testSetDescriptionToEmpty() throws StringTooShortException {
         help.setDescription("");
     }
 
-    /**
-     * Set the given values to fields belonging to Help object
-     * @result Help object assigneeId is set anew and returned accordingly for each setter
-     * @corner_case setAssigneeId is tested on the matter of invalid input id (negative argument)
-     */
-
     @Test
     public void testSetAssigneeId() {
+        assertEquals(2, help.getAssigneeId());
         help.setAssigneeId(15);
         assertEquals(15, help.getAssigneeId());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected=IllegalArgumentException.class)
     public void testSetAssigneeIdToNegative() {
         help.setAssigneeId(-12);
     }
 
-    /**
-     * Set the given values to fields belonging to Help object
-     * @result Help object pmId is set anew and returned accordingly for each setter
-     * @corner_case setPmId is tested on the matter of invalid input id (negative argument)
-     */
     @Test
     public void testSetPmId() {
+        assertEquals(3, help.getPmId());
         help.setPmId(42);
         assertEquals(42, help.getPmId());
     }
 
-    @Test(expected =IllegalArgumentException.class)
+    @Test(expected=IllegalArgumentException.class)
     public void testSetPmIdToNegative() {
         help.setPmId(-12);
     }
 
-    /**
-     * Set the given values to fields belonging to Help object
-     * @result Help object taskId is set anew and returned accordingly for each setter
-     * @corner_case setTaskId is tested on the matter of invalid input id (negative argument)
-     */
     @Test
     public void testSetTaskId() {
+        assertEquals(2, help.getTaskId());
         help.setTaskId(12);
         assertEquals(12, help.getTaskId());
     }
