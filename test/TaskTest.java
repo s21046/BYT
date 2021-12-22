@@ -292,7 +292,7 @@ public class TaskTest {
 	}
 
 	@Test
-	public void testSetTeamAssigned() {
+	public void testSetTeamAssigned() throws StringTooShortException {
 		try {
 			Team badTeam = null;
 			createUI.setTeamAssigned(badTeam);

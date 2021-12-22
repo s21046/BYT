@@ -2,10 +2,8 @@ import ApplicationExceptions.StringTooShortException;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -18,7 +16,6 @@ public class TeamTest {
     private HashSet<Task> tasks = new HashSet<>();
     private Team team;
 
-    //Corner cases to be added
     @Before
     public void setUp() throws StringTooShortException {
         id = 1;
@@ -31,10 +28,12 @@ public class TeamTest {
         team = new Team(id, name, description, pm, assignees);
     }
 
+    //TODO add constructor tests (look in other test files)
+
     /**
      * Get the given values belonging to Team object
-     * @result Team object values are returned accordingly for each getter
-     * @corner_cases None
+     * Team object values are returned accordingly for each getter
+     * Corner cases: None
      */
 
     @Test
@@ -68,28 +67,60 @@ public class TeamTest {
     }
 
     /**
-     * Set the given values to fields belonging to Team object
-     * @result Team object values are set anew and returned accordingly for each setter
-     * @corner_cases setId is tested on the matter of invalid input id (negative argument)
+     * Set the {attribute} value of Vote object
+     * Vote object {attribute} is set anew and returned accordingly for each setter
+     * Corner cases:
+     * - values < 0 passed to the id field, null description/name/pm/assignees
+     * - description.length < 15 / name.length < 3
      */
 
     @Test
     public void testSetId() {
+        assertEquals(id, team.getId());
         team.setId(15);
         assertEquals(15, team.getId());
     }
 
+    @Test(expected=IllegalArgumentException.class)
+    public void testSetIdIllegalArgument() {
+        team.setId(-1);
+    }
+
     @Test
     public void testSetName() throws StringTooShortException {
+        assertEquals(name, team.getName());
         team.setName("FFF");
         assertEquals("FFF", team.getName());
     }
 
+    @Test(expected=IllegalArgumentException.class)
+    public void testSetNameIllegalArgument() throws StringTooShortException {
+        team.setName(null);
+    }
+
+    @Test(expected=StringTooShortException.class)
+    public void testSetNameStringTooShort() throws StringTooShortException {
+        team.setName("ai");
+    }
+
     @Test
     public void testSetDescription() throws StringTooShortException {
+        assertEquals(description, team.getDescription());
         team.setDescription("Very gooooooooooood");
         assertEquals("Very gooooooooooood", team.getDescription());
     }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testSetDescriptionIllegalArgument() throws StringTooShortException {
+        team.setDescription(null);
+    }
+
+    @Test(expected=StringTooShortException.class)
+    public void testSetDescriptionStringTooShort() throws StringTooShortException {
+        team.setDescription("short");
+    }
+
+    //TODO corner cases for pm, assignees, tasks
 
     @Test
     public void testSetPm() throws StringTooShortException {
@@ -106,7 +137,7 @@ public class TeamTest {
         list.add(a3); list.add(a4);
         team.setAssignees(list);
         assertEquals(list.size(), team.getAssignees().size());
-        //assertEquals(list.conta.getId(), team.getAssignees().get(0).getId());
+        //assertEquals(list.get(0).getId(), team.getAssignees().get(0).getId());
         //assertEquals(list.get(1).getId(), team.getAssignees().get(1).getId());
     }
 
