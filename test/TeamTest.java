@@ -12,9 +12,19 @@ public class TeamTest {
     private String name;
     private String description;
     private ProjectManager pm;
-    private HashSet<Assignee> assignees = new HashSet<>();
-    private HashSet<Task> tasks = new HashSet<>();
-    private Team team;
+    //Two not empty assignees lists
+    private HashSet<Assignee> assignees_list = new HashSet<>();
+    private HashSet<Assignee> assignees_list_short = new HashSet<>();
+    //Two empty assignees lists
+    private HashSet<Assignee> assignees_list2 = new HashSet<>();
+    private HashSet<Assignee> assignees_list_2_short = new HashSet<>();
+    //Two not empty tasks lists
+    private HashSet<Task> tasks_list = new HashSet<>();
+    private HashSet<Task> tasks_list_short = new HashSet<>();
+    //Two empty tasks lists
+    private HashSet<Task> tasks_list2 = new HashSet<>();
+    private HashSet<Task> tasks_list_2_short = new HashSet<>();
+    private Team team, team2;
 
     @Before
     public void setUp() throws StringTooShortException {
@@ -24,8 +34,15 @@ public class TeamTest {
         pm = new ProjectManager(1, "Jake", "Peralta");
         Assignee a1 = new Assignee(1, "Me", "Worker");
         Assignee a2 = new Assignee(2, "Me2", "Worker2");
-        assignees.add(pm); assignees.add(a1); assignees.add(a2);
-        team = new Team(id, name, description, pm, assignees);
+        assignees_list.add(pm); assignees_list.add(a1); assignees_list.add(a2);
+        assignees_list_short.add(pm); assignees_list_short.add(a1);
+        team = new Team(id, name, description, pm, assignees_list);
+        team2 = new Team(2, "good", "ggggggggggggggggggg", pm, assignees_list2);
+        Task t1 = new Task(7, "name", "jfjgfgffggfgffl", LocalDate.now(), null, LocalDate.now(), Status.APPROVED, team);
+        Task t2 = new Task(8, "name2", "jfjfhfhfhhfhffnf", LocalDate.now(), null, LocalDate.now(), Status.APPROVED, team);
+        tasks_list.add(t1); tasks_list.add(t2);
+        tasks_list_short.add(t1);
+        team.setTasks(tasks_list); team2.setTasks(tasks_list_short);
     }
 
     /**
@@ -37,7 +54,7 @@ public class TeamTest {
 
     @Test
     public void testConstructor() throws StringTooShortException {
-        new Team(1, "Good", "Teeeeeeeaaaaammmmm", pm, assignees);
+        new Team(1, "Good", "Teeeeeeeaaaaammmmm", pm, assignees_list);
     }
 
     @Test(expected=IllegalArgumentException.class)
@@ -47,7 +64,7 @@ public class TeamTest {
 
     @Test(expected=StringTooShortException.class)
     public void testConstructorStringTooShort() throws StringTooShortException {
-        new Team(0, "", "", pm, assignees);
+        new Team(0, "", "", pm, assignees_list);
     }
 
     /**
@@ -78,12 +95,12 @@ public class TeamTest {
 
     @Test
     public void testGetAssignees() {
-        assertEquals(assignees, team.getAssignees());
+        assertEquals(assignees_list, team.getAssignees());
     }
 
     @Test
     public void testGetTasks() {
-        assertEquals(tasks, team.getTasks());
+        assertEquals(tasks_list, team.getTasks());
     }
 
     /**
@@ -153,7 +170,15 @@ public class TeamTest {
         team.setPM(null);
     }
 
-    //TODO add many different lists and test them accordingly (refer to Assignee tests for lists)
+    /**
+     * Set the {objects}_list value of Team object
+     * Team object {objects}_list is set anew and returned accordingly for each setter
+     * Cases:  1) The {objects}_list in Team is not empty and is set to a new empty list
+     *         2) The {objects}_list in Team is empty and is set to a new not empty list
+     *         3) The {objects}_list in Team is empty and is set to a new empty list
+     *         4) The {objects}_list in Team is not empty and is set to a new not empty list
+     * Corner cases: input list is null
+     */
 
     @Test
     public void testSetAssignees() throws StringTooShortException {
@@ -163,6 +188,30 @@ public class TeamTest {
         list.add(a3); list.add(a4);
         team.setAssignees(list);
         assertEquals(list, team.getAssignees());
+    }
+
+    @Test
+    public void testSetAssignees_listFromNotEmptyToEmpty() {
+        team.setAssignees(assignees_list2);
+        assertEquals(assignees_list2, team.getAssignees());
+    }
+
+    @Test
+    public void testSetAssignees_listFromEmptyToNotEmpty() {
+        team2.setAssignees(assignees_list);
+        assertEquals(assignees_list, team2.getAssignees());
+    }
+
+    @Test
+    public void testSetAssignees_listFromEmptyToEmpty() {
+        team2.setAssignees(assignees_list_2_short);
+        assertEquals(assignees_list_2_short,team2.getAssignees());
+    }
+
+    @Test
+    public void testSetAssignees_listFromNotEmptyToNotEmpty() {
+        team.setAssignees(assignees_list_short);
+        assertEquals(assignees_list_short, team.getAssignees());
     }
 
     @Test(expected=IllegalArgumentException.class)
@@ -178,6 +227,30 @@ public class TeamTest {
         list.add(t1); list.add(t2);
         team.setTasks(list);
         assertEquals(list, team.getTasks());
+    }
+
+    @Test
+    public void testSetTasks_listFromNotEmptyToEmpty() {
+        team.setTasks(tasks_list2);
+        assertEquals(tasks_list2, team.getTasks());
+    }
+
+    @Test
+    public void testSetTasks_listFromEmptyToNotEmpty() {
+        team2.setTasks(tasks_list);
+        assertEquals(tasks_list, team2.getTasks());
+    }
+
+    @Test
+    public void testSetTasks_listFromEmptyToEmpty() {
+        team2.setTasks(tasks_list_2_short);
+        assertEquals(tasks_list_2_short,team2.getTasks());
+    }
+
+    @Test
+    public void testSetTasks_listFromNotEmptyToNotEmpty() {
+        team.setTasks(tasks_list_short);
+        assertEquals(tasks_list_short, team.getTasks());
     }
 
     @Test(expected=IllegalArgumentException.class)

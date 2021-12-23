@@ -68,22 +68,20 @@ public class AssigneeTest {
 
         pm = new ProjectManager(2,"Jerycho", "Swain");
 
-        //TODO fix -- assignees can't be null (look in Team constructor)
-
-        team1 = new Team(1,"Birbs", "Focus on testing", pm, null);
-        team2 = new Team(2,"Cats", "Write code", pm, null);
+        team1 = new Team(1,"Birbs", "Focus on testing", pm, new HashSet<>());
+        team2 = new Team(2,"Cats", "Write code here pls", pm, new HashSet<>());
         teams_list.add(team1);
         teams_list.add(team2);
         teams_list_short.add(team1);
 
-        task1 = new Task(1,"Run", "Just runnin", day1, null, day2, stat1, team1);
-        task2 = new Task( 2,"Stop", "Just stoppin", day2, null, day3, stat2, team2);
+        task1 = new Task(1,"Run", "Just runninnnnnnnnn", day1, null, day2, stat1, team1);
+        task2 = new Task( 2,"Stop", "Just stoppinnnnnnnnn", day2, null, day3, stat2, team2);
         tasks_list.add(task1);
         tasks_list.add(task2);
         tasks_list_short.add(task1);
 
-        rew1 = new Reward(3,"Golden Duck", "Quack", rtype1,day2);
-        rew2 = new Reward( 4, "Rainbow", "Colorful", rtype2, day3);
+        rew1 = new Reward(3,"Golden Duck", "Quackkkkkkkkkkkkkkkkk", rtype1,day2);
+        rew2 = new Reward( 4, "Rainbow", "Colorfullllllllllllll", rtype2, day3);
         rewards_list.add(rew1);
         rewards_list.add(rew2);
         rewards_list_short.add(rew1);

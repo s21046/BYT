@@ -3,6 +3,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 
 import static org.junit.Assert.*;
 
@@ -28,12 +29,10 @@ public class ReviewTest {
         status = Status.ASSIGNED;
         pm = new ProjectManager(2,"Jerycho", "Swain");
 
-        //TODO fix -- assignees can't be null (look in Team constructor)
-
-        team = new Team(1,"Birbs", "Focus on testing", pm, null);
+        team = new Team(1,"Birbs", "Focus on testing pls rn", pm, new HashSet<>());
         day1 = LocalDate.now();
         day2 = LocalDate.now();
-        task = new Task(1, "Some task", "Nothing", day1, null, day2, status, team);
+        task = new Task(1, "Some task", "Nothing, relaxxxxxxx", day1, null, day2, status, team);
         rev = new Review(id, description, approved, assigneeId, taskId);
     }
 

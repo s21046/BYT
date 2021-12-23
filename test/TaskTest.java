@@ -61,7 +61,7 @@ public class TaskTest {
 		name3 = "Get some sleep";
 		desc1 = "We need to create a nice UI for our application";
 		desc2 = "Be a contributing member of society";
-		desc3 = "do somthin";
+		desc3 = "do somthing please, like, contribute for once";
 		startDate1 = LocalDate.now();
 		startDate2 = LocalDate.now();
 		startDate3 = LocalDate.now();
@@ -395,5 +395,4 @@ public class TaskTest {
 			assertEquals(e.getMessage(), "Argument cannot be null");
 		}
 	}
-
 }
