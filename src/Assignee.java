@@ -1,5 +1,6 @@
 import ApplicationExceptions.*;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class Assignee {
@@ -121,7 +122,7 @@ public class Assignee {
         return new Review(reviewId, description, approved, this.id, taskId);
     }
 
-    public Help requestHelp(int helpId, Date date, String description, int taskId) throws StringTooShortException {
+    public Help requestHelp(int helpId, LocalDate date, String description, int taskId) throws StringTooShortException {
         int pmId = this.tasks_list.stream().filter(e -> e.getId() == taskId).findFirst().get()
                 .getTeamAssigned().getPM().getId();
         return new Help(helpId, date, description, this.id, pmId, taskId);

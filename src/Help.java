@@ -1,21 +1,21 @@
 import ApplicationExceptions.StringTooShortException;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Help {
     private int id;
-    private Date date;
+    private LocalDate date;
     private String description;
 
     //TODO set up checks for these FKs in the {set} methods -> call proper exceptions -> add to tests
 
     private int assigneeId, pmId, taskId;
 
-    public Help(int id, Date date, String description, int assigneeId, int pmId, int taskId) throws StringTooShortException {
+    public Help(int id, LocalDate date, String description, int assigneeId, int pmId, int taskId) throws StringTooShortException {
         if (id < 0 || assigneeId < 0 || pmId < 0 || taskId < 0) { throw new IllegalArgumentException("id cannot be a negative integer"); }
         if (description == null || date == null) { throw new IllegalArgumentException("Argument cannot be null"); }
         if (description.isEmpty()) { throw new StringTooShortException(); }
-        if (date.before(new Date(System.currentTimeMillis()))) throw new IllegalArgumentException("date cannot be in the past");
+        if (date.isBefore(LocalDate.now())) throw new IllegalArgumentException("date cannot be in the past");
 
         this.id = id;
         this.date = date;
@@ -34,13 +34,13 @@ public class Help {
         else this.id = id;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         if (date == null) throw new IllegalArgumentException("Argument cannot be null");
-        if (date.before(new Date(System.currentTimeMillis()))) throw new IllegalArgumentException("date cannot be in the past");
+        if (date.isBefore(LocalDate.now())) throw new IllegalArgumentException("date cannot be in the past");
         this.date = date;
     }
 

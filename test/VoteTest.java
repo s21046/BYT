@@ -2,7 +2,7 @@ import ApplicationExceptions.StringTooShortException;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 
 import static org.junit.Assert.assertEquals;
@@ -35,8 +35,8 @@ public class VoteTest {
         team.getAssignees().add(new Assignee(votedForId1,"Tst1","bloke"));
         team.getAssignees().add(new Assignee(votedForId2,"Tst1","gal"));
 
-        task = new Task(1, "TestTask", "It's a test, good good test", new Date(), null, new Date(), Status.ASSIGNED, team);
-        task2 = new Task(2, "TestTask2", "It's a test2, good, good test2", new Date(), null, new Date(), Status.APPROVED, team);
+        task = new Task(1, "TestTask", "It's a test, good good test", LocalDate.now(), null, LocalDate.now(), Status.ASSIGNED, team);
+        task2 = new Task(2, "TestTask2", "It's a test2, good, good test2", LocalDate.now(), null, LocalDate.now(), Status.APPROVED, team);
         vote1 = new Vote(id1, task, explanation1, votedForId1, voterId1);
         task.getVotes_list().add(vote1);
     }
@@ -86,9 +86,6 @@ public class VoteTest {
 
     @Test
     public void testGetVotedForId() {
-        //TODO fix -- same mistake with startDate --look for explanation in
-        //TeamTest/testSetTasks
-
         assertEquals(votedForId1, vote1.getVotedForId());
     }
 

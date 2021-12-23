@@ -1,20 +1,20 @@
 import ApplicationExceptions.StringTooShortException;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Reward {
     private int id;
     private String name;
     private String description;
     private RewardType type;
-    private Date dateGiven;
+    private LocalDate dateGiven;
 
-    public Reward(int id, String name, String description, RewardType type, Date dateGiven) throws StringTooShortException {
+    public Reward(int id, String name, String description, RewardType type, LocalDate dateGiven) throws StringTooShortException {
         if (id < 0) { throw new IllegalArgumentException("id cannot be a negative integer"); }
         if (description == null || name == null || type == null || dateGiven ==  null)
         { throw new IllegalArgumentException("Argument cannot be null"); }
         if (description.length() < 15 || name.length() < 3) { throw new StringTooShortException(); }
-        if (dateGiven.after(new Date(System.currentTimeMillis()))) throw new IllegalArgumentException("dateGiven cannot be in future");
+        if (dateGiven.isAfter(LocalDate.now())) throw new IllegalArgumentException("dateGiven cannot be in future");
 
         this.id = id;
         this.name = name;
@@ -61,13 +61,13 @@ public class Reward {
         else this.type = type;
     }
 
-    public Date getDateGiven() {
+    public LocalDate getDateGiven() {
         return dateGiven;
     }
 
-    public void setDateGiven(Date dateGiven) {
+    public void setDateGiven(LocalDate dateGiven) {
         if (dateGiven == null) throw new IllegalArgumentException("Argument cannot be null");
-        if (dateGiven.after(new Date(System.currentTimeMillis()))) throw new IllegalArgumentException("dateGiven cannot be in future");
+        if (dateGiven.isAfter(LocalDate.now())) throw new IllegalArgumentException("dateGiven cannot be in future");
         else this.dateGiven = dateGiven;
     }
 }

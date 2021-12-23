@@ -2,6 +2,8 @@ import ApplicationExceptions.StringTooShortException;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 import static org.junit.Assert.*;
@@ -10,9 +12,9 @@ public class TaskTest {
     private int id1, id2, id3;
     private String name1, name2, name3;
     private String desc1, desc2, desc3;
-    private Date startDate1, startDate2, startDate3;
-	private Date endDate1, endDate2, endDate3;
-    private Date deadline1, deadline2, deadline3;
+    private LocalDate startDate1, startDate2, startDate3;
+	private LocalDate endDate1, endDate2, endDate3;
+    private LocalDate deadline1, deadline2, deadline3;
     private Status status;
     private Team programmers;
 	//Two not empty votes lists
@@ -60,15 +62,15 @@ public class TaskTest {
 		desc1 = "We need to create a nice UI for our application";
 		desc2 = "Be a contributing member of society";
 		desc3 = "do somthin";
-		startDate1 = new Date();
-		startDate2 = new Date();
-		startDate3 = new Date();
-		endDate1 = new Date();
-		endDate2 = new Date();
+		startDate1 = LocalDate.now();
+		startDate2 = LocalDate.now();
+		startDate3 = LocalDate.now();
+		endDate1 = LocalDate.now();
+		endDate2 = LocalDate.now();
 		endDate3 = null;
-		deadline1 = new Date();
-		deadline2 = new Date();
-		deadline3 = new Date();
+		deadline1 = LocalDate.now();
+		deadline2 = LocalDate.now();
+		deadline3 = LocalDate.now();
 		status = Status.APPROVED;
 		createUI = new Task(id1, name1, desc1, startDate1, endDate1, deadline1, status, programmers);
 		vacuumRoom = new Task(id2, name2, desc2, startDate2, endDate2, deadline2, status, programmers);
@@ -236,10 +238,7 @@ public class TaskTest {
 
 	@Test
 	public void testSetStartDate() {
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(createUI.getStartDate());
-		cal.add(Calendar.DATE, -30);
-		Date badStartDate = cal.getTime();
+		LocalDate badStartDate = createUI.getStartDate().minus(30, ChronoUnit.DAYS);
 		try {
 			createUI.setStartDate(badStartDate);
 			fail();
@@ -247,7 +246,7 @@ public class TaskTest {
 			assertEquals(e.getMessage(), "Start date cannot be in past.");
 		}
 
-		Date badStartDate2 = new Date();
+		LocalDate badStartDate2 = LocalDate.now();
 		try {
 			vacuumRoom.setStartDate(badStartDate2);
 			fail();
@@ -255,7 +254,7 @@ public class TaskTest {
 			assertEquals(e.getMessage(), "Start date cannot be after the deadline");
 		}
 
-		Date badStartDate3 = null;
+		LocalDate badStartDate3 = null;
 		try {
 			vacuumRoom.setStartDate(badStartDate3);
 			fail();
@@ -268,10 +267,7 @@ public class TaskTest {
 
 	@Test
 	public void testSetDeadline() {
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(createUI.getStartDate());
-		cal.add(Calendar.DATE, -30);
-		Date badDeadline = cal.getTime();
+		LocalDate badDeadline = createUI.getStartDate().minus(30, ChronoUnit.DAYS);
 		try {
 			createUI.setDeadline(badDeadline);
 			fail();
@@ -279,12 +275,10 @@ public class TaskTest {
 			assertEquals(e.getMessage(), "Deadline cannot be in past.");
 		}
 
-		cal.add(Calendar.DATE, 60);
-		Date temp = cal.getTime();
+		LocalDate temp = createUI.getStartDate().plus(30, ChronoUnit.DAYS);
 		createUI.setDeadline(temp);
 		createUI.setStartDate(temp);
-		cal.add(Calendar.DATE, -10);
-		Date badDeadline2 = cal.getTime();
+		LocalDate badDeadline2 = createUI.getStartDate().minus(10, ChronoUnit.DAYS);
 		try {
 			createUI.setDeadline(badDeadline2);
 			fail();
@@ -292,7 +286,7 @@ public class TaskTest {
 			assertEquals(e.getMessage(), "Deadline cannot precede the start date.");
 		}
 
-		Date badDeadline3 = null;
+		LocalDate badDeadline3 = null;
 		try {
 			vacuumRoom.setDeadline(badDeadline3);
 			fail();

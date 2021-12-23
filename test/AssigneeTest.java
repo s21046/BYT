@@ -2,12 +2,12 @@ import ApplicationExceptions.StringTooShortException;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class AssigneeTest {
     private int id, id1;
@@ -15,7 +15,7 @@ public class AssigneeTest {
     private String firstName, firstName1;
     private String lastName, lastName1;
     private ProjectManager pm;
-    private Date day1, day2, day3;
+    private LocalDate day1, day2, day3;
     private Task task1, task2;
     private Reward rew1, rew2;
     private RewardType rtype1, rtype2;
@@ -62,9 +62,9 @@ public class AssigneeTest {
         rtype1 = RewardType.BADGE;
         rtype2 = RewardType.TITLE;
 
-        day1 = new Date();
-        day2 = new Date();
-        day3 = new Date();
+        day1 = LocalDate.now();
+        day2 = LocalDate.now();
+        day3 = LocalDate.now();
 
         pm = new ProjectManager(2,"Jerycho", "Swain");
 

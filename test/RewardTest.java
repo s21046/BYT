@@ -2,8 +2,8 @@ import ApplicationExceptions.StringTooShortException;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 import static org.junit.Assert.assertEquals;
 
@@ -12,7 +12,7 @@ public class RewardTest {
     private String name;
     private String description;
     private RewardType type;
-    private Date dateGiven;
+    private LocalDate dateGiven;
     private Reward reward;
 
     @Before
@@ -21,7 +21,7 @@ public class RewardTest {
         name = "Best Reward";
         description = "Just for testing purposes";
         type = RewardType.BADGE;
-        dateGiven = new Date();
+        dateGiven = LocalDate.now();
         reward = new Reward(1, name, description, type, dateGiven);
     }
 
@@ -34,18 +34,18 @@ public class RewardTest {
 
     @Test
     public void testConstructor() throws StringTooShortException {
-        new Reward(1, "Name", "BIIIIIIiiiiiigggggggg", RewardType.TITLE, new Date());
+        new Reward(1, "Name", "BIIIIIIiiiiiigggggggg", RewardType.TITLE, LocalDate.now());
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void testConstructorIllegalArguments() throws StringTooShortException {
-        new Reward(-1, null, null, null, new Date(new Date().getTime() + 10));
+        new Reward(-1, null, null, null, LocalDate.now().plus(10, ChronoUnit.DAYS));
         new Reward(-1, null, null, null, null);
     }
 
     @Test(expected=StringTooShortException.class)
     public void testConstructorStringTooShort() throws StringTooShortException {
-        new Reward(0, "N", "", RewardType.BADGE, new Date());
+        new Reward(0, "N", "", RewardType.BADGE, LocalDate.now());
     }
 
     /**
@@ -148,8 +148,8 @@ public class RewardTest {
     @Test
     public void testSetDateGiven() {
         assertEquals(dateGiven, reward.getDateGiven());
-        reward.setDateGiven(new Date());
-        assertEquals(new Date(), reward.getDateGiven());
+        reward.setDateGiven(LocalDate.now());
+        assertEquals(LocalDate.now(), reward.getDateGiven());
     }
 
     @Test(expected=IllegalArgumentException.class)
@@ -159,10 +159,7 @@ public class RewardTest {
 
     @Test(expected=IllegalArgumentException.class)
     public void testSetDateGivenToLaterThanCurrent() {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date());
-        cal.add(Calendar.DATE, 30);
-        Date badDate = cal.getTime();
+        LocalDate badDate = LocalDate.now().plus(30, ChronoUnit.DAYS);
         reward.setDateGiven(badDate);
     }
 }

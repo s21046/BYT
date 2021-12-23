@@ -2,7 +2,7 @@ import ApplicationExceptions.StringTooShortException;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 
 import static org.junit.Assert.assertEquals;
@@ -179,8 +179,8 @@ public class TeamTest {
         //solution - set startDate here not to current time, but to some time in the future
         //also, check out dates in other test files - maybe we need to do the same there
 
-        Task t1 = new Task(1, "name", "jfjgfgffggfgffl", new Date(), null, new Date(), Status.APPROVED, team);
-        Task t2 = new Task(2, "name2", "jfjfhfhfhhfhffnf", new Date(), null, new Date(), Status.APPROVED, team);
+        Task t1 = new Task(1, "name", "jfjgfgffggfgffl", LocalDate.now(), null, LocalDate.now(), Status.APPROVED, team);
+        Task t2 = new Task(2, "name2", "jfjfhfhfhhfhffnf", LocalDate.now(), null, LocalDate.now(), Status.APPROVED, team);
         HashSet<Task> list = new HashSet<>();
         list.add(t1); list.add(t2);
         team.setTasks(list);

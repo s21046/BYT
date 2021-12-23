@@ -2,12 +2,13 @@ import ApplicationExceptions.StringTooShortException;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Date;
-import static org.junit.Assert.*;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import static org.junit.Assert.assertEquals;
 
 public class HelpTest {
     private int id;
-    private Date date, secDate, thirdDate;
+    private LocalDate date, secDate, thirdDate;
     private String description;
     private int assigneeId, pmId, taskId;
     private Help help;
@@ -15,9 +16,9 @@ public class HelpTest {
     @Before
     public void setUp() throws StringTooShortException {
         id = 1;
-        date = new Date();
-        secDate = new Date();
-        thirdDate = new Date(secDate.getTime() - 10);
+        date = LocalDate.now();
+        secDate = LocalDate.now();
+        thirdDate = secDate.minus(10, ChronoUnit.DAYS);
         description = "Just for testing purposes";
         assigneeId = 2;
         pmId = 3;
@@ -34,18 +35,18 @@ public class HelpTest {
 
     @Test
     public void testConstructor() throws StringTooShortException {
-        new Help(1, new Date(), "Help", 1, 1, 1);
+        new Help(1, LocalDate.now(), "Help", 1, 1, 1);
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void testConstructorIllegalArguments() throws StringTooShortException {
-        new Help(-1, new Date(new Date().getTime() - 10), null, -1, -1, -1);
+        new Help(-1, LocalDate.now().minus(10, ChronoUnit.DAYS), null, -1, -1, -1);
         new Help(-1, null, null, -1, -1, -1);
     }
 
     @Test(expected=StringTooShortException.class)
     public void testConstructorStringTooShort() throws StringTooShortException {
-        new Help(0, new Date(), "", 0, 0, 0);
+        new Help(0, LocalDate.now(), "", 0, 0, 0);
     }
 
     /**

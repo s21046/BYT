@@ -2,7 +2,7 @@ import ApplicationExceptions.StringTooShortException;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import static org.junit.Assert.*;
 
@@ -12,7 +12,7 @@ public class ReviewTest {
     private boolean approved;
     private int assigneeId, taskId;
     private Task task;
-    private Date day1, day2;
+    private LocalDate day1, day2;
     private Status status;
     private Team team;
     private ProjectManager pm;
@@ -31,8 +31,8 @@ public class ReviewTest {
         //TODO fix -- assignees can't be null (look in Team constructor)
 
         team = new Team(1,"Birbs", "Focus on testing", pm, null);
-        day1 = new Date();
-        day2 = new Date();
+        day1 = LocalDate.now();
+        day2 = LocalDate.now();
         task = new Task(1, "Some task", "Nothing", day1, null, day2, status, team);
         rev = new Review(id, description, approved, assigneeId, taskId);
     }

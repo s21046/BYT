@@ -2,10 +2,10 @@ import ApplicationExceptions.StringTooShortException;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * This test class covers only methods unique for ProjectManager.
@@ -16,7 +16,7 @@ public class ProjectManagerTest {
     private ProjectManager pm, pm2;
     private String firstName;
     private String lastName;
-    private Date date, secDate;
+    private LocalDate date, secDate;
     private String description;
     private int assigneeId, pmId, taskId;
     private Help help, help2;
@@ -33,8 +33,8 @@ public class ProjectManagerTest {
         firstName = "Jerycho";
         lastName = "Swain";
 
-        date = new Date();
-        secDate = new Date();
+        date = LocalDate.now();
+        secDate = LocalDate.now();
         description = "Just for testing purposes";
         assigneeId = 2;
         taskId = 2;

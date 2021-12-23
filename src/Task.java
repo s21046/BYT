@@ -1,15 +1,15 @@
 import ApplicationExceptions.StringTooShortException;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 
 public class Task {
     private int id;
     private String name;
     private String description;
-    private Date startDate;
-    private Date endDate;
-    private Date deadline;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private LocalDate deadline;
     private Status status;
     private Team teamAssigned;
 
@@ -19,27 +19,27 @@ public class Task {
     private HashSet<Review> reviews_list = new HashSet<>();
     private HashSet<Assignee> assignees_list = new HashSet<>();
 
-    public Task(int id, String name, String description, Date startDate, Date endDate, Date deadline, Status status, Team teamAssigned) throws StringTooShortException {
+    public Task(int id, String name, String description, LocalDate startDate, LocalDate endDate, LocalDate deadline, Status status, Team teamAssigned) throws StringTooShortException {
         if (id < 0) { throw new IllegalArgumentException("id cannot be a negative integer"); }
         if (description == null || name == null || startDate == null || deadline == null || status == null || teamAssigned == null)
         { throw new IllegalArgumentException("Argument cannot be null"); }
         if (description.length() < 15 || name.length() < 3) { throw new StringTooShortException(); }
 
-        if (startDate.before(new Date(System.currentTimeMillis())))
+        if (startDate.isBefore(LocalDate.now()))
             throw new IllegalArgumentException("Start date cannot be in past.");
-        if (startDate.after(deadline))
+        if (startDate.isAfter(deadline))
             throw new IllegalArgumentException("Start date cannot be after the deadline");
-        if (deadline.before(new Date(System.currentTimeMillis())))
+        if (deadline.isBefore(LocalDate.now()))
             throw new IllegalArgumentException("Deadline cannot be in past.");
-        if (deadline.before(startDate))
+        if (deadline.isBefore(startDate))
             throw new IllegalArgumentException("Deadline cannot precede the start date.");
 
         if (endDate != null) {
-            if (endDate.before(new Date(System.currentTimeMillis())))
+            if (endDate.isBefore(LocalDate.now()))
                 throw new IllegalArgumentException("End date cannot be in past.");
-            if (endDate.before(startDate))
+            if (endDate.isBefore(startDate))
                 throw new IllegalArgumentException("End date cannot precede the start date.");
-            if (startDate.after(endDate))
+            if (startDate.isAfter(endDate))
                 throw new IllegalArgumentException("Start date cannot be after the end date");
         }
 
@@ -84,35 +84,35 @@ public class Task {
         else this.description = description;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         if (startDate == null) throw new IllegalArgumentException("Argument cannot be null");
-        else if (startDate.before(new Date(System.currentTimeMillis()))) throw new IllegalArgumentException("Start date cannot be in past.");
-        if (startDate.after(deadline) || startDate.after(endDate)) throw new IllegalArgumentException("Start date cannot be after the deadline/end date");
+        else if (startDate.isBefore(LocalDate.now())) throw new IllegalArgumentException("Start date cannot be in past.");
+        if (startDate.isAfter(deadline) || startDate.isAfter(endDate)) throw new IllegalArgumentException("Start date cannot be after the deadline/end date");
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
-        if (endDate.before(new Date(System.currentTimeMillis()))) throw new IllegalArgumentException("End date cannot be in past.");
-        if (endDate.before(startDate)) throw new IllegalArgumentException("End date cannot precede the start date.");
+    public void setEndDate(LocalDate endDate) {
+        if (endDate.isBefore(LocalDate.now())) throw new IllegalArgumentException("End date cannot be in past.");
+        if (endDate.isBefore(startDate)) throw new IllegalArgumentException("End date cannot precede the start date.");
         this.endDate = endDate;
     }
 
-    public Date getDeadline() {
+    public LocalDate getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(Date deadline) {
+    public void setDeadline(LocalDate deadline) {
         if (deadline == null) throw new IllegalArgumentException("Argument cannot be null");
-        else if (deadline.before(new Date(System.currentTimeMillis()))) throw new IllegalArgumentException("Deadline cannot be in past.");
-        if (deadline.before(startDate)) throw new IllegalArgumentException("Deadline cannot precede the start date.");
+        else if (deadline.isBefore(LocalDate.now())) throw new IllegalArgumentException("Deadline cannot be in past.");
+        if (deadline.isBefore(startDate)) throw new IllegalArgumentException("Deadline cannot precede the start date.");
         else this.deadline = deadline;
     }
 

@@ -1,7 +1,6 @@
 import ApplicationExceptions.StringTooShortException;
 
-import java.time.Instant;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 
@@ -22,17 +21,17 @@ public class ProjectManager extends Assignee {
     }
 
     public void giveReward(int rewardId, int assigneeId, String name, String description, RewardType type) throws StringTooShortException {
-        Reward reward = new Reward(rewardId, name, description, type, Date.from(Instant.now()));
+        Reward reward = new Reward(rewardId, name, description, type, LocalDate.now());
     }
 
-    public void createTask(int taskId, String name, String description, Date startDate,
-                           Date endDate, Date deadline, Status status, Team team) throws StringTooShortException {
+    public void createTask(int taskId, String name, String description, LocalDate startDate,
+                           LocalDate endDate, LocalDate deadline, Status status, Team team) throws StringTooShortException {
         Task t = new Task(taskId, name, description, startDate, endDate, deadline, status, team);
         team.addTask(t);
     }
 
-    public void updateTask(int taskId, String name, String description, Date startDate,
-                           Date endDate, Date deadline, Status status, Team team) throws StringTooShortException {
+    public void updateTask(int taskId, String name, String description, LocalDate startDate,
+                           LocalDate endDate, LocalDate deadline, Status status, Team team) throws StringTooShortException {
         team.deleteTask(taskId);
         Task t = new Task(taskId, name, description, startDate, endDate, deadline, status, team);
         team.addTask(t);
