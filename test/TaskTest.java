@@ -84,6 +84,8 @@ public class TaskTest {
 		getSleep.setReviews_list(reviews_list_short);
 	}
 
+	//TODO constructor tests
+
 	/**
 	 * Get the given values belonging to Task object
 	 * Task object values are returned accordingly for each getter
@@ -305,8 +307,97 @@ public class TaskTest {
 		getSleep.setTeamAssigned(null);
 	}
 
-	//TODO do lists testing
+	/**
+	 * Set the {objects}_list value of Task object
+	 * Task object {objects}_list is set anew and returned accordingly for each setter
+	 * Cases:  1) The {objects}_list in Task is not empty and is set to a new empty list
+	 *         2) The {objects}_list in Task is empty and is set to a new not empty list
+	 *         3) The {objects}_list in Task is empty and is set to a new empty list
+	 *         4) The {objects}_list in Task is not empty and is set to a new not empty list
+	 * Corner cases:
+	 * - input list is null
+	 * - for Assignee_list: assignees being assigned are not part of the team, working on this task
+	 * - for Reviews_list: reviews of different tasks, then the given one
+	 */
 
+	//TODO check -- if it says not empty to empty - is it really that way??
+	//check in other classes too, fix if wrong
+
+	//TODO complete list tests
+
+	@Test
+	public void testSetAssignees_listFromNotEmptyToEmpty() {
+		createUI.setAssignees_list(assignees_list2);
+		assertEquals(assignees_list2, createUI.getAssignees_list());
+	}
+
+	@Test
+	public void testSetAssignees_listFromEmptyToNotEmpty() {
+		getSleep.setAssignees_list(assignees_list);
+		assertEquals(assignees_list, getSleep.getAssignees_list());
+	}
+
+	@Test
+	public void testSetAssignees_listFromEmptyToEmpty() {
+		getSleep.setAssignees_list(assignees_list_2_short);
+		assertEquals(assignees_list_2_short, getSleep.getAssignees_list());
+	}
+
+	@Test
+	public void testSetAssignees_listFromNotEmptyToNotEmpty() {
+		createUI.setAssignees_list(assignees_list_short);
+		assertEquals(assignees_list_short, createUI.getAssignees_list());
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void testSetAssignees_listToNull() {
+		createUI.setAssignees_list(null);
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void testSetAssignees_listToRandomAssignees() throws StringTooShortException {
+		Assignee a3 = new Assignee(1, "Me3", "Worker3");
+		Assignee a4 = new Assignee(2, "Me4", "Worker4");
+		HashSet<Assignee> list = new HashSet<>();
+		list.add(a3); list.add(a4);
+		createUI.setAssignees_list(list);
+		assertEquals(list, createUI.getAssignees_list());
+	}
+
+	@Test
+	public void testSetVotes_listFromNotEmptyToEmpty() {
+		createUI.setVotes_list(votes_list2);
+		assertEquals(votes_list2, createUI.getVotes_list());
+	}
+
+	@Test
+	public void testSetVotes_listFromEmptyToNotEmpty() {
+		getSleep.setVotes_list(votes_list);
+		assertEquals(votes_list, getSleep.getVotes_list());
+	}
+
+	@Test
+	public void testSetVotes_listFromEmptyToEmpty() {
+		getSleep.setVotes_list(votes_list_2_short);
+		assertEquals(votes_list_2_short, getSleep.getVotes_list());
+	}
+
+	@Test
+	public void testSetVotes_listFromNotEmptyToNotEmpty() {
+		createUI.setVotes_list(votes_list_short);
+		assertEquals(votes_list_short, createUI.getVotes_list());
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void testSetVotes_listToNull() {
+		createUI.setVotes_list(null);
+	}
+
+
+
+
+
+/*
 	@Test
 	public void testSetVotes_list() throws StringTooShortException {
 		Vote goodVote = new Vote(1, createUI, "Because yes", 1, 2);
@@ -373,4 +464,6 @@ public class TaskTest {
 			assertEquals(e.getMessage(), "Argument cannot be null");
 		}
 	}
+
+ */
 }
