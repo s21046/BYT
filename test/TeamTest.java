@@ -172,13 +172,6 @@ public class TeamTest {
 
     @Test
     public void testSetTasks() throws StringTooShortException {
-        //TODO fix -- sometimes gives "Start date cannot be in past" exception
-        //the problem is in the order, in which tests are run
-        //we compare startDate with current datetime (look in Task constructor), so if time passes in these little seconds,
-        //startdate becomes invalid
-        //solution - set startDate here not to current time, but to some time in the future
-        //also, check out dates in other test files - maybe we need to do the same there
-
         Task t1 = new Task(1, "name", "jfjgfgffggfgffl", LocalDate.now(), null, LocalDate.now(), Status.APPROVED, team);
         Task t2 = new Task(2, "name2", "jfjfhfhfhhfhffnf", LocalDate.now(), null, LocalDate.now(), Status.APPROVED, team);
         HashSet<Task> list = new HashSet<>();
