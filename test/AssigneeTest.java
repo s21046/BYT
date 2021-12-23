@@ -236,6 +236,8 @@ public class AssigneeTest {
      * Corner cases: input list is null
      */
 
+    //TODO check -- if it says not empty to empty - is it really that way??
+
     @Test
     public void testSetTasks_listFromNotEmptyToEmpty() {
         assignee.setTasks_list(tasks_list2);
@@ -259,7 +261,6 @@ public class AssigneeTest {
         assignee.setTasks_list(tasks_list_short);
         assertEquals(tasks_list_short, assignee.getTasks_list());
     }
-
 
     @Test(expected=IllegalArgumentException.class)
     public void testSetTasks_listToNullException() {

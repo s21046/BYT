@@ -9,7 +9,6 @@ import java.util.*;
 import static org.junit.Assert.*;
 
 public class TaskTest {
-	private Task task;
     private int id1, id2;
     private String name1, name2;
     private String desc1, desc2;
@@ -104,56 +103,56 @@ public class TaskTest {
 
 	@Test
 	public void testConstructor() throws StringTooShortException {
-		task = new Task(5, "Tasky task", "Appropriate description",
+		new Task(5, "Tasky task", "Appropriate description",
 				LocalDate.now(), null, LocalDate.now().plusDays(1),
 				Status.APPROVED, programmers);
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	public void testConstructorWithNegativeId() throws StringTooShortException {
-		task = new Task(-5, "Tasky task", "Appropriate description",
+		new Task(-5, "Tasky task", "Appropriate description",
 				LocalDate.now(), null, LocalDate.now().plusDays(1),
 				Status.APPROVED, programmers);
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	public void testConstructorWithNullFields() throws StringTooShortException {
-		task = new Task(5, "Tasky task", null,
+		new Task(5, "Tasky task", null,
 				LocalDate.now(), null, null,
 				Status.APPROVED, null);
 	}
 
 	@Test(expected=StringTooShortException.class)
 	public void testConstructorWithShortName() throws StringTooShortException {
-		task = new Task(5, "T", "Appropriate description",
+		new Task(5, "T", "Appropriate description",
 				LocalDate.now(), null, LocalDate.now().plusDays(1),
 				Status.APPROVED, programmers);
 	}
 
 	@Test(expected=StringTooShortException.class)
 	public void testConstructorWithShortDescription() throws StringTooShortException {
-		task = new Task(5, "Task", "Huh?",
+		new Task(5, "Task", "Huh?",
 				LocalDate.now(), null, LocalDate.now().plusDays(1),
 				Status.APPROVED, programmers);
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	public void testConstructorWithStartDateAfterDeadline() throws StringTooShortException {
-		task = new Task(5, "Task", "Appropriate description",
+		new Task(5, "Task", "Appropriate description",
 				LocalDate.now().plusDays(1), null, LocalDate.now(),
 				Status.APPROVED, programmers);
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	public void testConstructorWithStartDateInPast() throws StringTooShortException {
-		task = new Task(5, "Task", "Appropriate description",
+		new Task(5, "Task", "Appropriate description",
 				LocalDate.now().minusDays(1), null, LocalDate.now(),
 				Status.APPROVED, programmers);
 	}
 
 	@Test(expected=IllegalArgumentException.class)
 	public void testConstructorWithEndDateBeforeStartDate() throws StringTooShortException {
-		task = new Task(5, "Task", "Appropriate description",
+		new Task(5, "Task", "Appropriate description",
 				LocalDate.now(), LocalDate.now().minusDays(1), LocalDate.now().plusDays(1),
 				Status.APPROVED, programmers);
 	}
@@ -498,74 +497,4 @@ public class TaskTest {
 	public void testSetReviews_listToDifferentTask(){
 		createUI.setReviews_list(reviews_list_short);
 	}
-
-/*
-	@Test
-	public void testSetVotes_list() throws StringTooShortException {
-		Vote goodVote = new Vote(1, createUI, "Because yes", 1, 2);
-		Vote badVote = new Vote(2, getSleep, "Yes because", 1, 2);
-		HashSet<Vote> votes = new HashSet<>();
-		votes.add(goodVote);
-		createUI.setVotes_list(votes);
-		votes.add(badVote);
-		try {
-			createUI.setVotes_list(votes);
-			fail();
-		} catch (IllegalArgumentException e) {
-			assertEquals(e.getMessage(), "All votes in the list should belong to this task.");
-		}
-		votes = null;
-		try {
-			createUI.setVotes_list(votes);
-			fail();
-		} catch (IllegalArgumentException e) {
-			assertEquals(e.getMessage(), "Argument cannot be null");
-		}
-	}
-
-	@Test
-	public void testSetReviews_list() throws StringTooShortException {
-		Review review = new Review(1,"Very nicely done", true, 3, 3);
-		HashSet<Review> reviews = new HashSet<>();
-		reviews.add(review);
-		getSleep.setReviews_list(reviews);
-		assertEquals(getSleep.getReviews_list(), reviews);
-		try {
-			createUI.setReviews_list(reviews);
-			fail();
-		} catch (IllegalArgumentException e) {
-			assertEquals(e.getMessage(), "All reviews in the list should belong to this task.");
-		}
-		try {
-			createUI.setReviews_list(null);
-			fail();
-		} catch (IllegalArgumentException e) {
-			assertEquals(e.getMessage(), "Argument cannot be null");
-		}
-	}
-
-	@Test
-	public void testSetAssignees_list() throws StringTooShortException {
-		Assignee badAssignee = new Assignee(4, "Voldo", "Italian");
-		HashSet<Assignee> badAssignees = new HashSet<>();
-		badAssignees.add(badAssignee);
-		try {
-			createUI.setAssignees_list(badAssignees);
-			fail();
-		} catch (IllegalArgumentException e) {
-			assertEquals(e.getMessage(), "Assignees in the list should belong to this task's team.");
-		}
-
-		HashSet<Assignee> goodAssignees = assignees_list;
-		getSleep.setAssignees_list(goodAssignees);
-
-		try {
-			getSleep.setAssignees_list(null);
-			fail();
-		} catch (IllegalArgumentException e) {
-			assertEquals(e.getMessage(), "Argument cannot be null");
-		}
-	}
-
- */
 }

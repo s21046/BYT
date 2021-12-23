@@ -180,6 +180,8 @@ public class TeamTest {
      * Corner cases: input list is null
      */
 
+    //TODO check -- if it says not empty to empty - is it really that way??
+
     @Test
     public void testSetAssignees() throws StringTooShortException {
         Assignee a3 = new Assignee(1, "Me3", "Worker3");
