@@ -4,6 +4,8 @@ public class Suggestion {
     private int id;
     private String name;
     private String description;
+
+    //TODO set up checks for these FKs in the {set} methods -> call proper exceptions -> add to tests
     private int assigneeId;
 
     public Suggestion(int id, String name, String description, int assigneeId) throws StringTooShortException {

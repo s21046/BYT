@@ -68,6 +68,8 @@ public class AssigneeTest {
 
         pm = new ProjectManager(2,"Jerycho", "Swain");
 
+        //TODO fix -- assignees can't be null (look in Team constructor)
+
         team1 = new Team(1,"Birbs", "Focus on testing", pm, null);
         team2 = new Team(2,"Cats", "Write code", pm, null);
         teams_list.add(team1);

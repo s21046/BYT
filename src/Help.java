@@ -7,6 +7,8 @@ public class Help {
     private Date date;
     private String description;
 
+    //TODO set up checks for these FKs in the {set} methods -> call proper exceptions -> add to tests
+
     private int assigneeId, pmId, taskId;
 
     public Help(int id, Date date, String description, int assigneeId, int pmId, int taskId) throws StringTooShortException {

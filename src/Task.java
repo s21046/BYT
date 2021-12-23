@@ -11,15 +11,38 @@ public class Task {
     private Date endDate;
     private Date deadline;
     private Status status;
-    private boolean voteStarted;
-
     private Team teamAssigned;
+
+    private boolean voteStarted;
 
     private HashSet<Vote> votes_list = new HashSet<>();
     private HashSet<Review> reviews_list = new HashSet<>();
     private HashSet<Assignee> assignees_list = new HashSet<>();
 
-    public Task(int id, String name, String description, Date startDate, Date endDate, Date deadline, Status status, Team teamAssigned) {
+    public Task(int id, String name, String description, Date startDate, Date endDate, Date deadline, Status status, Team teamAssigned) throws StringTooShortException {
+        if (id < 0) { throw new IllegalArgumentException("id cannot be a negative integer"); }
+        if (description == null || name == null || startDate == null || deadline == null || status == null || teamAssigned == null)
+        { throw new IllegalArgumentException("Argument cannot be null"); }
+        if (description.length() < 15 || name.length() < 3) { throw new StringTooShortException(); }
+
+        if (startDate.before(new Date(System.currentTimeMillis())))
+            throw new IllegalArgumentException("Start date cannot be in past.");
+        if (startDate.after(deadline))
+            throw new IllegalArgumentException("Start date cannot be after the deadline");
+        if (deadline.before(new Date(System.currentTimeMillis())))
+            throw new IllegalArgumentException("Deadline cannot be in past.");
+        if (deadline.before(startDate))
+            throw new IllegalArgumentException("Deadline cannot precede the start date.");
+
+        if (endDate != null) {
+            if (endDate.before(new Date(System.currentTimeMillis())))
+                throw new IllegalArgumentException("End date cannot be in past.");
+            if (endDate.before(startDate))
+                throw new IllegalArgumentException("End date cannot precede the start date.");
+            if (startDate.after(endDate))
+                throw new IllegalArgumentException("Start date cannot be after the end date");
+        }
+
         this.id = id;
         this.name = name;
         this.description = description;
@@ -102,21 +125,21 @@ public class Task {
         else this.status = status;
     }
 
+    public Team getTeamAssigned() {
+        return teamAssigned;
+    }
+
+    public void setTeamAssigned(Team teamAssigned) {
+        if (teamAssigned == null) throw new IllegalArgumentException("Argument cannot be null");
+        else this.teamAssigned = teamAssigned;
+    }
+
     public boolean isVoteStarted() {
         return voteStarted;
     }
 
     public void setVoteStarted(boolean voteStarted) {
         this.voteStarted = voteStarted;
-    }
-
-    public Team getTeamAssigned(){
-        return teamAssigned;
-    }
-
-    public void setTeamAssigned(Team teamAssigned){
-        if (teamAssigned == null) throw new IllegalArgumentException("Argument cannot be null");
-        else this.teamAssigned = teamAssigned;
     }
 
     public HashSet<Vote> getVotes_list() {

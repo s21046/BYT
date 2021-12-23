@@ -24,11 +24,31 @@ public class TeamTest {
         pm = new ProjectManager(1, "Jake", "Peralta");
         Assignee a1 = new Assignee(1, "Me", "Worker");
         Assignee a2 = new Assignee(2, "Me2", "Worker2");
-        assignees.add(a1); assignees.add(a2);
+        assignees.add(pm); assignees.add(a1); assignees.add(a2);
         team = new Team(id, name, description, pm, assignees);
     }
 
-    //TODO add constructor tests (look in other test files)
+    /**
+     * Initiate constructor with various values
+     * Corner cases:
+     * - values < 0 passed to the id field, null description/name/pm/assignees
+     * - description.length < 15 / name.length < 3
+     */
+
+    @Test
+    public void testConstructor() throws StringTooShortException {
+        new Team(1, "Good", "Teeeeeeeaaaaammmmm", pm, assignees);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testConstructorIllegalArguments() throws StringTooShortException {
+        new Team(-1, null, null, null, null);
+    }
+
+    @Test(expected=StringTooShortException.class)
+    public void testConstructorStringTooShort() throws StringTooShortException {
+        new Team(0, "", "", pm, assignees);
+    }
 
     /**
      * Get the given values belonging to Team object
@@ -120,14 +140,20 @@ public class TeamTest {
         team.setDescription("short");
     }
 
-    //TODO corner cases for pm, assignees, tasks
-
     @Test
     public void testSetPm() throws StringTooShortException {
-        ProjectManager pm = new ProjectManager(777, "PM", "TheBest");
-        team.setPM(pm);
-        assertEquals(pm.getId(), team.getPM().getId());
+        assertEquals(pm, team.getPM());
+        ProjectManager newPM = new ProjectManager(777, "PM", "TheBest");
+        team.setPM(newPM);
+        assertEquals(newPM, team.getPM());
     }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testSetPmIllegalArgument() {
+        team.setPM(null);
+    }
+
+    //TODO add many different lists and test them accordingly (refer to Assignee tests for lists)
 
     @Test
     public void testSetAssignees() throws StringTooShortException {
@@ -136,20 +162,33 @@ public class TeamTest {
         HashSet<Assignee> list = new HashSet<>();
         list.add(a3); list.add(a4);
         team.setAssignees(list);
-        assertEquals(list.size(), team.getAssignees().size());
-        //assertEquals(list.get(0).getId(), team.getAssignees().get(0).getId());
-        //assertEquals(list.get(1).getId(), team.getAssignees().get(1).getId());
+        assertEquals(list, team.getAssignees());
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testSetAssigneesToNull() {
+        team.setAssignees(null);
     }
 
     @Test
-    public void testSetTasks() {
-        Task t1 = new Task(1, "name", "jfj", new Date(), null, new Date(), Status.APPROVED, team);
-        Task t2 = new Task(2, "name2", "jfj", new Date(), null, new Date(), Status.APPROVED, team);
+    public void testSetTasks() throws StringTooShortException {
+        //TODO fix -- sometimes gives "Start date cannot be in past" exception
+        //the problem is in the order, in which tests are run
+        //we compare startDate with current datetime (look in Task constructor), so if time passes in these little seconds,
+        //startdate becomes invalid
+        //solution - set startDate here not to current time, but to some time in the future
+        //also, check out dates in other test files - maybe we need to do the same there
+
+        Task t1 = new Task(1, "name", "jfjgfgffggfgffl", new Date(), null, new Date(), Status.APPROVED, team);
+        Task t2 = new Task(2, "name2", "jfjfhfhfhhfhffnf", new Date(), null, new Date(), Status.APPROVED, team);
         HashSet<Task> list = new HashSet<>();
         list.add(t1); list.add(t2);
         team.setTasks(list);
-        assertEquals(list.size(), team.getTasks().size());
-        //assertEquals(list.get(0).getId(), team.getTasks().get(0).getId());
-        //assertEquals(list.get(1).getId(), team.getTasks().get(1).getId());
+        assertEquals(list, team.getTasks());
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testSetTasksToNull() {
+        team.setTasks(null);
     }
 }

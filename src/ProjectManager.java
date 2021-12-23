@@ -26,13 +26,13 @@ public class ProjectManager extends Assignee {
     }
 
     public void createTask(int taskId, String name, String description, Date startDate,
-                           Date endDate, Date deadline, Status status, Team team) {
+                           Date endDate, Date deadline, Status status, Team team) throws StringTooShortException {
         Task t = new Task(taskId, name, description, startDate, endDate, deadline, status, team);
         team.addTask(t);
     }
 
     public void updateTask(int taskId, String name, String description, Date startDate,
-                           Date endDate, Date deadline, Status status, Team team) {
+                           Date endDate, Date deadline, Status status, Team team) throws StringTooShortException {
         team.deleteTask(taskId);
         Task t = new Task(taskId, name, description, startDate, endDate, deadline, status, team);
         team.addTask(t);

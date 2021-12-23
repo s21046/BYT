@@ -27,6 +27,9 @@ public class ReviewTest {
         approved = true;
         status = Status.ASSIGNED;
         pm = new ProjectManager(2,"Jerycho", "Swain");
+
+        //TODO fix -- assignees can't be null (look in Team constructor)
+
         team = new Team(1,"Birbs", "Focus on testing", pm, null);
         day1 = new Date();
         day2 = new Date();

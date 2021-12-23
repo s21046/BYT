@@ -7,21 +7,44 @@ import java.util.*;
 import static org.junit.Assert.*;
 
 public class TaskTest {
-    int id1, id2, id3;
-    String name1, name2, name3;
-    String desc1, desc2, desc3;
-    Date startDate1, startDate2, startDate3;
-    Date deadline1, deadline2, deadline3;
-    Status status;
-    Team programmers;
-    HashSet<Assignee> assignees;
-    ProjectManager pm;
-	Task createUI;
-	Task vacuumRoom;
-	Task getSleep;
+    private int id1, id2, id3;
+    private String name1, name2, name3;
+    private String desc1, desc2, desc3;
+    private Date startDate1, startDate2, startDate3;
+	private Date endDate1, endDate2, endDate3;
+    private Date deadline1, deadline2, deadline3;
+    private Status status;
+    private Team programmers;
+	//Two not empty votes lists
+	private HashSet<Vote> votes_list = new HashSet<>();
+	private HashSet<Vote> votes_list_short = new HashSet<>();
+	//Two empty votes lists
+	private HashSet<Vote> votes_list2 = new HashSet<>();
+	private HashSet<Vote> votes_list_2_short = new HashSet<>();
+	//Two not empty reviews lists
+	private HashSet<Review> reviews_list = new HashSet<>();
+	private HashSet<Review> reviews_list_short = new HashSet<>();
+	//Two empty reviews lists
+	private HashSet<Review> reviews_list2 = new HashSet<>();
+	private HashSet<Review> reviews_list_2_short = new HashSet<>();
+	//Two not empty assignees lists
+	private HashSet<Assignee> assignees_list = new HashSet<>();
+	private HashSet<Assignee> assignees_list_short = new HashSet<>();
+	//Two empty assignees lists
+	private HashSet<Assignee> assignees_list2 = new HashSet<>();
+	private HashSet<Assignee> assignees_list_2_short = new HashSet<>();
+
+	//TODO replace these assignees with the lists above and implement tests (refer to AssigneeTest file for lists tests)
+    private HashSet<Assignee> assignees;
+
+    private ProjectManager pm;
+	private Task createUI, vacuumRoom, getSleep;
 	
 	@Before
 	public void setUp() throws StringTooShortException {
+		//TODO show that assignees don't have to include all members of the team
+		//TODO add tests for that
+
 		pm = new ProjectManager(1, "Hana", "Busa");
 		assignees = new HashSet<>();
 		assignees.add(pm);
@@ -40,20 +63,23 @@ public class TaskTest {
 		startDate1 = new Date();
 		startDate2 = new Date();
 		startDate3 = new Date();
+		endDate1 = new Date();
+		endDate2 = new Date();
+		endDate3 = null;
 		deadline1 = new Date();
 		deadline2 = new Date();
 		deadline3 = new Date();
 		status = Status.APPROVED;
-		createUI = new Task(id1, name1, desc1, startDate1, null, deadline1, status, programmers);
-		vacuumRoom = new Task(id2, name2, desc2, startDate2, null, deadline2, status, programmers);
-		getSleep = new Task(id3, name3, desc3, startDate3, null, deadline3, status, programmers);
+		createUI = new Task(id1, name1, desc1, startDate1, endDate1, deadline1, status, programmers);
+		vacuumRoom = new Task(id2, name2, desc2, startDate2, endDate2, deadline2, status, programmers);
+		getSleep = new Task(id3, name3, desc3, startDate3, endDate3, deadline3, status, programmers);
 	}
-	
-	  /**
-     * Get the given values belonging to Task object
-     * @result Task object values are returned accordingly for each getter
-     * @corner_cases None
-     */
+
+	/**
+	 * Get the given values belonging to Task object
+	 * Task object values are returned accordingly for each getter
+	 * Corner cases: None
+	 */
 	
 	@Test
 	public void testGetId() {
@@ -82,6 +108,13 @@ public class TaskTest {
 		assertEquals(vacuumRoom.getStartDate(), startDate2);
 		assertEquals(getSleep.getStartDate(), startDate3);
 	}
+
+	@Test
+	public void testGetEndDate() {
+		assertEquals(createUI.getEndDate(), endDate1);
+		assertEquals(vacuumRoom.getEndDate(), endDate2);
+		assertEquals(getSleep.getEndDate(), endDate3);
+	}
 	
 	@Test
 	public void testGetDeadline() {
@@ -99,9 +132,9 @@ public class TaskTest {
 
 	@Test
 	public void testIsVoteStarted() {
-		assertEquals(createUI.isVoteStarted(), false);
-		assertEquals(vacuumRoom.isVoteStarted(), false);
-		assertEquals(getSleep.isVoteStarted(), false);
+		assertFalse(createUI.isVoteStarted());
+		assertFalse(vacuumRoom.isVoteStarted());
+		assertFalse(getSleep.isVoteStarted());
 	}
 	
 	@Test
@@ -113,12 +146,7 @@ public class TaskTest {
 	
 	@Test
 	public void testGetVotes_list() throws StringTooShortException {
-		assertEquals(createUI.getVotes_list().size(), 0);
-		Vote vote = new Vote(1, vacuumRoom, "Because I say so", 1,2);
-		HashSet<Vote> votes = new HashSet<>();
-		votes.add(vote);
-		vacuumRoom.setVotes_list(votes);
-		assertEquals(vacuumRoom.getVotes_list(), votes);
+		assertEquals(vacuumRoom.getVotes_list(), votes_list2);
 	}
 	
 	@Test
@@ -235,6 +263,8 @@ public class TaskTest {
 			assertEquals(e.getMessage(), "Argument cannot be null");
 		}
 	}
+
+	//TODO add testSetEndDate
 
 	@Test
 	public void testSetDeadline() {

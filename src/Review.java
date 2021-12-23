@@ -4,6 +4,8 @@ public class Review {
     private int id;
     private String description;
     private boolean approved;
+
+    //TODO set up checks for these FKs in the {set} methods -> call proper exceptions -> add to tests
     private int assigneeId, taskId;
 
     public Review(int id, String description, boolean approved, int assigneeId, int taskId) throws StringTooShortException {
