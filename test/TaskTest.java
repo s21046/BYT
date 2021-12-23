@@ -9,12 +9,12 @@ import java.util.*;
 import static org.junit.Assert.*;
 
 public class TaskTest {
-    private int id1, id2, id3;
-    private String name1, name2, name3;
-    private String desc1, desc2, desc3;
-    private LocalDate startDate1, startDate2, startDate3;
-	private LocalDate endDate1, endDate2, endDate3;
-    private LocalDate deadline1, deadline2, deadline3;
+    private int id1, id2;
+    private String name1, name2;
+    private String desc1, desc2;
+    private LocalDate startDate1, startDate2;
+	private LocalDate endDate1, endDate2;
+    private LocalDate deadline1, deadline2;
     private Status status;
     private Team programmers;
 	//Two not empty votes lists
@@ -36,45 +36,52 @@ public class TaskTest {
 	private HashSet<Assignee> assignees_list2 = new HashSet<>();
 	private HashSet<Assignee> assignees_list_2_short = new HashSet<>();
 
-	//TODO replace these assignees with the lists above and implement tests (refer to AssigneeTest file for lists tests)
-    private HashSet<Assignee> assignees;
-
     private ProjectManager pm;
-	private Task createUI, vacuumRoom, getSleep;
+	private Task createUI, getSleep;
 	
 	@Before
 	public void setUp() throws StringTooShortException {
-		//TODO show that assignees don't have to include all members of the team
-		//TODO add tests for that
-
+		HashSet<Assignee> team_list = new HashSet<>();
 		pm = new ProjectManager(1, "Hana", "Busa");
-		assignees = new HashSet<>();
-		assignees.add(pm);
-		assignees.add(new Assignee(2, "Kuka", "Racza"));
-		assignees.add(new Assignee(3, "Dalai", "Lama"));
-		programmers = new Team(1, "Le Programmers", "Greatest programmers", pm, assignees);
-		id1 = 1;
-		id2 = 2;
-		id3 = 3;
-		name1 = "Create UI";
-		name2 = "Vacuum your room";
-		name3 = "Get some sleep";
+		Assignee a1 = new Assignee(1, "Kuka", "Racza");
+		Assignee a2 = new Assignee(2, "Dalai", "Lama");
+		team_list.add(pm); team_list.add(a1); team_list.add(a2);
+		programmers = new Team(1, "Le Programmers", "Greatest programmers", pm, team_list);
+		//members of the team work on tasks
+		//those working on the tasks are kept in HashSet<Assignee>
+		assignees_list.add(a1); assignees_list.add(a2);
+		assignees_list_short.add(a1);
+
+		id1 = 1; id2 = 2;
+		name1 = "Create UI"; name2 = "Vacuum your room";
 		desc1 = "We need to create a nice UI for our application";
 		desc2 = "Be a contributing member of society";
-		desc3 = "do somthing please, like, contribute for once";
-		startDate1 = LocalDate.now();
-		startDate2 = LocalDate.now();
-		startDate3 = LocalDate.now();
-		endDate1 = LocalDate.now();
-		endDate2 = LocalDate.now();
-		endDate3 = null;
-		deadline1 = LocalDate.now();
-		deadline2 = LocalDate.now();
-		deadline3 = LocalDate.now();
+		startDate1 = LocalDate.now(); startDate2 = LocalDate.now();
+		endDate1 = LocalDate.now().plus(25, ChronoUnit.DAYS); endDate2 = null;
+		deadline1 = LocalDate.now().plus(30, ChronoUnit.DAYS);
+		deadline2 = LocalDate.now().plus(60, ChronoUnit.DAYS);
 		status = Status.APPROVED;
 		createUI = new Task(id1, name1, desc1, startDate1, endDate1, deadline1, status, programmers);
-		vacuumRoom = new Task(id2, name2, desc2, startDate2, endDate2, deadline2, status, programmers);
-		getSleep = new Task(id3, name3, desc3, startDate3, endDate3, deadline3, status, programmers);
+		getSleep = new Task(id2, name2, desc2, startDate2, endDate2, deadline2, status, programmers);
+
+		Vote vote1 = new Vote(1, createUI, "because", 1, 2);
+		Vote vote2 = new Vote(2, getSleep, "because", 2, 1);
+		Vote vote3 = new Vote(3, createUI, "because", 2, 1);
+		votes_list.add(vote1); votes_list.add(vote3);
+		votes_list_short.add(vote2);
+
+		Review rev1 = new Review(1, "bhbhbhbhbhbhhbhbhb", true, 1, 1);
+		Review rev2 = new Review(2, "bhbhbhbhbhbhhbhbhb", true, 2, 1);
+		Review rev3 = new Review(3, "bhbhbhbhbhbhhbhbhb", false, 2, 2);
+		reviews_list.add(rev1); reviews_list.add(rev2);
+		reviews_list_short.add(rev3);
+
+		createUI.setAssignees_list(assignees_list);
+		createUI.setVotes_list(votes_list);
+		createUI.setReviews_list(reviews_list);
+		getSleep.setAssignees_list(assignees_list_short);
+		getSleep.setVotes_list(votes_list_short);
+		getSleep.setReviews_list(reviews_list_short);
 	}
 
 	/**
@@ -86,253 +93,224 @@ public class TaskTest {
 	@Test
 	public void testGetId() {
 		assertEquals(createUI.getId(), id1);
-		assertEquals(vacuumRoom.getId(), id2);
-		assertEquals(getSleep.getId(), id3);
+		assertEquals(getSleep.getId(), id2);
 	}
 	
 	@Test
 	public void testGetName() {
 		assertEquals(createUI.getName(), name1);
-		assertEquals(vacuumRoom.getName(), name2);
-		assertEquals(getSleep.getName(), name3);
+		assertEquals(getSleep.getName(), name2);
 	}
 	
 	@Test
 	public void testGetDescription() {
 		assertEquals(createUI.getDescription(), desc1);
-		assertEquals(vacuumRoom.getDescription(), desc2);
-		assertEquals(getSleep.getDescription(), desc3);
+		assertEquals(getSleep.getDescription(), desc2);
 	}
 	
 	@Test
 	public void testGetStartDate() {
 		assertEquals(createUI.getStartDate(), startDate1);
-		assertEquals(vacuumRoom.getStartDate(), startDate2);
-		assertEquals(getSleep.getStartDate(), startDate3);
+		assertEquals(getSleep.getStartDate(), startDate2);
 	}
 
 	@Test
 	public void testGetEndDate() {
 		assertEquals(createUI.getEndDate(), endDate1);
-		assertEquals(vacuumRoom.getEndDate(), endDate2);
-		assertEquals(getSleep.getEndDate(), endDate3);
+		assertEquals(getSleep.getEndDate(), endDate2);
 	}
 	
 	@Test
 	public void testGetDeadline() {
 		assertEquals(createUI.getDeadline(), deadline1);
-		assertEquals(vacuumRoom.getDeadline(), deadline2);
-		assertEquals(getSleep.getDeadline(), deadline3);
+		assertEquals(getSleep.getDeadline(), deadline2);
 	}
 	
 	@Test
 	public void testGetStatus() {
 		assertEquals(createUI.getStatus(), status);
-		assertEquals(vacuumRoom.getStatus(), status);
 		assertEquals(getSleep.getStatus(), status);
 	}
 
 	@Test
 	public void testIsVoteStarted() {
 		assertFalse(createUI.isVoteStarted());
-		assertFalse(vacuumRoom.isVoteStarted());
 		assertFalse(getSleep.isVoteStarted());
 	}
 	
 	@Test
 	public void testGetTeamAssigned() {
 		assertEquals(createUI.getTeamAssigned(), programmers);
-		assertEquals(vacuumRoom.getTeamAssigned(), programmers);
 		assertEquals(getSleep.getTeamAssigned(), programmers);
 	}
 	
 	@Test
-	public void testGetVotes_list() throws StringTooShortException {
-		assertEquals(vacuumRoom.getVotes_list(), votes_list2);
+	public void testGetVotes_list() {
+		assertEquals(createUI.getVotes_list(), votes_list);
+		assertEquals(getSleep.getVotes_list(), votes_list_short);
 	}
 	
 	@Test
-	public void testGetReviews_list() throws StringTooShortException {
-		assertEquals(createUI.getReviews_list().size(), 0);
-		Review review = new Review(1,"Very nicely done", true, 3, 3);
-		HashSet<Review> reviews = new HashSet<>();
-		reviews.add(review);
-		vacuumRoom.setReviews_list(reviews);
-		assertEquals(vacuumRoom.getReviews_list(), reviews);
+	public void testGetReviews_list() {
+		assertEquals(createUI.getReviews_list(), reviews_list);
+		assertEquals(getSleep.getReviews_list(), reviews_list_short);
 	}
 	
 	@Test
 	public void testGetAssignees_list() {
-		assertEquals(createUI.getAssignees_list().size(), 0);
-		getSleep.setAssignees_list(assignees);
-		assertEquals(getSleep.getAssignees_list(), assignees);
+		assertEquals(createUI.getAssignees_list(), assignees_list);
+		assertEquals(getSleep.getAssignees_list(), assignees_list_short);
 	}
 
 	/**
-	 * Set the given values to fields belonging to Help object
-	 * @result Help object values are set anew and returned accordingly for each setter
-	 * @corner_cases
-	 * Methods are tested on the matter of invalid input id
-	 * 	setId: negative argument,
-	 * 	setName: null argument, name shorter than 3 characters
-	 * 	setDescription: null argument, description shorter than 15 characters
-	 * 	setStartDate: null argument, date in the past, date after deadline
-	 * 	setDeadline: null argument, date in the past, date before startDate
-	 * 	setStatus: null argument
-	 * 	setTeamAssigned: null argument
-	 * 	setVotes_list: null argument,
-	 * 	setReviews_list: null argument, Review lists containing Reviews for different Tasks
-	 * 	setAssignees_list: null argument, Assignee lists containing Assignees belonging to a different Team than the Task is assigned to
+	 * Set the {attribute} value of Task object
+	 * Task object {attribute} is set anew and returned accordingly for each setter
+	 * Corner cases:
+	 * - values < 0 passed to the id field, null description/name/startDate/deadline/status/teamAssigned
+	 * - description.length < 15 / name.length < 3
+	 * - startDate is before current date / after endDate / after deadline
+	 * - endDate is before current date / before startDate
+	 * - deadline is before current date / before startDate
 	 */
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testSetId() {
-		vacuumRoom.setId(10);
-		assertEquals(vacuumRoom.getId(), 10);
-		createUI.setId(-4);
+		assertEquals(id1, createUI.getId());
+		createUI.setId(5);
+		assertEquals(5, createUI.getId());
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void testSetIdToNegative() {
+		getSleep.setId(-5);
 	}
 
 	@Test
 	public void testSetName() throws StringTooShortException {
-		String newName1 = "Create a pleasing UI";
-		createUI.setName(newName1);
-		try {
-			String newName2 = "UI";
-			createUI.setName(newName2);
-			fail();
-		}
-		catch (StringTooShortException e) {
-			// should be thrown
-		}
+		assertEquals(name1, createUI.getName());
+		createUI.setName("newName");
+		assertEquals("newName", createUI.getName());
+	}
 
-		try {
-			String newName3 = null;
-			vacuumRoom.setName(newName3);
-			fail();
-		} catch (IllegalArgumentException e) {
-			// should be thrown
-		}
+	@Test(expected=IllegalArgumentException.class)
+	public void testSetNameToNull() throws StringTooShortException {
+		getSleep.setName(null);
+	}
+
+	@Test(expected=StringTooShortException.class)
+	public void testSetNameStringTooShort() throws StringTooShortException {
+		getSleep.setName("H");
 	}
 
 	@Test
 	public void testSetDescription() throws StringTooShortException {
-		String newDesc1 = "We really love pleasing UIs! They are so cool!";
-		createUI.setDescription(newDesc1);
-		try {
-			String newDesc2 = "Do it";
-			createUI.setDescription(newDesc2);
-			fail();
-		}
-		catch (StringTooShortException e) {
-			// should be thrown
-		}
+		assertEquals(desc1, createUI.getDescription());
+		createUI.setDescription("newDescriptionnnnnnnn");
+		assertEquals("newDescriptionnnnnnnn", createUI.getDescription());
+	}
 
-		try {
-			String newDesc3 = null;
-			vacuumRoom.setDescription(newDesc3);
-			fail();
-		} catch (IllegalArgumentException e) {
-			// should be thrown
-		}
+	@Test(expected=IllegalArgumentException.class)
+	public void testSetDescriptionToNull() throws StringTooShortException {
+		getSleep.setDescription(null);
+	}
+
+	@Test(expected=StringTooShortException.class)
+	public void testSetDescriptionStringTooShort() throws StringTooShortException {
+		getSleep.setDescription("descr");
 	}
 
 	@Test
 	public void testSetStartDate() {
-		LocalDate badStartDate = createUI.getStartDate().minus(30, ChronoUnit.DAYS);
-		try {
-			createUI.setStartDate(badStartDate);
-			fail();
-		} catch (IllegalArgumentException e) {
-			assertEquals(e.getMessage(), "Start date cannot be in past.");
-		}
-
-		LocalDate badStartDate2 = LocalDate.now();
-		try {
-			vacuumRoom.setStartDate(badStartDate2);
-			fail();
-		} catch (IllegalArgumentException e) {
-			assertEquals(e.getMessage(), "Start date cannot be after the deadline");
-		}
-
-		LocalDate badStartDate3 = null;
-		try {
-			vacuumRoom.setStartDate(badStartDate3);
-			fail();
-		} catch (IllegalArgumentException e) {
-			assertEquals(e.getMessage(), "Argument cannot be null");
-		}
+		assertEquals(startDate1, createUI.getStartDate());
+		LocalDate tmp = LocalDate.now().plus(10, ChronoUnit.DAYS);
+		createUI.setStartDate(LocalDate.now().plus(10, ChronoUnit.DAYS));
+		assertEquals(tmp, createUI.getStartDate());
 	}
 
-	//TODO add testSetEndDate
+	@Test(expected=IllegalArgumentException.class)
+	public void testSetStartDateIllegalArgument() {
+		LocalDate nullDate = null;
+		LocalDate pastDate = LocalDate.now().minus(1, ChronoUnit.DAYS);
+		LocalDate afterEndDate = createUI.getEndDate().plus(1, ChronoUnit.DAYS);
+		LocalDate afterDeadline = createUI.getDeadline().plus(1, ChronoUnit.DAYS);
+		createUI.setStartDate(nullDate);
+		createUI.setStartDate(pastDate);
+		createUI.setStartDate(afterEndDate);
+		createUI.setStartDate(afterDeadline);
+	}
+
+	@Test
+	public void testSetEndDate() {
+		assertEquals(endDate1, createUI.getEndDate());
+		LocalDate tmp = LocalDate.now().plus(10, ChronoUnit.DAYS);
+		createUI.setEndDate(LocalDate.now().plus(10, ChronoUnit.DAYS));
+		assertEquals(tmp, createUI.getEndDate());
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void testSetEndDateIllegalArgument() {
+		LocalDate pastDate = LocalDate.now().minus(1, ChronoUnit.DAYS);
+		LocalDate beforeStartDate = createUI.getStartDate().minus(1, ChronoUnit.DAYS);
+		createUI.setEndDate(pastDate);
+		createUI.setEndDate(beforeStartDate);
+	}
 
 	@Test
 	public void testSetDeadline() {
-		LocalDate badDeadline = createUI.getStartDate().minus(30, ChronoUnit.DAYS);
-		try {
-			createUI.setDeadline(badDeadline);
-			fail();
-		} catch (IllegalArgumentException e) {
-			assertEquals(e.getMessage(), "Deadline cannot be in past.");
-		}
-
-		LocalDate temp = createUI.getStartDate().plus(30, ChronoUnit.DAYS);
-		createUI.setDeadline(temp);
-		createUI.setStartDate(temp);
-		LocalDate badDeadline2 = createUI.getStartDate().minus(10, ChronoUnit.DAYS);
-		try {
-			createUI.setDeadline(badDeadline2);
-			fail();
-		} catch (IllegalArgumentException e) {
-			assertEquals(e.getMessage(), "Deadline cannot precede the start date.");
-		}
-
-		LocalDate badDeadline3 = null;
-		try {
-			vacuumRoom.setDeadline(badDeadline3);
-			fail();
-		} catch (IllegalArgumentException e) {
-			assertEquals(e.getMessage(), "Argument cannot be null");
-		}
+		assertEquals(deadline1, createUI.getDeadline());
+		LocalDate tmp = LocalDate.now().plus(10, ChronoUnit.DAYS);
+		createUI.setDeadline(LocalDate.now().plus(10, ChronoUnit.DAYS));
+		assertEquals(tmp, createUI.getDeadline());
 	}
 
+	@Test(expected=IllegalArgumentException.class)
+	public void testSetDeadlineIllegalArgument() {
+		LocalDate nullDate = null;
+		LocalDate pastDate = LocalDate.now().minus(1, ChronoUnit.DAYS);
+		LocalDate beforeStartDate = createUI.getStartDate().minus(1, ChronoUnit.DAYS);
+		createUI.setDeadline(nullDate);
+		createUI.setDeadline(pastDate);
+		createUI.setDeadline(beforeStartDate);
+	}
 
 	@Test
 	public void testSetStatus() {
-		createUI.setStatus(Status.ASSIGNED);
-		assertEquals(createUI.getStatus(), Status.ASSIGNED);
+		assertEquals(status, createUI.getStatus());
+		createUI.setStatus(Status.UNDER_REVIEW);
+		assertEquals(Status.UNDER_REVIEW, createUI.getStatus());
+	}
 
-		try {
-			getSleep.setStatus(null);
-			fail();
-		} catch (IllegalArgumentException e) {
-			// should be thrown
-		}
+	@Test(expected=IllegalArgumentException.class)
+	public void testSetStatusToNull() {
+		getSleep.setStatus(null);
 	}
 
 	@Test
 	public void testSetVoteStarted() {
+		assertFalse(createUI.isVoteStarted());
 		createUI.setVoteStarted(true);
 		assertTrue(createUI.isVoteStarted());
 	}
 
 	@Test
 	public void testSetTeamAssigned() throws StringTooShortException {
-		try {
-			Team badTeam = null;
-			createUI.setTeamAssigned(badTeam);
-			fail();
-		} catch (IllegalArgumentException e) {
-			// should be thrown
-		}
-
-		Team goodTeam = new Team(2, "Le Testers", "Greatest testers", pm, assignees);
-		vacuumRoom.setTeamAssigned(goodTeam);
+		assertEquals(programmers, createUI.getTeamAssigned());
+		Team goodTeam = new Team(2, "Le Testers", "Greatest testers", pm, assignees_list);
+		createUI.setTeamAssigned(goodTeam);
+		assertEquals(goodTeam, createUI.getTeamAssigned());
 	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void testSetTeamAssignedToNull() {
+		getSleep.setTeamAssigned(null);
+	}
+
+	//TODO do lists testing
 
 	@Test
 	public void testSetVotes_list() throws StringTooShortException {
 		Vote goodVote = new Vote(1, createUI, "Because yes", 1, 2);
-		Vote badVote = new Vote(2, vacuumRoom, "Yes because", 1, 2);
+		Vote badVote = new Vote(2, getSleep, "Yes because", 1, 2);
 		HashSet<Vote> votes = new HashSet<>();
 		votes.add(goodVote);
 		createUI.setVotes_list(votes);
@@ -360,13 +338,13 @@ public class TaskTest {
 		getSleep.setReviews_list(reviews);
 		assertEquals(getSleep.getReviews_list(), reviews);
 		try {
-			vacuumRoom.setReviews_list(reviews);
+			createUI.setReviews_list(reviews);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals(e.getMessage(), "All reviews in the list should belong to this task.");
 		}
 		try {
-			getSleep.setReviews_list(null);
+			createUI.setReviews_list(null);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals(e.getMessage(), "Argument cannot be null");
@@ -385,8 +363,8 @@ public class TaskTest {
 			assertEquals(e.getMessage(), "Assignees in the list should belong to this task's team.");
 		}
 
-		HashSet<Assignee> goodAssignees = assignees;
-		vacuumRoom.setAssignees_list(goodAssignees);
+		HashSet<Assignee> goodAssignees = assignees_list;
+		getSleep.setAssignees_list(goodAssignees);
 
 		try {
 			getSleep.setAssignees_list(null);

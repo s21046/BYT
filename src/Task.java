@@ -1,7 +1,9 @@
 import ApplicationExceptions.StringTooShortException;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 public class Task {
     private int id;
@@ -168,12 +170,12 @@ public class Task {
         return assignees_list;
     }
 
-    public void setAssignees_list(HashSet<Assignee> assignee_list) {
-        if (assignee_list == null) throw new IllegalArgumentException("Argument cannot be null");
-        if (assignee_list.stream().allMatch(
-                a -> a.getTeams_list().stream().anyMatch(
-                        t -> t.getId() == this.teamAssigned.getId()))) {
-            this.assignees_list = assignee_list;
+    public void setAssignees_list(HashSet<Assignee> assignees_list) {
+        if (assignees_list == null) throw new IllegalArgumentException("Argument cannot be null");
+        List<Assignee> team = new ArrayList<>(getTeamAssigned().getAssignees());
+        team.add(getTeamAssigned().getPM());
+        if (team.containsAll(assignees_list)) {
+            this.assignees_list = assignees_list;
         } else throw new IllegalArgumentException("Assignees in the list should belong to this task's team.");
     }
 }
