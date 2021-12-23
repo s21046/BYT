@@ -64,10 +64,11 @@ public class UniqueIdGenerator<K> {
      * Overrides id of the object with a new one.
      * @param previousId Id of target object
      * @param targetId New id for target object
+     * @return targetId
      * @throws NoSuchElementException If there is no object with such id
-     * @throws KeyAlreadyExistsException If the is already an object with such id
+     * @throws KeyAlreadyExistsException If there is already an object with such id
      */
-    public void setId(int previousId,int targetId){
+    public int setId(int previousId,int targetId){
         if(idList.get(previousId) == null) throw new NoSuchElementException("No object with such id.");
         else if(idList.get(targetId) != null) throw new KeyAlreadyExistsException("Object with this id already exists.");
         else {
@@ -76,6 +77,7 @@ public class UniqueIdGenerator<K> {
             idPool.add(previousId);
             idList.put(targetId,targetObject);
             checkForNaturalOrder(targetId);
+            return targetId;
         }
     }
 }
