@@ -31,18 +31,10 @@ public class Task {
             throw new IllegalArgumentException("Start date cannot be in past.");
         if (startDate.isAfter(deadline))
             throw new IllegalArgumentException("Start date cannot be after the deadline");
-        if (deadline.isBefore(LocalDate.now()))
-            throw new IllegalArgumentException("Deadline cannot be in past.");
-        if (deadline.isBefore(startDate))
-            throw new IllegalArgumentException("Deadline cannot precede the start date.");
 
         if (endDate != null) {
-            if (endDate.isBefore(LocalDate.now()))
-                throw new IllegalArgumentException("End date cannot be in past.");
             if (endDate.isBefore(startDate))
                 throw new IllegalArgumentException("End date cannot precede the start date.");
-            if (startDate.isAfter(endDate))
-                throw new IllegalArgumentException("Start date cannot be after the end date");
         }
 
         this.id = id;

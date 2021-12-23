@@ -9,6 +9,7 @@ import java.util.*;
 import static org.junit.Assert.*;
 
 public class TaskTest {
+	private Task task;
     private int id1, id2;
     private String name1, name2;
     private String desc1, desc2;
@@ -17,15 +18,17 @@ public class TaskTest {
     private LocalDate deadline1, deadline2;
     private Status status;
     private Team programmers;
-	//Two not empty votes lists
+	//Three not empty votes lists
 	private HashSet<Vote> votes_list = new HashSet<>();
 	private HashSet<Vote> votes_list_short = new HashSet<>();
+	private HashSet<Vote> votes_list_long = new HashSet<>();
 	//Two empty votes lists
 	private HashSet<Vote> votes_list2 = new HashSet<>();
 	private HashSet<Vote> votes_list_2_short = new HashSet<>();
-	//Two not empty reviews lists
+	//Three not empty reviews lists
 	private HashSet<Review> reviews_list = new HashSet<>();
 	private HashSet<Review> reviews_list_short = new HashSet<>();
+	private HashSet<Review> reviews_list_long = new HashSet<>();
 	//Two empty reviews lists
 	private HashSet<Review> reviews_list2 = new HashSet<>();
 	private HashSet<Review> reviews_list_2_short = new HashSet<>();
@@ -53,9 +56,9 @@ public class TaskTest {
 		assignees_list_short.add(a1);
 
 		id1 = 1; id2 = 2;
-		name1 = "Create UI"; name2 = "Vacuum your room";
+		name1 = "Create UI"; name2 = "Get some sleep";
 		desc1 = "We need to create a nice UI for our application";
-		desc2 = "Be a contributing member of society";
+		desc2 = "Everyone needs some rest every now and then";
 		startDate1 = LocalDate.now(); startDate2 = LocalDate.now();
 		endDate1 = LocalDate.now().plus(25, ChronoUnit.DAYS); endDate2 = null;
 		deadline1 = LocalDate.now().plus(30, ChronoUnit.DAYS);
@@ -67,24 +70,93 @@ public class TaskTest {
 		Vote vote1 = new Vote(1, createUI, "because", 1, 2);
 		Vote vote2 = new Vote(2, getSleep, "because", 2, 1);
 		Vote vote3 = new Vote(3, createUI, "because", 2, 1);
+		Vote vote4 = new Vote(4, createUI, "because!", 3,3);
 		votes_list.add(vote1); votes_list.add(vote3);
 		votes_list_short.add(vote2);
+		votes_list_long.add(vote1); votes_list_long.add(vote3); votes_list_long.add(vote4);
 
 		Review rev1 = new Review(1, "bhbhbhbhbhbhhbhbhb", true, 1, 1);
 		Review rev2 = new Review(2, "bhbhbhbhbhbhhbhbhb", true, 2, 1);
 		Review rev3 = new Review(3, "bhbhbhbhbhbhhbhbhb", false, 2, 2);
+		Review rev4 = new Review(4, "baabbabababababa", false, 3, 1);
 		reviews_list.add(rev1); reviews_list.add(rev2);
 		reviews_list_short.add(rev3);
+		reviews_list_long.add(rev1); reviews_list_long.add(rev2); reviews_list_long.add(rev4);
 
 		createUI.setAssignees_list(assignees_list);
 		createUI.setVotes_list(votes_list);
 		createUI.setReviews_list(reviews_list);
-		getSleep.setAssignees_list(assignees_list_short);
-		getSleep.setVotes_list(votes_list_short);
-		getSleep.setReviews_list(reviews_list_short);
+		getSleep.setAssignees_list(assignees_list2);
+		getSleep.setVotes_list(votes_list2);
+		getSleep.setReviews_list(reviews_list2);
 	}
 
-	//TODO constructor tests
+	/**
+	 * Create a Task object
+	 * Returns a Task object according to the parameters
+	 * Corner cases:
+	 * - values < 0 passed to the id field, null description/name/startDate/deadline/status/teamAssigned
+	 * - description.length < 15 / name.length < 3
+	 * - startDate is before current date / after endDate / after deadline
+	 * - endDate is before current date / before startDate
+	 * - deadline is before current date / before startDate
+	 */
+
+	@Test
+	public void testConstructor() throws StringTooShortException {
+		task = new Task(5, "Tasky task", "Appropriate description",
+				LocalDate.now(), null, LocalDate.now().plusDays(1),
+				Status.APPROVED, programmers);
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void testConstructorWithNegativeId() throws StringTooShortException {
+		task = new Task(-5, "Tasky task", "Appropriate description",
+				LocalDate.now(), null, LocalDate.now().plusDays(1),
+				Status.APPROVED, programmers);
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void testConstructorWithNullFields() throws StringTooShortException {
+		task = new Task(5, "Tasky task", null,
+				LocalDate.now(), null, null,
+				Status.APPROVED, null);
+	}
+
+	@Test(expected=StringTooShortException.class)
+	public void testConstructorWithShortName() throws StringTooShortException {
+		task = new Task(5, "T", "Appropriate description",
+				LocalDate.now(), null, LocalDate.now().plusDays(1),
+				Status.APPROVED, programmers);
+	}
+
+	@Test(expected=StringTooShortException.class)
+	public void testConstructorWithShortDescription() throws StringTooShortException {
+		task = new Task(5, "Task", "Huh?",
+				LocalDate.now(), null, LocalDate.now().plusDays(1),
+				Status.APPROVED, programmers);
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void testConstructorWithStartDateAfterDeadline() throws StringTooShortException {
+		task = new Task(5, "Task", "Appropriate description",
+				LocalDate.now().plusDays(1), null, LocalDate.now(),
+				Status.APPROVED, programmers);
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void testConstructorWithStartDateInPast() throws StringTooShortException {
+		task = new Task(5, "Task", "Appropriate description",
+				LocalDate.now().minusDays(1), null, LocalDate.now(),
+				Status.APPROVED, programmers);
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void testConstructorWithEndDateBeforeStartDate() throws StringTooShortException {
+		task = new Task(5, "Task", "Appropriate description",
+				LocalDate.now(), LocalDate.now().minusDays(1), LocalDate.now().plusDays(1),
+				Status.APPROVED, programmers);
+	}
 
 	/**
 	 * Get the given values belonging to Task object
@@ -149,19 +221,19 @@ public class TaskTest {
 	@Test
 	public void testGetVotes_list() {
 		assertEquals(createUI.getVotes_list(), votes_list);
-		assertEquals(getSleep.getVotes_list(), votes_list_short);
+		assertEquals(getSleep.getVotes_list(), votes_list2);
 	}
 	
 	@Test
 	public void testGetReviews_list() {
 		assertEquals(createUI.getReviews_list(), reviews_list);
-		assertEquals(getSleep.getReviews_list(), reviews_list_short);
+		assertEquals(getSleep.getReviews_list(), reviews_list2);
 	}
 	
 	@Test
 	public void testGetAssignees_list() {
 		assertEquals(createUI.getAssignees_list(), assignees_list);
-		assertEquals(getSleep.getAssignees_list(), assignees_list_short);
+		assertEquals(getSleep.getAssignees_list(), assignees_list2);
 	}
 
 	/**
@@ -316,14 +388,9 @@ public class TaskTest {
 	 *         4) The {objects}_list in Task is not empty and is set to a new not empty list
 	 * Corner cases:
 	 * - input list is null
-	 * - for Assignee_list: assignees being assigned are not part of the team, working on this task
-	 * - for Reviews_list: reviews of different tasks, then the given one
+	 * - for Assignee_list: assignees being assigned are not part of the team working on this task
+	 * - for Votes_list, Reviews_list: reviews of different tasks than the given one
 	 */
-
-	//TODO check -- if it says not empty to empty - is it really that way??
-	//check in other classes too, fix if wrong
-
-	//TODO complete list tests
 
 	@Test
 	public void testSetAssignees_listFromNotEmptyToEmpty() {
@@ -372,8 +439,8 @@ public class TaskTest {
 
 	@Test
 	public void testSetVotes_listFromEmptyToNotEmpty() {
-		getSleep.setVotes_list(votes_list);
-		assertEquals(votes_list, getSleep.getVotes_list());
+		getSleep.setVotes_list(votes_list_short);
+		assertEquals(votes_list_short, getSleep.getVotes_list());
 	}
 
 	@Test
@@ -384,8 +451,8 @@ public class TaskTest {
 
 	@Test
 	public void testSetVotes_listFromNotEmptyToNotEmpty() {
-		createUI.setVotes_list(votes_list_short);
-		assertEquals(votes_list_short, createUI.getVotes_list());
+		createUI.setVotes_list(votes_list_long);
+		assertEquals(votes_list_long, createUI.getVotes_list());
 	}
 
 	@Test(expected=IllegalArgumentException.class)
@@ -393,9 +460,44 @@ public class TaskTest {
 		createUI.setVotes_list(null);
 	}
 
+	@Test(expected=IllegalArgumentException.class)
+	public void testSetVotes_listToDifferentTask(){
+		createUI.setVotes_list(votes_list_short);
+	}
 
+	@Test
+	public void testSetReviews_listFromNotEmptyToEmpty() {
+		createUI.setReviews_list(reviews_list2);
+		assertEquals(reviews_list2, createUI.getReviews_list());
+	}
 
+	@Test
+	public void testSetReviews_listFromEmptyToNotEmpty() {
+		getSleep.setReviews_list(reviews_list_short);
+		assertEquals(reviews_list_short, getSleep.getReviews_list());
+	}
 
+	@Test
+	public void testSetReviews_listFromEmptyToEmpty() {
+		getSleep.setReviews_list(reviews_list_2_short);
+		assertEquals(reviews_list_2_short, getSleep.getReviews_list());
+	}
+
+	@Test
+	public void testSetReviews_listFromNotEmptyToNotEmpty() {
+		createUI.setReviews_list(reviews_list_long);
+		assertEquals(reviews_list_long, createUI.getReviews_list());
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void testSetReviews_listToNull() {
+		createUI.setReviews_list(null);
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void testSetReviews_listToDifferentTask(){
+		createUI.setReviews_list(reviews_list_short);
+	}
 
 /*
 	@Test
