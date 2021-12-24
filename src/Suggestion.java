@@ -5,7 +5,6 @@ public class Suggestion {
     private String name;
     private String description;
 
-    //TODO set up checks for these FKs in the {set} methods -> call proper exceptions -> add to tests
     private int assigneeId;
 
     public Suggestion(int id, String name, String description, int assigneeId) throws StringTooShortException {
@@ -24,8 +23,8 @@ public class Suggestion {
     }
 
     public void setId(int id) {
-        if (id < 0) throw new IllegalArgumentException("id cannot be a negative integer.");
-        else this.id = id;
+        if (id < 0) { throw new IllegalArgumentException("id cannot be a negative integer"); }
+        this.id = id;
     }
 
     public String getName() {

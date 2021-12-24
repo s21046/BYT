@@ -5,7 +5,6 @@ public class Vote {
     private Task task;
     private String explanation;
 
-    //TODO set up checks for these FKs in the {set} methods -> call proper exceptions -> add to tests
     private int votedForId;
     private int voterId;
 
