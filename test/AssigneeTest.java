@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class AssigneeTest {
     private int id, id1;
@@ -171,7 +171,6 @@ public class AssigneeTest {
         assertEquals(suggestions_list, assignee.getSuggestions_list());
     }
 
-
     /**
      * Set the {attribute} value of Assignee object
      * Assignee object {attribute} is set anew and returned accordingly for each setter
@@ -236,28 +235,30 @@ public class AssigneeTest {
      * Corner cases: input list is null
      */
 
-    //TODO check -- if it says not empty to empty - is it really that way??
-
     @Test
     public void testSetTasks_listFromNotEmptyToEmpty() {
+        assertFalse(assignee.getTasks_list().isEmpty());
         assignee.setTasks_list(tasks_list2);
         assertEquals(tasks_list2, assignee.getTasks_list());
     }
 
     @Test
     public void testSetTasks_listFromEmptyToNotEmpty() {
+        assertTrue(assignee1.getTasks_list().isEmpty());
         assignee1.setTasks_list(tasks_list);
         assertEquals(tasks_list, assignee1.getTasks_list());
     }
 
     @Test
     public void testSetTasks_listFromEmptyToEmpty() {
-        assignee.setTasks_list(tasks_list_2_short);
-        assertEquals(tasks_list_2_short, assignee.getTasks_list());
+        assertTrue(assignee1.getTasks_list().isEmpty());
+        assignee1.setTasks_list(tasks_list_2_short);
+        assertEquals(tasks_list_2_short, assignee1.getTasks_list());
     }
 
     @Test
-    public void setTasks_listFromNotEmptyToNotEmpty() {
+    public void testSetTasks_listFromNotEmptyToNotEmpty() {
+        assertFalse(assignee.getTasks_list().isEmpty());
         assignee.setTasks_list(tasks_list_short);
         assertEquals(tasks_list_short, assignee.getTasks_list());
     }
@@ -269,24 +270,28 @@ public class AssigneeTest {
 
     @Test
     public void testSetRewards_listFromNotEmptyToEmpty() {
+        assertFalse(assignee.getRewards_list().isEmpty());
         assignee.setRewards_list(rewards_list2);
         assertEquals(rewards_list2, assignee.getRewards_list());
     }
 
     @Test
     public void testSetRewards_listFromEmptyToNotEmpty() {
+        assertTrue(assignee1.getRewards_list().isEmpty());
         assignee1.setRewards_list(rewards_list);
         assertEquals(rewards_list, assignee1.getRewards_list());
     }
 
     @Test
     public void testSetRewards_listFromEmptyToEmpty() {
+        assertTrue(assignee1.getRewards_list().isEmpty());
         assignee1.setRewards_list(rewards_list2_short);
         assertEquals(rewards_list2_short, assignee1.getRewards_list());
     }
 
     @Test
     public void testSetRewards_listFromNotEmptyToNotEmpty() {
+        assertFalse(assignee.getRewards_list().isEmpty());
         assignee.setRewards_list(rewards_list_short);
         assertEquals(rewards_list_short, assignee.getRewards_list());
     }
@@ -298,24 +303,28 @@ public class AssigneeTest {
 
     @Test
     public void testSetSuggestions_listFromNotEmptyToEmpty() {
+        assertFalse(assignee.getSuggestions_list().isEmpty());
         assignee.setSuggestions_list(suggestions_list2);
         assertEquals(suggestions_list2, assignee.getSuggestions_list());
     }
 
     @Test
     public void testSetSuggestions_listFromEmptyToNotEmpty() {
+        assertTrue(assignee1.getSuggestions_list().isEmpty());
         assignee1.setSuggestions_list(suggestions_list);
         assertEquals(suggestions_list, assignee1.getSuggestions_list());
     }
 
     @Test
     public void testSetSuggestions_listFromEmptyToEmpty() {
+        assertTrue(assignee1.getSuggestions_list().isEmpty());
         assignee1.setSuggestions_list(suggestions_list2_short);
         assertEquals(suggestions_list2_short, assignee1.getSuggestions_list());
     }
 
     @Test
     public void testSetSuggestions_listFromNotEmptyToNotEmpty() {
+        assertFalse(assignee.getSuggestions_list().isEmpty());
         assignee.setSuggestions_list(suggestions_list_short);
         assertEquals(suggestions_list_short, assignee.getSuggestions_list());
     }
@@ -327,24 +336,28 @@ public class AssigneeTest {
 
     @Test
     public void testSetTeams_listFromNotEmptyToEmpty() {
+        assertFalse(assignee.getTeams_list().isEmpty());
         assignee.setTeams_list(teams_list2);
         assertEquals(teams_list2, assignee.getTeams_list());
     }
 
     @Test
     public void testSetTeams_listFromEmptyToNotEmpty() {
+        assertTrue(assignee1.getTeams_list().isEmpty());
         assignee1.setTeams_list(teams_list);
         assertEquals(teams_list, assignee1.getTeams_list());
     }
 
     @Test
     public void testSetTeams_listFromEmptyToEmpty() {
+        assertTrue(assignee1.getTeams_list().isEmpty());
         assignee1.setTeams_list(teams_list2_short);
         assertEquals(teams_list2_short, assignee1.getTeams_list());
     }
 
     @Test
     public void testSetTeams_listFromNotEmptyToNotEmpty() {
+        assertFalse(assignee.getTeams_list().isEmpty());
         assignee.setTeams_list(teams_list_short);
         assertEquals(teams_list_short, assignee.getTeams_list());
     }

@@ -5,7 +5,7 @@ import org.junit.Test;
 import java.time.LocalDate;
 import java.util.HashSet;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  * This test class covers only methods unique for ProjectManager.
@@ -74,24 +74,28 @@ public class ProjectManagerTest {
 
     @Test
     public void testSetHelpRequests_listFromNotEmptyToEmpty() {
+        assertFalse(pm.getHelpRequests_list().isEmpty());
         pm.setHelpRequests_list(helpRequests_list2);
         assertEquals(helpRequests_list2, pm.getHelpRequests_list());
     }
 
     @Test
     public void testSetHelpRequests_listFromEmptyToNotEmpty() {
+        assertTrue(pm2.getHelpRequests_list().isEmpty());
         pm2.setHelpRequests_list(helpRequests_list);
         assertEquals(helpRequests_list, pm2.getHelpRequests_list());
     }
 
     @Test
     public void testSetHelpRequests_listFromEmptyToEmpty() {
+        assertTrue(pm2.getHelpRequests_list().isEmpty());
         pm2.setHelpRequests_list(helpRequests_list2_short);
         assertEquals(helpRequests_list2_short, pm2.getHelpRequests_list());
     }
 
     @Test
     public void testSetHelpRequests_listFromNotEmptyToNotEmpty() {
+        assertFalse(pm.getHelpRequests_list().isEmpty());
         pm.setHelpRequests_list(helpRequests_list_short);
         assertEquals(helpRequests_list_short, pm.getHelpRequests_list());
     }

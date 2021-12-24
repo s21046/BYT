@@ -5,7 +5,7 @@ import org.junit.Test;
 import java.time.LocalDate;
 import java.util.HashSet;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class TeamTest {
     private int id;
@@ -42,7 +42,7 @@ public class TeamTest {
         Task t2 = new Task(8, "name2", "jfjfhfhfhhfhffnf", LocalDate.now(), null, LocalDate.now(), Status.APPROVED, team);
         tasks_list.add(t1); tasks_list.add(t2);
         tasks_list_short.add(t1);
-        team.setTasks(tasks_list); team2.setTasks(tasks_list_short);
+        team.setTasks(tasks_list); team2.setTasks(tasks_list2);
     }
 
     /**
@@ -180,8 +180,6 @@ public class TeamTest {
      * Corner cases: input list is null
      */
 
-    //TODO check -- if it says not empty to empty - is it really that way??
-
     @Test
     public void testSetAssignees() throws StringTooShortException {
         Assignee a3 = new Assignee(1, "Me3", "Worker3");
@@ -194,24 +192,28 @@ public class TeamTest {
 
     @Test
     public void testSetAssignees_listFromNotEmptyToEmpty() {
+        assertFalse(team.getAssignees().isEmpty());
         team.setAssignees(assignees_list2);
         assertEquals(assignees_list2, team.getAssignees());
     }
 
     @Test
     public void testSetAssignees_listFromEmptyToNotEmpty() {
+        assertTrue(team2.getAssignees().isEmpty());
         team2.setAssignees(assignees_list);
         assertEquals(assignees_list, team2.getAssignees());
     }
 
     @Test
     public void testSetAssignees_listFromEmptyToEmpty() {
+        assertTrue(team2.getAssignees().isEmpty());
         team2.setAssignees(assignees_list_2_short);
         assertEquals(assignees_list_2_short,team2.getAssignees());
     }
 
     @Test
     public void testSetAssignees_listFromNotEmptyToNotEmpty() {
+        assertFalse(team.getAssignees().isEmpty());
         team.setAssignees(assignees_list_short);
         assertEquals(assignees_list_short, team.getAssignees());
     }
@@ -233,24 +235,28 @@ public class TeamTest {
 
     @Test
     public void testSetTasks_listFromNotEmptyToEmpty() {
+        assertFalse(team.getTasks().isEmpty());
         team.setTasks(tasks_list2);
         assertEquals(tasks_list2, team.getTasks());
     }
 
     @Test
     public void testSetTasks_listFromEmptyToNotEmpty() {
+        assertTrue(team2.getTasks().isEmpty());
         team2.setTasks(tasks_list);
         assertEquals(tasks_list, team2.getTasks());
     }
 
     @Test
     public void testSetTasks_listFromEmptyToEmpty() {
+        assertTrue(team2.getTasks().isEmpty());
         team2.setTasks(tasks_list_2_short);
-        assertEquals(tasks_list_2_short,team2.getTasks());
+        assertEquals(tasks_list_2_short, team2.getTasks());
     }
 
     @Test
     public void testSetTasks_listFromNotEmptyToNotEmpty() {
+        assertFalse(team.getTasks().isEmpty());
         team.setTasks(tasks_list_short);
         assertEquals(tasks_list_short, team.getTasks());
     }

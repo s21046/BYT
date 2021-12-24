@@ -393,24 +393,28 @@ public class TaskTest {
 
 	@Test
 	public void testSetAssignees_listFromNotEmptyToEmpty() {
+		assertFalse(createUI.getAssignees_list().isEmpty());
 		createUI.setAssignees_list(assignees_list2);
 		assertEquals(assignees_list2, createUI.getAssignees_list());
 	}
 
 	@Test
 	public void testSetAssignees_listFromEmptyToNotEmpty() {
+		assertTrue(getSleep.getAssignees_list().isEmpty());
 		getSleep.setAssignees_list(assignees_list);
 		assertEquals(assignees_list, getSleep.getAssignees_list());
 	}
 
 	@Test
 	public void testSetAssignees_listFromEmptyToEmpty() {
+		assertTrue(getSleep.getAssignees_list().isEmpty());
 		getSleep.setAssignees_list(assignees_list_2_short);
 		assertEquals(assignees_list_2_short, getSleep.getAssignees_list());
 	}
 
 	@Test
 	public void testSetAssignees_listFromNotEmptyToNotEmpty() {
+		assertFalse(createUI.getAssignees_list().isEmpty());
 		createUI.setAssignees_list(assignees_list_short);
 		assertEquals(assignees_list_short, createUI.getAssignees_list());
 	}
@@ -432,24 +436,28 @@ public class TaskTest {
 
 	@Test
 	public void testSetVotes_listFromNotEmptyToEmpty() {
+		assertFalse(createUI.getVotes_list().isEmpty());
 		createUI.setVotes_list(votes_list2);
 		assertEquals(votes_list2, createUI.getVotes_list());
 	}
 
 	@Test
 	public void testSetVotes_listFromEmptyToNotEmpty() {
+		assertTrue(getSleep.getVotes_list().isEmpty());
 		getSleep.setVotes_list(votes_list_short);
 		assertEquals(votes_list_short, getSleep.getVotes_list());
 	}
 
 	@Test
 	public void testSetVotes_listFromEmptyToEmpty() {
+		assertTrue(getSleep.getVotes_list().isEmpty());
 		getSleep.setVotes_list(votes_list_2_short);
 		assertEquals(votes_list_2_short, getSleep.getVotes_list());
 	}
 
 	@Test
 	public void testSetVotes_listFromNotEmptyToNotEmpty() {
+		assertFalse(createUI.getVotes_list().isEmpty());
 		createUI.setVotes_list(votes_list_long);
 		assertEquals(votes_list_long, createUI.getVotes_list());
 	}
@@ -466,24 +474,28 @@ public class TaskTest {
 
 	@Test
 	public void testSetReviews_listFromNotEmptyToEmpty() {
+		assertFalse(createUI.getReviews_list().isEmpty());
 		createUI.setReviews_list(reviews_list2);
 		assertEquals(reviews_list2, createUI.getReviews_list());
 	}
 
 	@Test
 	public void testSetReviews_listFromEmptyToNotEmpty() {
+		assertTrue(getSleep.getReviews_list().isEmpty());
 		getSleep.setReviews_list(reviews_list_short);
 		assertEquals(reviews_list_short, getSleep.getReviews_list());
 	}
 
 	@Test
 	public void testSetReviews_listFromEmptyToEmpty() {
+		assertTrue(getSleep.getReviews_list().isEmpty());
 		getSleep.setReviews_list(reviews_list_2_short);
 		assertEquals(reviews_list_2_short, getSleep.getReviews_list());
 	}
 
 	@Test
 	public void testSetReviews_listFromNotEmptyToNotEmpty() {
+		assertFalse(createUI.getReviews_list().isEmpty());
 		createUI.setReviews_list(reviews_list_long);
 		assertEquals(reviews_list_long, createUI.getReviews_list());
 	}
