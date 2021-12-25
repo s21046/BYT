@@ -1,4 +1,5 @@
 import ApplicationExceptions.StringTooShortException;
+import ApplicationExceptions.ValueAlreadyExistsException;
 
 public class Review {
     private int id;
@@ -8,12 +9,15 @@ public class Review {
     //TODO set up checks for these FKs in the {set} methods -> call proper exceptions -> add to tests
     private int assigneeId, taskId;
 
-    public Review(int id, String description, boolean approved, int assigneeId, int taskId) throws StringTooShortException {
-        if (id < 0 || assigneeId < 0 || taskId < 0) { throw new IllegalArgumentException("id cannot be a negative integer"); }
+    UniqueIdGenerator<Review> uig;
+
+    public Review(UniqueIdGenerator<Review> uig, String description, boolean approved, int assigneeId, int taskId) throws StringTooShortException, ValueAlreadyExistsException {
+        if ( assigneeId < 0 || taskId < 0) { throw new IllegalArgumentException("id cannot be a negative integer"); }
         if (description == null) { throw new IllegalArgumentException("Argument cannot be null"); }
         if (description.length() < 15) { throw new StringTooShortException(); }
 
-        this.id = id;
+        this.uig = uig;
+        this.id = uig.generateId(this);
         this.approved = approved;
         this.description = description;
         this.assigneeId = assigneeId;
@@ -26,7 +30,7 @@ public class Review {
 
     public void setId(int id) {
         if (id < 0) throw new IllegalArgumentException("id cannot be a negative integer.");
-        else this.id = id;
+        else this.id = uig.setId(this.id, id);
     }
 
     public String getDescription() {

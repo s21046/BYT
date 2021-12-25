@@ -111,8 +111,8 @@ public class Assignee {
         return new Vote(voteId, task, explanation, votedForId, this.id);
     }
 
-    public Review review(int reviewId, int taskId, boolean approved, String description)
-            throws NoSuchTaskException, CantReviewOwnTaskException, StringTooShortException {
+    public Review review(UniqueIdGenerator<Review> uig, int taskId, boolean approved, String description)
+            throws NoSuchTaskException, CantReviewOwnTaskException, StringTooShortException, ValueAlreadyExistsException {
 
         Task task = getTasks_list().stream().filter(t -> t.getId() == taskId).findFirst().orElse(null);
         if (task == null) { throw new NoSuchTaskException(); }
@@ -120,13 +120,13 @@ public class Assignee {
             throw new CantReviewOwnTaskException();
         }
 
-        return new Review(reviewId, description, approved, this.id, taskId);
+        return new Review(uig, description, approved, this.id, taskId);
     }
 
-    public Help requestHelp(int helpId, LocalDate date, String description, int taskId) throws StringTooShortException {
+    public Help requestHelp(UniqueIdGenerator<Help> uig, LocalDate date, String description, int taskId) throws StringTooShortException, ValueAlreadyExistsException {
         int pmId = this.tasks_list.stream().filter(e -> e.getId() == taskId).findFirst().get()
                 .getTeamAssigned().getPM().getId();
-        return new Help(helpId, date, description, this.id, pmId, taskId);
+        return new Help(uig, date, description, this.id, pmId, taskId);
     }
 
     public Suggestion createSuggestion(int suggestId, String name, String description) throws StringTooShortException {

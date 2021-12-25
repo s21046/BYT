@@ -19,22 +19,24 @@ public class ReviewTest {
     private Team team;
     private ProjectManager pm;
     private Review rev;
-    UniqueIdGenerator<Assignee> uig = new UniqueIdGenerator<>();
+
+    UniqueIdGenerator<Assignee> uigAssignee = new UniqueIdGenerator<>();
+    UniqueIdGenerator<Review> uigReview = new UniqueIdGenerator<>();
     @Before
     public void setUp() throws StringTooShortException, ValueAlreadyExistsException {
-        id = 5;
+        id = 0;
         description = "Quack-quack-quack-quack";
         assigneeId = 1;
         taskId = 2;
         approved = true;
         status = Status.ASSIGNED;
-        pm = new ProjectManager(uig,"Jerycho", "Swain");
+        pm = new ProjectManager(uigAssignee,"Jerycho", "Swain");
 
         team = new Team(1,"Birbs", "Focus on testing pls rn", pm, new HashSet<>());
         day1 = LocalDate.now();
         day2 = LocalDate.now();
         task = new Task(1, "Some task", "Nothing, relaxxxxxxx", day1, null, day2, status, team);
-        rev = new Review(id, description, approved, assigneeId, taskId);
+        rev = new Review(uigReview, description, approved, assigneeId, taskId);
     }
 
     /**
@@ -45,18 +47,18 @@ public class ReviewTest {
      */
 
     @Test
-    public void testConstructor() throws StringTooShortException {
-        new Review(1, "BIIIIiiiiiiiig Description", true, 1, 1);
+    public void testConstructor() throws StringTooShortException, ValueAlreadyExistsException {
+        new Review(uigReview, "BIIIIiiiiiiiig Description", true, 1, 1);
     }
 
     @Test(expected=IllegalArgumentException.class)
-    public void testConstructorIllegalArguments() throws StringTooShortException {
-        new Review(-1, null, false, -1, -1);
+    public void testConstructorIllegalArguments() throws StringTooShortException, ValueAlreadyExistsException {
+        new Review(uigReview, null, false, -1, -1);
     }
 
     @Test(expected=StringTooShortException.class)
-    public void testConstructorStringTooShort() throws StringTooShortException {
-        new Review(0, "short", true, 0, 0);
+    public void testConstructorStringTooShort() throws StringTooShortException, ValueAlreadyExistsException {
+        new Review(uigReview, "short", true, 0, 0);
     }
 
     /**
@@ -100,7 +102,7 @@ public class ReviewTest {
 
     @Test
     public void testSetId() {
-        assertEquals(5, rev.getId());
+        assertEquals(0, rev.getId());
         rev.setId(2);
         assertEquals(2, rev.getId());
     }

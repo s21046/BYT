@@ -42,14 +42,15 @@ public class TaskTest {
     private ProjectManager pm;
 	private Task createUI, getSleep;
 
-	UniqueIdGenerator<Assignee> uig = new UniqueIdGenerator<>();
+	UniqueIdGenerator<Assignee> uigAssignee = new UniqueIdGenerator<>();
+	UniqueIdGenerator<Review> uigReview = new UniqueIdGenerator<>();
 	
 	@Before
 	public void setUp() throws StringTooShortException, ValueAlreadyExistsException {
 		HashSet<Assignee> team_list = new HashSet<>();
-		pm = new ProjectManager(uig, "Hana", "Busa");
-		Assignee a1 = new Assignee(uig, "Kuka", "Racza");
-		Assignee a2 = new Assignee(uig, "Dalai", "Lama");
+		pm = new ProjectManager(uigAssignee, "Hana", "Busa");
+		Assignee a1 = new Assignee(uigAssignee, "Kuka", "Racza");
+		Assignee a2 = new Assignee(uigAssignee, "Dalai", "Lama");
 		team_list.add(pm); team_list.add(a1); team_list.add(a2);
 		programmers = new Team(1, "Le Programmers", "Greatest programmers", pm, team_list);
 		//members of the team work on tasks
@@ -77,10 +78,10 @@ public class TaskTest {
 		votes_list_short.add(vote2);
 		votes_list_long.add(vote1); votes_list_long.add(vote3); votes_list_long.add(vote4);
 
-		Review rev1 = new Review(1, "bhbhbhbhbhbhhbhbhb", true, 1, 1);
-		Review rev2 = new Review(2, "bhbhbhbhbhbhhbhbhb", true, 2, 1);
-		Review rev3 = new Review(3, "bhbhbhbhbhbhhbhbhb", false, 2, 2);
-		Review rev4 = new Review(4, "baabbabababababa", false, 3, 1);
+		Review rev1 = new Review(uigReview, "bhbhbhbhbhbhhbhbhb", true, 1, 1);
+		Review rev2 = new Review(uigReview, "bhbhbhbhbhbhhbhbhb", true, 2, 1);
+		Review rev3 = new Review(uigReview, "bhbhbhbhbhbhhbhbhb", false, 2, 2);
+		Review rev4 = new Review(uigReview, "baabbabababababa", false, 3, 1);
 		reviews_list.add(rev1); reviews_list.add(rev2);
 		reviews_list_short.add(rev3);
 		reviews_list_long.add(rev1); reviews_list_long.add(rev2); reviews_list_long.add(rev4);
@@ -429,8 +430,8 @@ public class TaskTest {
 
 	@Test(expected=IllegalArgumentException.class)
 	public void testSetAssignees_listToRandomAssignees() throws StringTooShortException, ValueAlreadyExistsException {
-		Assignee a3 = new Assignee(uig, "Me3", "Worker3");
-		Assignee a4 = new Assignee(uig, "Me4", "Worker4");
+		Assignee a3 = new Assignee(uigAssignee, "Me3", "Worker3");
+		Assignee a4 = new Assignee(uigAssignee, "Me4", "Worker4");
 		HashSet<Assignee> list = new HashSet<>();
 		list.add(a3); list.add(a4);
 		createUI.setAssignees_list(list);

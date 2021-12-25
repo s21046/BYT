@@ -1,4 +1,5 @@
 import ApplicationExceptions.StringTooShortException;
+import ApplicationExceptions.ValueAlreadyExistsException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,10 +13,11 @@ public class HelpTest {
     private String description;
     private int assigneeId, pmId, taskId;
     private Help help;
-
+    UniqueIdGenerator<Help> uig;
     @Before
-    public void setUp() throws StringTooShortException {
-        id = 1;
+    public void setUp() throws StringTooShortException, ValueAlreadyExistsException {
+        id = 0;
+        uig = new UniqueIdGenerator<>();
         date = LocalDate.now();
         secDate = LocalDate.now();
         thirdDate = secDate.minus(10, ChronoUnit.DAYS);
@@ -23,7 +25,7 @@ public class HelpTest {
         assigneeId = 2;
         pmId = 3;
         taskId = 2;
-        help = new Help(id, date, description, assigneeId, pmId, taskId);
+        help = new Help(uig, date, description, assigneeId, pmId, taskId);
     }
 
     /**
@@ -34,19 +36,19 @@ public class HelpTest {
      */
 
     @Test
-    public void testConstructor() throws StringTooShortException {
-        new Help(1, LocalDate.now(), "Help", 1, 1, 1);
+    public void testConstructor() throws StringTooShortException, ValueAlreadyExistsException {
+        new Help(uig, LocalDate.now(), "Help", 1, 1, 1);
     }
 
     @Test(expected=IllegalArgumentException.class)
-    public void testConstructorIllegalArguments() throws StringTooShortException {
-        new Help(-1, LocalDate.now().minus(10, ChronoUnit.DAYS), null, -1, -1, -1);
-        new Help(-1, null, null, -1, -1, -1);
+    public void testConstructorIllegalArguments() throws StringTooShortException, ValueAlreadyExistsException {
+        new Help(uig, LocalDate.now().minus(10, ChronoUnit.DAYS), null, -1, -1, -1);
+        new Help(uig, null, null, -1, -1, -1);
     }
 
     @Test(expected=StringTooShortException.class)
-    public void testConstructorStringTooShort() throws StringTooShortException {
-        new Help(0, LocalDate.now(), "", 0, 0, 0);
+    public void testConstructorStringTooShort() throws StringTooShortException, ValueAlreadyExistsException {
+        new Help(uig, LocalDate.now(), "", 0, 0, 0);
     }
 
     /**
@@ -95,7 +97,7 @@ public class HelpTest {
 
     @Test
     public void testSetId() {
-        assertEquals(1, help.getId());
+        assertEquals(0, help.getId());
         help.setId(3);
         assertEquals(3, help.getId());
     }
