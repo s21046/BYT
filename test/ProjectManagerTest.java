@@ -1,4 +1,5 @@
 import ApplicationExceptions.StringTooShortException;
+import ApplicationExceptions.ValueAlreadyExistsException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,8 +28,9 @@ public class ProjectManagerTest {
     private HashSet<Help> helpRequests_list2 = new HashSet<>();
     private HashSet<Help> helpRequests_list2_short = new HashSet<>();
 
+    UniqueIdGenerator<Assignee> assigneeUniqueIdGenerator = new UniqueIdGenerator<>();
     @Before
-    public void setUp() throws StringTooShortException {
+    public void setUp() throws StringTooShortException, ValueAlreadyExistsException {
         pmId = 5;
         firstName = "Jerycho";
         lastName = "Swain";
@@ -38,16 +40,19 @@ public class ProjectManagerTest {
         description = "Just for testing purposes";
         assigneeId = 2;
         taskId = 2;
-        help = new Help(1, date, description, assigneeId, pmId, taskId);
-        help2 = new Help(2, secDate, "Smth", assigneeId, pmId, taskId);
+        help = new Help( date, description, assigneeId, pmId, taskId);
+        help2 = new Help( secDate, "Smth", assigneeId, pmId, taskId);
 
         helpRequests_list.add(help);
         helpRequests_list.add(help2);
         helpRequests_list_short.add(help2);
 
-        pm = new ProjectManager(pmId, firstName, lastName);
+        pm = new ProjectManager( firstName, lastName);
+        pmId = assigneeUniqueIdGenerator.generateId(pm);
+        pm.setId(pmId);
         pm.setHelpRequests_list(helpRequests_list);
-        pm2 = new ProjectManager(66, "Dude", "Dudowski");
+        pm2 = new ProjectManager( "Dude", "Dudowski");
+        pm2.setId(assigneeUniqueIdGenerator.generateId(pm2));
         pm2.setHelpRequests_list(helpRequests_list2);
     }
 

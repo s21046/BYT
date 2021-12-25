@@ -7,12 +7,11 @@ public class Review {
 
     private int assigneeId, taskId;
 
-    public Review(int id, String description, boolean approved, int assigneeId, int taskId) throws StringTooShortException {
-        if (id < 0 || assigneeId < 0 || taskId < 0) { throw new IllegalArgumentException("id cannot be a negative integer"); }
+    public Review(String description, boolean approved, int assigneeId, int taskId) throws StringTooShortException {
+        if ( assigneeId < 0 || taskId < 0) { throw new IllegalArgumentException("id cannot be a negative integer"); }
         if (description == null) { throw new IllegalArgumentException("Argument cannot be null"); }
         if (description.length() < 15) { throw new StringTooShortException(); }
 
-        this.id = id;
         this.approved = approved;
         this.description = description;
         this.assigneeId = assigneeId;

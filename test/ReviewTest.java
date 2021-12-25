@@ -1,4 +1,5 @@
 import ApplicationExceptions.StringTooShortException;
+import ApplicationExceptions.ValueAlreadyExistsException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,21 +20,36 @@ public class ReviewTest {
     private ProjectManager pm;
     private Review rev;
 
+    UniqueIdGenerator<Assignee> assigneeUniqueIdGenerator;
+    UniqueIdGenerator<Team> teamUniqueIdGenerator;
+    UniqueIdGenerator<Reward> rewardUniqueIdGenerator;
+    UniqueIdGenerator<Task> taskUniqueIdGenerator;
+    UniqueIdGenerator<Suggestion> suggestionUniqueIdGenerator;
+    UniqueIdGenerator<Review> reviewUniqueIdGenerator;
     @Before
-    public void setUp() throws StringTooShortException {
+    public void setUp() throws StringTooShortException, ValueAlreadyExistsException {
+        assigneeUniqueIdGenerator = new UniqueIdGenerator<Assignee>();
+        teamUniqueIdGenerator = new UniqueIdGenerator<Team>();
+        rewardUniqueIdGenerator = new UniqueIdGenerator<Reward>();
+        taskUniqueIdGenerator = new UniqueIdGenerator<Task>();
+        suggestionUniqueIdGenerator = new UniqueIdGenerator<Suggestion>();
+        reviewUniqueIdGenerator = new UniqueIdGenerator<Review>();
         id = 5;
         description = "Quack-quack-quack-quack";
         assigneeId = 1;
         taskId = 2;
         approved = true;
         status = Status.ASSIGNED;
-        pm = new ProjectManager(2,"Jerycho", "Swain");
+        pm = new ProjectManager("Jerycho", "Swain");
+        pm.setId(assigneeUniqueIdGenerator.generateId(pm));
 
-        team = new Team(1,"Birbs", "Focus on testing pls rn", pm, new HashSet<>());
+        team = new Team("Birbs", "Focus on testing pls rn", pm, new HashSet<>());
         day1 = LocalDate.now();
         day2 = LocalDate.now();
-        task = new Task(1, "Some task", "Nothing, relaxxxxxxx", day1, null, day2, status, team);
-        rev = new Review(id, description, approved, assigneeId, taskId);
+        task = new Task( "Some task", "Nothing, relaxxxxxxx", day1, null, day2, status, team);
+        task.setId(taskUniqueIdGenerator.generateId(task));
+        rev = new Review( description, approved, assigneeId, taskId);
+        rev.setId(reviewUniqueIdGenerator.generateId(rev));
     }
 
     /**
@@ -45,17 +61,17 @@ public class ReviewTest {
 
     @Test
     public void testConstructor() throws StringTooShortException {
-        new Review(1, "BIIIIiiiiiiiig Description", true, 1, 1);
+        new Review("BIIIIiiiiiiiig Description", true, 1, 1);
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void testConstructorIllegalArguments() throws StringTooShortException {
-        new Review(-1, null, false, -1, -1);
+        new Review( null, false, -1, -1);
     }
 
     @Test(expected=StringTooShortException.class)
     public void testConstructorStringTooShort() throws StringTooShortException {
-        new Review(0, "short", true, 0, 0);
+        new Review( "short", true, 0, 0);
     }
 
     /**
@@ -66,7 +82,7 @@ public class ReviewTest {
 
     @Test
     public void testGetId() {
-        assertEquals(id, rev.getId());
+        assertEquals(0, rev.getId());
     }
 
     @Test
@@ -99,7 +115,7 @@ public class ReviewTest {
 
     @Test
     public void testSetId() {
-        assertEquals(5, rev.getId());
+        assertEquals(0, rev.getId());
         rev.setId(2);
         assertEquals(2, rev.getId());
     }

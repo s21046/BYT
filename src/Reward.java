@@ -9,14 +9,12 @@ public class Reward {
     private RewardType type;
     private LocalDate dateGiven;
 
-    public Reward(int id, String name, String description, RewardType type, LocalDate dateGiven) throws StringTooShortException {
-        if (id < 0) { throw new IllegalArgumentException("id cannot be a negative integer"); }
+    public Reward(String name, String description, RewardType type, LocalDate dateGiven) throws StringTooShortException {
         if (description == null || name == null || type == null || dateGiven ==  null)
         { throw new IllegalArgumentException("Argument cannot be null"); }
         if (description.length() < 15 || name.length() < 3) { throw new StringTooShortException(); }
         if (dateGiven.isAfter(LocalDate.now())) throw new IllegalArgumentException("dateGiven cannot be in future");
 
-        this.id = id;
         this.name = name;
         this.description = description;
         this.type = type;

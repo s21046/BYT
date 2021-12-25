@@ -1,4 +1,5 @@
 import ApplicationExceptions.StringTooShortException;
+import ApplicationExceptions.ValueAlreadyExistsException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,15 +15,16 @@ public class RewardTest {
     private RewardType type;
     private LocalDate dateGiven;
     private Reward reward;
-
+    UniqueIdGenerator<Reward> rewardUniqueIdGenerator = new UniqueIdGenerator<>();
     @Before
-    public void setUp() throws StringTooShortException {
+    public void setUp() throws StringTooShortException, ValueAlreadyExistsException {
         id = 1;
         name = "Best Reward";
         description = "Just for testing purposes";
         type = RewardType.BADGE;
         dateGiven = LocalDate.now();
-        reward = new Reward(1, name, description, type, dateGiven);
+        reward = new Reward(name, description, type, dateGiven);
+        reward.setId(rewardUniqueIdGenerator.generateId(reward));
     }
 
     /**
@@ -34,18 +36,18 @@ public class RewardTest {
 
     @Test
     public void testConstructor() throws StringTooShortException {
-        new Reward(1, "Name", "BIIIIIIiiiiiigggggggg", RewardType.TITLE, LocalDate.now());
+        new Reward( "Name", "BIIIIIIiiiiiigggggggg", RewardType.TITLE, LocalDate.now());
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void testConstructorIllegalArguments() throws StringTooShortException {
-        new Reward(-1, null, null, null, LocalDate.now().plus(10, ChronoUnit.DAYS));
-        new Reward(-1, null, null, null, null);
+        new Reward( null, null, null, LocalDate.now().plus(10, ChronoUnit.DAYS));
+        new Reward( null, null, null, null);
     }
 
     @Test(expected=StringTooShortException.class)
     public void testConstructorStringTooShort() throws StringTooShortException {
-        new Reward(0, "N", "", RewardType.BADGE, LocalDate.now());
+        new Reward( "N", "", RewardType.BADGE, LocalDate.now());
     }
 
     /**
@@ -56,7 +58,7 @@ public class RewardTest {
 
     @Test
     public void testGetId() {
-        assertEquals(id, reward.getId());
+        assertEquals(0, reward.getId());
     }
 
     @Test
@@ -89,7 +91,7 @@ public class RewardTest {
 
     @Test
     public void testSetId() {
-        assertEquals(1, reward.getId());
+        assertEquals(0, reward.getId());
         reward.setId(15);
         assertEquals(15, reward.getId());
     }

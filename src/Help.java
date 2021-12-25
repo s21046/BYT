@@ -9,13 +9,12 @@ public class Help {
 
     private int assigneeId, pmId, taskId;
 
-    public Help(int id, LocalDate date, String description, int assigneeId, int pmId, int taskId) throws StringTooShortException {
-        if (id < 0 || assigneeId < 0 || pmId < 0 || taskId < 0) { throw new IllegalArgumentException("id cannot be a negative integer"); }
+    public Help(LocalDate date, String description, int assigneeId, int pmId, int taskId) throws StringTooShortException {
+        if (assigneeId < 0 || pmId < 0 || taskId < 0) { throw new IllegalArgumentException("id cannot be a negative integer"); }
         if (description == null || date == null) { throw new IllegalArgumentException("Argument cannot be null"); }
         if (description.isEmpty()) { throw new StringTooShortException(); }
         if (date.isBefore(LocalDate.now())) throw new IllegalArgumentException("date cannot be in the past");
 
-        this.id = id;
         this.date = date;
         this.description = description;
         this.assigneeId = assigneeId;

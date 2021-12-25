@@ -21,8 +21,7 @@ public class Task {
     private HashSet<Review> reviews_list = new HashSet<>();
     private HashSet<Assignee> assignees_list = new HashSet<>();
 
-    public Task(int id, String name, String description, LocalDate startDate, LocalDate endDate, LocalDate deadline, Status status, Team teamAssigned) throws StringTooShortException {
-        if (id < 0) { throw new IllegalArgumentException("id cannot be a negative integer"); }
+    public Task(String name, String description, LocalDate startDate, LocalDate endDate, LocalDate deadline, Status status, Team teamAssigned) throws StringTooShortException {
         if (description == null || name == null || startDate == null || deadline == null || status == null || teamAssigned == null)
         { throw new IllegalArgumentException("Argument cannot be null"); }
         if (description.length() < 15 || name.length() < 3) { throw new StringTooShortException(); }
@@ -37,7 +36,6 @@ public class Task {
                 throw new IllegalArgumentException("End date cannot precede the start date.");
         }
 
-        this.id = id;
         this.name = name;
         this.description = description;
         this.startDate = startDate;
