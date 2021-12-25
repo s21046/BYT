@@ -11,13 +11,11 @@ public class Team {
     private HashSet<Assignee> assignees;
     private HashSet<Task> tasks = new HashSet<>();
 
-    public Team(int id, String name, String description, ProjectManager pm, HashSet<Assignee> assignees) throws StringTooShortException {
-        if (id < 0) { throw new IllegalArgumentException("id cannot be a negative integer"); }
+    public Team(String name, String description, ProjectManager pm, HashSet<Assignee> assignees) throws StringTooShortException {
         if (description == null || name == null || pm == null || assignees == null)
         { throw new IllegalArgumentException("Argument cannot be null"); }
         if (description.length() < 15 || name.length() < 3) { throw new StringTooShortException(); }
 
-        this.id = id;
         this.name = name;
         this.description = description;
         this.pm = pm;

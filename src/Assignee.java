@@ -13,12 +13,10 @@ public class Assignee {
     private HashSet<Suggestion> suggestions_list = new HashSet<>();
     private HashSet<Team> teams_list = new HashSet<>();
 
-    public Assignee(int id, String firstName, String lastName) throws StringTooShortException {
-        if (id < 0) { throw new IllegalArgumentException("id cannot be a negative integer"); }
+    public Assignee(String firstName, String lastName) throws StringTooShortException {
         if (firstName == null || lastName == null) { throw new IllegalArgumentException("Argument cannot be null"); }
         if (firstName.isEmpty() || lastName.isEmpty()) { throw new StringTooShortException(); }
 
-        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
     }
@@ -107,7 +105,7 @@ public class Assignee {
             throw new AlreadyVotedException();
         }
 
-        return new Vote(voteId, task, explanation, votedForId, this.id);
+        return new Vote( task, explanation, votedForId, this.id);
     }
 
     public Review review(int reviewId, int taskId, boolean approved, String description)
@@ -119,16 +117,16 @@ public class Assignee {
             throw new CantReviewOwnTaskException();
         }
 
-        return new Review(reviewId, description, approved, this.id, taskId);
+        return new Review( description, approved, this.id, taskId);
     }
 
     public Help requestHelp(int helpId, LocalDate date, String description, int taskId) throws StringTooShortException {
         int pmId = this.tasks_list.stream().filter(e -> e.getId() == taskId).findFirst().get()
                 .getTeamAssigned().getPM().getId();
-        return new Help(helpId, date, description, this.id, pmId, taskId);
+        return new Help( date, description, this.id, pmId, taskId);
     }
 
     public Suggestion createSuggestion(int suggestId, String name, String description) throws StringTooShortException {
-        return new Suggestion(suggestId, name, description, this.id);
+        return new Suggestion( name, description, this.id);
     }
 }

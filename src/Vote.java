@@ -9,8 +9,8 @@ public class Vote {
     private int votedForId;
     private int voterId;
 
-    public Vote(int id, Task task, String explanation, int votedForId, int voterId) throws StringTooShortException {
-        if (id < 0 || votedForId < 0 || voterId < 0) { throw new IllegalArgumentException("id cannot be a negative integer"); }
+    public Vote(Task task, String explanation, int votedForId, int voterId) throws StringTooShortException {
+        if (votedForId < 0 || voterId < 0) { throw new IllegalArgumentException("id cannot be a negative integer"); }
         if (task == null || explanation == null) { throw new IllegalArgumentException("Argument cannot be null"); }
         if (explanation.isEmpty()) { throw new StringTooShortException(); }
 

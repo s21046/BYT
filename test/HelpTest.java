@@ -1,4 +1,5 @@
 import ApplicationExceptions.StringTooShortException;
+import ApplicationExceptions.ValueAlreadyExistsException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,9 +14,9 @@ public class HelpTest {
     private int assigneeId, pmId, taskId;
     private Help help;
 
+    UniqueIdGenerator<Help> helpUniqueIdGenerator = new UniqueIdGenerator<>();
     @Before
-    public void setUp() throws StringTooShortException {
-        id = 1;
+    public void setUp() throws StringTooShortException, ValueAlreadyExistsException {
         date = LocalDate.now();
         secDate = LocalDate.now();
         thirdDate = secDate.minus(10, ChronoUnit.DAYS);
@@ -23,7 +24,9 @@ public class HelpTest {
         assigneeId = 2;
         pmId = 3;
         taskId = 2;
-        help = new Help(id, date, description, assigneeId, pmId, taskId);
+        help = new Help(date, description, assigneeId, pmId, taskId);
+        id = helpUniqueIdGenerator.generateId(help);
+        help.setId(id);
     }
 
     /**
@@ -35,18 +38,18 @@ public class HelpTest {
 
     @Test
     public void testConstructor() throws StringTooShortException {
-        new Help(1, LocalDate.now(), "Help", 1, 1, 1);
+        new Help( LocalDate.now(), "Help", 1, 1, 1);
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void testConstructorIllegalArguments() throws StringTooShortException {
-        new Help(-1, LocalDate.now().minus(10, ChronoUnit.DAYS), null, -1, -1, -1);
-        new Help(-1, null, null, -1, -1, -1);
+        new Help( LocalDate.now().minus(10, ChronoUnit.DAYS), null, -1, -1, -1);
+        new Help( null, null, -1, -1, -1);
     }
 
     @Test(expected=StringTooShortException.class)
     public void testConstructorStringTooShort() throws StringTooShortException {
-        new Help(0, LocalDate.now(), "", 0, 0, 0);
+        new Help( LocalDate.now(), "", 0, 0, 0);
     }
 
     /**
@@ -95,7 +98,7 @@ public class HelpTest {
 
     @Test
     public void testSetId() {
-        assertEquals(1, help.getId());
+        assertEquals(id, help.getId());
         help.setId(3);
         assertEquals(3, help.getId());
     }

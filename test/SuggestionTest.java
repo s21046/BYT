@@ -1,4 +1,5 @@
 import ApplicationExceptions.StringTooShortException;
+import ApplicationExceptions.ValueAlreadyExistsException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,14 +11,15 @@ public class SuggestionTest {
     private String description;
     private int assigneeId;
     private Suggestion suggestion;
-
+    UniqueIdGenerator<Suggestion> suggestionUniqueIdGenerator = new UniqueIdGenerator<>();
     @Before
-    public void setUp() throws StringTooShortException {
+    public void setUp() throws StringTooShortException, ValueAlreadyExistsException {
         id = 1;
         name = "Best suggestion";
         description = "I suggest making the world a better place.";
         assigneeId = 24;
-        suggestion = new Suggestion(id, name, description, assigneeId);
+        suggestion = new Suggestion( name, description, assigneeId);
+        suggestion.setId(suggestionUniqueIdGenerator.generateId(suggestion));
     }
 
     /**
@@ -29,17 +31,17 @@ public class SuggestionTest {
 
     @Test
     public void testConstructor() throws StringTooShortException {
-        new Suggestion(1, "Name", "BIIIIIIiiiiiigggggggg", 1);
+        new Suggestion("Name", "BIIIIIIiiiiiigggggggg", 1);
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void testConstructorIllegalArguments() throws StringTooShortException {
-        new Suggestion(-1, null, null, -1);
+        new Suggestion(null, null, -1);
     }
 
     @Test(expected=StringTooShortException.class)
     public void testConstructorStringTooShort() throws StringTooShortException {
-        new Suggestion(1, "", "", 1);
+        new Suggestion( "", "", 1);
     }
 
     /**
@@ -50,7 +52,7 @@ public class SuggestionTest {
 
     @Test
     public void testGetId() {
-        assertEquals(id, suggestion.getId());
+        assertEquals(0, suggestion.getId());
     }
 
     @Test
@@ -78,7 +80,7 @@ public class SuggestionTest {
 
     @Test
     public void testSetId() {
-        assertEquals(1, suggestion.getId());
+        assertEquals(0, suggestion.getId());
         suggestion.setId(5);
         assertEquals(5, suggestion.getId());
     }

@@ -1,4 +1,5 @@
 import ApplicationExceptions.StringTooShortException;
+import ApplicationExceptions.ValueAlreadyExistsException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,27 +18,48 @@ public class VoteTest {
     private Team team;
     private ProjectManager projectManager;
 
+    UniqueIdGenerator<Assignee> assigneeUniqueIdGenerator= new UniqueIdGenerator<>();
+    UniqueIdGenerator<Team> teamUniqueIdGenerator= new UniqueIdGenerator<>();
+    UniqueIdGenerator<Reward> rewardUniqueIdGenerator= new UniqueIdGenerator<>();
+    UniqueIdGenerator<Task> taskUniqueIdGenerator= new UniqueIdGenerator<>();
+    UniqueIdGenerator<Suggestion> suggestionUniqueIdGenerator= new UniqueIdGenerator<>();
+    UniqueIdGenerator<Review> reviewUniqueIdGenerator= new UniqueIdGenerator<>();
+    UniqueIdGenerator<Vote> voteUniqueIdGenerator= new UniqueIdGenerator<>();
+
     @Before
-    public void setUp() throws StringTooShortException {
+    public void setUp() throws StringTooShortException, ValueAlreadyExistsException {
         id1 = 5;
         id2 = 7;
         explanation1 = "Blah";
         explanation2 = "Blah2";
-        votedForId1 = 3;
-        votedForId2 = 5;
-        voterId1 = 15;
-        voterId2 = 23;
+        votedForId1 = 0;
+        votedForId2 = 1;
+        voterId1 = 2;
+        voterId2 = 3;
 
-        projectManager = new ProjectManager(1,"Project", "Manager");
-        team = new Team(1, "TestTeam", "This is a team for testing", projectManager, new HashSet<>());
-        team.getAssignees().add(new Assignee(voterId1,"Tst","bloke"));
-        team.getAssignees().add(new Assignee(voterId2,"Tst","gal"));
-        team.getAssignees().add(new Assignee(votedForId1,"Tst1","bloke"));
-        team.getAssignees().add(new Assignee(votedForId2,"Tst1","gal"));
+        projectManager = new ProjectManager("Project", "Manager");
+        projectManager.setId(assigneeUniqueIdGenerator.generateId(projectManager));
+        team = new Team("TestTeam", "This is a team for testing", projectManager, new HashSet<>());
+        team.setId(teamUniqueIdGenerator.generateId(team));
+        Assignee a1 = new Assignee("Tst","bloke");
+        a1.setId(assigneeUniqueIdGenerator.generateId(a1));
+        Assignee a2 = new Assignee("Tst","gal");
+        a2.setId(assigneeUniqueIdGenerator.generateId(a2));
+        Assignee a3 = new Assignee("Tst1","bloke");
+        a3.setId(assigneeUniqueIdGenerator.generateId(a3));
+        Assignee a4 = new Assignee("Tst1","gal");
+        a4.setId(assigneeUniqueIdGenerator.generateId(a4));
+        team.getAssignees().add(a1);
+        team.getAssignees().add(a2);
+        team.getAssignees().add(a3);
+        team.getAssignees().add(a4);
 
-        task = new Task(1, "TestTask", "It's a test, good good test", LocalDate.now(), null, LocalDate.now(), Status.ASSIGNED, team);
-        task2 = new Task(2, "TestTask2", "It's a test2, good, good test2", LocalDate.now(), null, LocalDate.now(), Status.APPROVED, team);
-        vote1 = new Vote(id1, task, explanation1, votedForId1, voterId1);
+        task = new Task( "TestTask", "It's a test, good good test", LocalDate.now(), null, LocalDate.now(), Status.ASSIGNED, team);
+        task.setId(taskUniqueIdGenerator.generateId(task));
+        task2 = new Task( "TestTask2", "It's a test2, good, good test2", LocalDate.now(), null, LocalDate.now(), Status.APPROVED, team);
+        task2.setId(taskUniqueIdGenerator.generateId(task2));
+        vote1 = new Vote( task, explanation1, votedForId1, voterId1);
+        vote1.setId(voteUniqueIdGenerator.generateId(vote1));
         task.getVotes_list().add(vote1);
     }
 
@@ -50,17 +72,17 @@ public class VoteTest {
 
     @Test
     public void testConstructor() throws StringTooShortException {
-        new Vote(1, task, "BIIIIIIiiiiiigggggggg", 1, 1);
+        new Vote( task, "BIIIIIIiiiiiigggggggg", 1, 1);
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void testConstructorIllegalArguments() throws StringTooShortException {
-        new Vote(-1, null, null, -1, -1);
+        new Vote( null, null, -1, -1);
     }
 
     @Test(expected=StringTooShortException.class)
     public void testConstructorStringTooShort() throws StringTooShortException {
-        new Vote(1, task, "", 1, 1);
+        new Vote(task, "", 1, 1);
     }
 
     /**
@@ -71,7 +93,7 @@ public class VoteTest {
 
     @Test
     public void testGetId() {
-        assertEquals(id1, vote1.getId());
+        assertEquals(0, vote1.getId());
     }
 
     @Test
@@ -104,7 +126,7 @@ public class VoteTest {
 
     @Test
     public void testSetId() {
-        assertEquals(id1, vote1.getId());
+        assertEquals(0, vote1.getId());
         vote1.setId(id2);
         assertEquals(id2, vote1.getId());
     }

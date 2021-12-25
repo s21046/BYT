@@ -1,4 +1,5 @@
 import ApplicationExceptions.StringTooShortException;
+import ApplicationExceptions.ValueAlreadyExistsException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -47,10 +48,21 @@ public class AssigneeTest {
     private HashSet<Team> teams_list2 = new HashSet<>();
     private HashSet<Team> teams_list2_short = new HashSet<>();
 
+    //UnqiueIdGenerators
+    UniqueIdGenerator<Assignee> assigneeUniqueIdGenerator;
+    UniqueIdGenerator<Team> teamUniqueIdGenerator;
+    UniqueIdGenerator<Reward> rewardUniqueIdGenerator;
+    UniqueIdGenerator<Task> taskUniqueIdGenerator;
+    UniqueIdGenerator<Suggestion> suggestionUniqueIdGenerator;
+
+
     @Before
-    public void setUp() throws StringTooShortException {
-        id = 11;
-        id1 = 12;
+    public void setUp() throws StringTooShortException, ValueAlreadyExistsException {
+        assigneeUniqueIdGenerator = new UniqueIdGenerator<Assignee>();
+        teamUniqueIdGenerator = new UniqueIdGenerator<Team>();
+        rewardUniqueIdGenerator = new UniqueIdGenerator<Reward>();
+        taskUniqueIdGenerator = new UniqueIdGenerator<Task>();
+        suggestionUniqueIdGenerator = new UniqueIdGenerator<Suggestion>();
         firstName = "John";
         firstName1 = "Adam";
         lastName = "Cena";
@@ -66,39 +78,51 @@ public class AssigneeTest {
         day2 = LocalDate.now();
         day3 = LocalDate.now();
 
-        pm = new ProjectManager(2,"Jerycho", "Swain");
+        pm = new ProjectManager("Jerycho", "Swain");
+        pm.setId(assigneeUniqueIdGenerator.generateId(pm));
 
-        team1 = new Team(1,"Birbs", "Focus on testing", pm, new HashSet<>());
-        team2 = new Team(2,"Cats", "Write code here pls", pm, new HashSet<>());
+        team1 = new Team("Birbs", "Focus on testing", pm, new HashSet<>());
+        team1.setId(teamUniqueIdGenerator.generateId(team1));
+        team2 = new Team("Cats", "Write code here pls", pm, new HashSet<>());
+        team2.setId(teamUniqueIdGenerator.generateId(team2));
+
         teams_list.add(team1);
         teams_list.add(team2);
         teams_list_short.add(team1);
 
-        task1 = new Task(1,"Run", "Just runninnnnnnnnn", day1, null, day2, stat1, team1);
-        task2 = new Task( 2,"Stop", "Just stoppinnnnnnnnn", day2, null, day3, stat2, team2);
+        task1 = new Task("Run", "Just runninnnnnnnnn", day1, null, day2, stat1, team1);
+        task1.setId(taskUniqueIdGenerator.generateId(task1));
+        task2 = new Task("Stop", "Just stoppinnnnnnnnn", day2, null, day3, stat2, team2);
+        task2.setId(taskUniqueIdGenerator.generateId(task2));
         tasks_list.add(task1);
         tasks_list.add(task2);
         tasks_list_short.add(task1);
 
-        rew1 = new Reward(3,"Golden Duck", "Quackkkkkkkkkkkkkkkkk", rtype1,day2);
-        rew2 = new Reward( 4, "Rainbow", "Colorfullllllllllllll", rtype2, day3);
+        rew1 = new Reward("Golden Duck", "Quackkkkkkkkkkkkkkkkk", rtype1,day2);
+        rew1.setId(rewardUniqueIdGenerator.generateId(rew1));
+        rew2 = new Reward( "Rainbow", "Colorfullllllllllllll", rtype2, day3);
+        rew2.setId(rewardUniqueIdGenerator.generateId(rew2));
         rewards_list.add(rew1);
         rewards_list.add(rew2);
         rewards_list_short.add(rew1);
 
-        sug1 = new Suggestion(1,"Code cleanup", "Delete unused imports", 2);
-        sug2 = new Suggestion(2, "Add more tests", "We need to test our code", 5);
+        sug1 = new Suggestion("Code cleanup", "Delete unused imports", 2);
+        sug1.setId(suggestionUniqueIdGenerator.generateId(sug1));
+        sug2 = new Suggestion( "Add more tests", "We need to test our code", 5);
+        sug2.setId(suggestionUniqueIdGenerator.generateId(sug2));
         suggestions_list.add(sug1);
         suggestions_list.add(sug2);
         suggestions_list_short.add(sug1);
 
-        assignee = new Assignee(id, firstName, lastName);
+        assignee = new Assignee( firstName, lastName);
+        assignee.setId(assigneeUniqueIdGenerator.generateId(assignee));
         assignee.setTasks_list(tasks_list);
         assignee.setSuggestions_list(suggestions_list);
         assignee.setRewards_list(rewards_list);
         assignee.setTeams_list(teams_list);
 
-        assignee1 = new Assignee(id1, firstName1,lastName1);
+        assignee1 = new Assignee( firstName1,lastName1);
+        assignee1.setId(assigneeUniqueIdGenerator.generateId(assignee1));
         assignee1.setTasks_list(tasks_list2);
         assignee1.setSuggestions_list(suggestions_list2);
         assignee1.setRewards_list(rewards_list2);
@@ -114,17 +138,17 @@ public class AssigneeTest {
 
     @Test
     public void testConstructor() throws StringTooShortException {
-        new Assignee(1, "Me", "Assignee");
+        new Assignee("Me", "Assignee");
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void testConstructorIllegalArguments() throws StringTooShortException {
-        new Assignee(-1, null, null);
+        new Assignee(null, null);
     }
 
     @Test(expected=StringTooShortException.class)
     public void testConstructorStringTooShort() throws StringTooShortException {
-        new Assignee(0, "", "");
+        new Assignee("", "");
     }
 
     /**
@@ -135,8 +159,8 @@ public class AssigneeTest {
 
     @Test
     public void testGetId() {
-        assertEquals(11, assignee.getId());
-        assertEquals(2, pm.getId());
+        assertEquals(1, assignee.getId());
+        assertEquals(0, pm.getId());
     }
 
     @Test
@@ -181,7 +205,7 @@ public class AssigneeTest {
 
     @Test
     public void testSetId() {
-        assertEquals(11, assignee.getId());
+        assertEquals(1, assignee.getId());
         assignee.setId(14);
         assertEquals(14, assignee.getId());
     }

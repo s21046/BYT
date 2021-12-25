@@ -8,12 +8,11 @@ public class Suggestion {
     //TODO set up checks for these FKs in the {set} methods -> call proper exceptions -> add to tests
     private int assigneeId;
 
-    public Suggestion(int id, String name, String description, int assigneeId) throws StringTooShortException {
-        if (id < 0 || assigneeId < 0) { throw new IllegalArgumentException("id cannot be a negative integer"); }
+    public Suggestion( String name, String description, int assigneeId) throws StringTooShortException {
+        if ( assigneeId < 0) { throw new IllegalArgumentException("id cannot be a negative integer"); }
         if (description == null || name == null) { throw new IllegalArgumentException("Argument cannot be null"); }
         if (description.isEmpty() || name.isEmpty()) { throw new StringTooShortException(); }
 
-        this.id = id;
         this.name = name;
         this.description = description;
         this.assigneeId = assigneeId;
