@@ -1,4 +1,5 @@
 import ApplicationExceptions.StringTooShortException;
+import ApplicationExceptions.ValueAlreadyExistsException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -40,13 +41,15 @@ public class TaskTest {
 
     private ProjectManager pm;
 	private Task createUI, getSleep;
+
+	UniqueIdGenerator<Assignee> uig = new UniqueIdGenerator<>();
 	
 	@Before
-	public void setUp() throws StringTooShortException {
+	public void setUp() throws StringTooShortException, ValueAlreadyExistsException {
 		HashSet<Assignee> team_list = new HashSet<>();
-		pm = new ProjectManager(1, "Hana", "Busa");
-		Assignee a1 = new Assignee(1, "Kuka", "Racza");
-		Assignee a2 = new Assignee(2, "Dalai", "Lama");
+		pm = new ProjectManager(uig, "Hana", "Busa");
+		Assignee a1 = new Assignee(uig, "Kuka", "Racza");
+		Assignee a2 = new Assignee(uig, "Dalai", "Lama");
 		team_list.add(pm); team_list.add(a1); team_list.add(a2);
 		programmers = new Team(1, "Le Programmers", "Greatest programmers", pm, team_list);
 		//members of the team work on tasks
@@ -425,9 +428,9 @@ public class TaskTest {
 	}
 
 	@Test(expected=IllegalArgumentException.class)
-	public void testSetAssignees_listToRandomAssignees() throws StringTooShortException {
-		Assignee a3 = new Assignee(1, "Me3", "Worker3");
-		Assignee a4 = new Assignee(2, "Me4", "Worker4");
+	public void testSetAssignees_listToRandomAssignees() throws StringTooShortException, ValueAlreadyExistsException {
+		Assignee a3 = new Assignee(uig, "Me3", "Worker3");
+		Assignee a4 = new Assignee(uig, "Me4", "Worker4");
 		HashSet<Assignee> list = new HashSet<>();
 		list.add(a3); list.add(a4);
 		createUI.setAssignees_list(list);

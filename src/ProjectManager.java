@@ -1,4 +1,5 @@
 import ApplicationExceptions.StringTooShortException;
+import ApplicationExceptions.ValueAlreadyExistsException;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -7,8 +8,8 @@ import java.util.List;
 public class ProjectManager extends Assignee {
     private HashSet<Help> helpRequests_list = new HashSet<>();
 
-    public ProjectManager(int id, String firstName, String lastName) throws StringTooShortException {
-        super(id, firstName, lastName);
+    public ProjectManager(UniqueIdGenerator<Assignee> uig, String firstName, String lastName) throws StringTooShortException, ValueAlreadyExistsException {
+        super(uig, firstName, lastName);
     }
 
     public HashSet<Help> getHelpRequests_list() {

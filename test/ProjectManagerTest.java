@@ -1,4 +1,5 @@
 import ApplicationExceptions.StringTooShortException;
+import ApplicationExceptions.ValueAlreadyExistsException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,9 +27,10 @@ public class ProjectManagerTest {
     //New empty helpRequest lists
     private HashSet<Help> helpRequests_list2 = new HashSet<>();
     private HashSet<Help> helpRequests_list2_short = new HashSet<>();
-
+    //new UniqueIdGenerator
+    UniqueIdGenerator<Assignee> uig = new UniqueIdGenerator<>();
     @Before
-    public void setUp() throws StringTooShortException {
+    public void setUp() throws StringTooShortException, ValueAlreadyExistsException {
         pmId = 5;
         firstName = "Jerycho";
         lastName = "Swain";
@@ -45,9 +47,9 @@ public class ProjectManagerTest {
         helpRequests_list.add(help2);
         helpRequests_list_short.add(help2);
 
-        pm = new ProjectManager(pmId, firstName, lastName);
+        pm = new ProjectManager(uig, firstName, lastName);
         pm.setHelpRequests_list(helpRequests_list);
-        pm2 = new ProjectManager(66, "Dude", "Dudowski");
+        pm2 = new ProjectManager(uig, "Dude", "Dudowski");
         pm2.setHelpRequests_list(helpRequests_list2);
     }
 

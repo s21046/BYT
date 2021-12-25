@@ -1,4 +1,5 @@
 import ApplicationExceptions.StringTooShortException;
+import ApplicationExceptions.ValueAlreadyExistsException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,24 +17,24 @@ public class VoteTest {
     private Task task, task2;
     private Team team;
     private ProjectManager projectManager;
-
+    UniqueIdGenerator<Assignee> uig = new UniqueIdGenerator<>();
     @Before
-    public void setUp() throws StringTooShortException {
+    public void setUp() throws StringTooShortException, ValueAlreadyExistsException {
         id1 = 5;
         id2 = 7;
         explanation1 = "Blah";
         explanation2 = "Blah2";
-        votedForId1 = 3;
-        votedForId2 = 5;
-        voterId1 = 15;
-        voterId2 = 23;
+        votedForId1 = 0;
+        votedForId2 = 1;
+        voterId1 = 2;
+        voterId2 = 3;
 
-        projectManager = new ProjectManager(1,"Project", "Manager");
+        projectManager = new ProjectManager(uig,"Project", "Manager");
         team = new Team(1, "TestTeam", "This is a team for testing", projectManager, new HashSet<>());
-        team.getAssignees().add(new Assignee(voterId1,"Tst","bloke"));
-        team.getAssignees().add(new Assignee(voterId2,"Tst","gal"));
-        team.getAssignees().add(new Assignee(votedForId1,"Tst1","bloke"));
-        team.getAssignees().add(new Assignee(votedForId2,"Tst1","gal"));
+        team.getAssignees().add(new Assignee(uig,"Tst","bloke"));
+        team.getAssignees().add(new Assignee(uig,"Tst","gal"));
+        team.getAssignees().add(new Assignee(uig,"Tst1","bloke"));
+        team.getAssignees().add(new Assignee(uig,"Tst1","gal"));
 
         task = new Task(1, "TestTask", "It's a test, good good test", LocalDate.now(), null, LocalDate.now(), Status.ASSIGNED, team);
         task2 = new Task(2, "TestTask2", "It's a test2, good, good test2", LocalDate.now(), null, LocalDate.now(), Status.APPROVED, team);

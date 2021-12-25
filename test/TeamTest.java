@@ -1,4 +1,5 @@
 import ApplicationExceptions.StringTooShortException;
+import ApplicationExceptions.ValueAlreadyExistsException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,15 +26,15 @@ public class TeamTest {
     private HashSet<Task> tasks_list2 = new HashSet<>();
     private HashSet<Task> tasks_list_2_short = new HashSet<>();
     private Team team, team2;
-
+    UniqueIdGenerator<Assignee> uig = new UniqueIdGenerator<>();
     @Before
-    public void setUp() throws StringTooShortException {
+    public void setUp() throws StringTooShortException, ValueAlreadyExistsException {
         id = 1;
         name = "Best Team";
         description = "Just for testing purposes";
-        pm = new ProjectManager(1, "Jake", "Peralta");
-        Assignee a1 = new Assignee(1, "Me", "Worker");
-        Assignee a2 = new Assignee(2, "Me2", "Worker2");
+        pm = new ProjectManager(uig, "Jake", "Peralta");
+        Assignee a1 = new Assignee(uig, "Me", "Worker");
+        Assignee a2 = new Assignee(uig, "Me2", "Worker2");
         assignees_list.add(pm); assignees_list.add(a1); assignees_list.add(a2);
         assignees_list_short.add(pm); assignees_list_short.add(a1);
         team = new Team(id, name, description, pm, assignees_list);
@@ -158,9 +159,9 @@ public class TeamTest {
     }
 
     @Test
-    public void testSetPm() throws StringTooShortException {
+    public void testSetPm() throws StringTooShortException, ValueAlreadyExistsException {
         assertEquals(pm, team.getPM());
-        ProjectManager newPM = new ProjectManager(777, "PM", "TheBest");
+        ProjectManager newPM = new ProjectManager(uig, "PM", "TheBest");
         team.setPM(newPM);
         assertEquals(newPM, team.getPM());
     }
@@ -181,9 +182,9 @@ public class TeamTest {
      */
 
     @Test
-    public void testSetAssignees() throws StringTooShortException {
-        Assignee a3 = new Assignee(1, "Me3", "Worker3");
-        Assignee a4 = new Assignee(2, "Me4", "Worker4");
+    public void testSetAssignees() throws StringTooShortException, ValueAlreadyExistsException {
+        Assignee a3 = new Assignee(uig, "Me3", "Worker3");
+        Assignee a4 = new Assignee(uig, "Me4", "Worker4");
         HashSet<Assignee> list = new HashSet<>();
         list.add(a3); list.add(a4);
         team.setAssignees(list);

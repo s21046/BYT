@@ -8,17 +8,18 @@ public class Assignee {
     private String firstName;
     private String lastName;
 
+    private UniqueIdGenerator uig;
     private HashSet<Task> tasks_list = new HashSet<>();
     private List<Reward> rewards_list = new ArrayList<>();
     private HashSet<Suggestion> suggestions_list = new HashSet<>();
     private HashSet<Team> teams_list = new HashSet<>();
 
-    public Assignee(int id, String firstName, String lastName) throws StringTooShortException {
-        if (id < 0) { throw new IllegalArgumentException("id cannot be a negative integer"); }
+    public Assignee(UniqueIdGenerator<Assignee> uig, String firstName, String lastName) throws StringTooShortException, ValueAlreadyExistsException {
+
         if (firstName == null || lastName == null) { throw new IllegalArgumentException("Argument cannot be null"); }
         if (firstName.isEmpty() || lastName.isEmpty()) { throw new StringTooShortException(); }
-
-        this.id = id;
+        this.uig = uig;
+        this.id = uig.generateId(this);
         this.firstName = firstName;
         this.lastName = lastName;
     }
@@ -29,7 +30,7 @@ public class Assignee {
 
     public void setId(int id){
         if (id < 0) throw new IllegalArgumentException("id cannot be a negative integer.");
-        else this.id = id;
+        else this.id = uig.setId(this.id,id);
     }
 
     public String getFirstName() { return firstName; }

@@ -1,4 +1,5 @@
 import ApplicationExceptions.StringTooShortException;
+import ApplicationExceptions.ValueAlreadyExistsException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -46,9 +47,11 @@ public class AssigneeTest {
     //Two empty teams lists
     private HashSet<Team> teams_list2 = new HashSet<>();
     private HashSet<Team> teams_list2_short = new HashSet<>();
+    //UniqueIdGenerator
+    private UniqueIdGenerator<Assignee> uig = new UniqueIdGenerator<>();
 
     @Before
-    public void setUp() throws StringTooShortException {
+    public void setUp() throws StringTooShortException, ValueAlreadyExistsException {
         id = 11;
         id1 = 12;
         firstName = "John";
@@ -66,7 +69,7 @@ public class AssigneeTest {
         day2 = LocalDate.now();
         day3 = LocalDate.now();
 
-        pm = new ProjectManager(2,"Jerycho", "Swain");
+        pm = new ProjectManager(uig,"Jerycho", "Swain");
 
         team1 = new Team(1,"Birbs", "Focus on testing", pm, new HashSet<>());
         team2 = new Team(2,"Cats", "Write code here pls", pm, new HashSet<>());
@@ -92,13 +95,13 @@ public class AssigneeTest {
         suggestions_list.add(sug2);
         suggestions_list_short.add(sug1);
 
-        assignee = new Assignee(id, firstName, lastName);
+        assignee = new Assignee(uig, firstName, lastName);
         assignee.setTasks_list(tasks_list);
         assignee.setSuggestions_list(suggestions_list);
         assignee.setRewards_list(rewards_list);
         assignee.setTeams_list(teams_list);
 
-        assignee1 = new Assignee(id1, firstName1,lastName1);
+        assignee1 = new Assignee(uig, firstName1,lastName1);
         assignee1.setTasks_list(tasks_list2);
         assignee1.setSuggestions_list(suggestions_list2);
         assignee1.setRewards_list(rewards_list2);
@@ -108,23 +111,23 @@ public class AssigneeTest {
     /**
      * Initiate constructor with various values
      * Corner cases:
-     * - values < 0 passed to the id field, null firstName/lastName;
+     * - null firstName/lastName;
      * - empty firstName/lastName
      */
 
     @Test
-    public void testConstructor() throws StringTooShortException {
-        new Assignee(1, "Me", "Assignee");
+    public void testConstructor() throws StringTooShortException, ValueAlreadyExistsException {
+        new Assignee(uig, "Me", "Assignee");
     }
 
     @Test(expected=IllegalArgumentException.class)
-    public void testConstructorIllegalArguments() throws StringTooShortException {
-        new Assignee(-1, null, null);
+    public void testConstructorIllegalArguments() throws StringTooShortException, ValueAlreadyExistsException {
+        new Assignee(uig, null, null);
     }
 
     @Test(expected=StringTooShortException.class)
-    public void testConstructorStringTooShort() throws StringTooShortException {
-        new Assignee(0, "", "");
+    public void testConstructorStringTooShort() throws StringTooShortException, ValueAlreadyExistsException {
+        new Assignee(uig, "", "");
     }
 
     /**
@@ -135,8 +138,8 @@ public class AssigneeTest {
 
     @Test
     public void testGetId() {
-        assertEquals(11, assignee.getId());
-        assertEquals(2, pm.getId());
+        assertEquals(1, assignee.getId());
+        assertEquals(0, pm.getId());
     }
 
     @Test
@@ -181,7 +184,7 @@ public class AssigneeTest {
 
     @Test
     public void testSetId() {
-        assertEquals(11, assignee.getId());
+        assertEquals(1, assignee.getId());
         assignee.setId(14);
         assertEquals(14, assignee.getId());
     }

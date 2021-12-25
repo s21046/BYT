@@ -14,12 +14,10 @@ public class UniqueIdGeneratorTest {
     UniqueIdGenerator<int[]> uig1;
     int[] id1;
     int[] id2;
-    Assignee assignee;
     @Before
-    public void setUp() throws StringTooShortException {
+    public void setUp() throws StringTooShortException, ValueAlreadyExistsException {
         uig = new UniqueIdGenerator<>();
         uig1 = new UniqueIdGenerator<>();
-        assignee = new Assignee(99,"Daniel", "Damn");
         id1 = new int[2];
         id2 = new int[2];
     }

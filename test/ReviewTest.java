@@ -1,4 +1,5 @@
 import ApplicationExceptions.StringTooShortException;
+import ApplicationExceptions.ValueAlreadyExistsException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,16 +19,16 @@ public class ReviewTest {
     private Team team;
     private ProjectManager pm;
     private Review rev;
-
+    UniqueIdGenerator<Assignee> uig = new UniqueIdGenerator<>();
     @Before
-    public void setUp() throws StringTooShortException {
+    public void setUp() throws StringTooShortException, ValueAlreadyExistsException {
         id = 5;
         description = "Quack-quack-quack-quack";
         assigneeId = 1;
         taskId = 2;
         approved = true;
         status = Status.ASSIGNED;
-        pm = new ProjectManager(2,"Jerycho", "Swain");
+        pm = new ProjectManager(uig,"Jerycho", "Swain");
 
         team = new Team(1,"Birbs", "Focus on testing pls rn", pm, new HashSet<>());
         day1 = LocalDate.now();
