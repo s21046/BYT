@@ -6,7 +6,6 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 public class SuggestionTest {
-    private int id;
     private String name;
     private String description;
     private int assigneeId;
@@ -14,7 +13,6 @@ public class SuggestionTest {
     UniqueIdGenerator<Suggestion> suggestionUniqueIdGenerator = new UniqueIdGenerator<>();
     @Before
     public void setUp() throws StringTooShortException, ValueAlreadyExistsException {
-        id = 1;
         name = "Best suggestion";
         description = "I suggest making the world a better place.";
         assigneeId = 24;

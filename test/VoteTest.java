@@ -9,7 +9,7 @@ import java.util.HashSet;
 import static org.junit.Assert.assertEquals;
 
 public class VoteTest {
-    private int id1, id2;
+    private int id2;
     private String explanation1, explanation2;
     private int votedForId1, votedForId2;
     private int voterId1, voterId2;
@@ -20,15 +20,11 @@ public class VoteTest {
 
     UniqueIdGenerator<Assignee> assigneeUniqueIdGenerator= new UniqueIdGenerator<>();
     UniqueIdGenerator<Team> teamUniqueIdGenerator= new UniqueIdGenerator<>();
-    UniqueIdGenerator<Reward> rewardUniqueIdGenerator= new UniqueIdGenerator<>();
     UniqueIdGenerator<Task> taskUniqueIdGenerator= new UniqueIdGenerator<>();
-    UniqueIdGenerator<Suggestion> suggestionUniqueIdGenerator= new UniqueIdGenerator<>();
-    UniqueIdGenerator<Review> reviewUniqueIdGenerator= new UniqueIdGenerator<>();
     UniqueIdGenerator<Vote> voteUniqueIdGenerator= new UniqueIdGenerator<>();
 
     @Before
     public void setUp() throws StringTooShortException, ValueAlreadyExistsException {
-        id1 = 5;
         id2 = 7;
         explanation1 = "Blah";
         explanation2 = "Blah2";
@@ -72,12 +68,12 @@ public class VoteTest {
 
     @Test
     public void testConstructor() throws StringTooShortException {
-        new Vote( task, "BIIIIIIiiiiiigggggggg", 1, 1);
+        new Vote(task, "BIIIIIIiiiiiigggggggg", 1, 1);
     }
 
     @Test(expected=IllegalArgumentException.class)
     public void testConstructorIllegalArguments() throws StringTooShortException {
-        new Vote( null, null, -1, -1);
+        new Vote(null, null, -1, -1);
     }
 
     @Test(expected=StringTooShortException.class)

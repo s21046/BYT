@@ -11,7 +11,6 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class AssigneeTest {
-    private int id, id1;
     private Assignee assignee, assignee1;
     private String firstName, firstName1;
     private String lastName, lastName1;
@@ -58,11 +57,11 @@ public class AssigneeTest {
 
     @Before
     public void setUp() throws StringTooShortException, ValueAlreadyExistsException {
-        assigneeUniqueIdGenerator = new UniqueIdGenerator<Assignee>();
-        teamUniqueIdGenerator = new UniqueIdGenerator<Team>();
-        rewardUniqueIdGenerator = new UniqueIdGenerator<Reward>();
-        taskUniqueIdGenerator = new UniqueIdGenerator<Task>();
-        suggestionUniqueIdGenerator = new UniqueIdGenerator<Suggestion>();
+        assigneeUniqueIdGenerator = new UniqueIdGenerator<>();
+        teamUniqueIdGenerator = new UniqueIdGenerator<>();
+        rewardUniqueIdGenerator = new UniqueIdGenerator<>();
+        taskUniqueIdGenerator = new UniqueIdGenerator<>();
+        suggestionUniqueIdGenerator = new UniqueIdGenerator<>();
         firstName = "John";
         firstName1 = "Adam";
         lastName = "Cena";

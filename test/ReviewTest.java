@@ -9,7 +9,6 @@ import java.util.HashSet;
 import static org.junit.Assert.*;
 
 public class ReviewTest {
-    private int id;
     private String description;
     private boolean approved;
     private int assigneeId, taskId;
@@ -28,13 +27,12 @@ public class ReviewTest {
     UniqueIdGenerator<Review> reviewUniqueIdGenerator;
     @Before
     public void setUp() throws StringTooShortException, ValueAlreadyExistsException {
-        assigneeUniqueIdGenerator = new UniqueIdGenerator<Assignee>();
-        teamUniqueIdGenerator = new UniqueIdGenerator<Team>();
-        rewardUniqueIdGenerator = new UniqueIdGenerator<Reward>();
-        taskUniqueIdGenerator = new UniqueIdGenerator<Task>();
-        suggestionUniqueIdGenerator = new UniqueIdGenerator<Suggestion>();
-        reviewUniqueIdGenerator = new UniqueIdGenerator<Review>();
-        id = 5;
+        assigneeUniqueIdGenerator = new UniqueIdGenerator<>();
+        teamUniqueIdGenerator = new UniqueIdGenerator<>();
+        rewardUniqueIdGenerator = new UniqueIdGenerator<>();
+        taskUniqueIdGenerator = new UniqueIdGenerator<>();
+        suggestionUniqueIdGenerator = new UniqueIdGenerator<>();
+        reviewUniqueIdGenerator = new UniqueIdGenerator<>();
         description = "Quack-quack-quack-quack";
         assigneeId = 1;
         taskId = 2;

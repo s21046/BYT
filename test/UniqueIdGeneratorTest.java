@@ -14,7 +14,7 @@ public class UniqueIdGeneratorTest {
     UniqueIdGenerator<int[]> uig1;
     int[] id1;
     int[] id2;
-    Assignee assignee;
+
     @Before
     public void setUp() throws StringTooShortException {
         uig = new UniqueIdGenerator<>();

@@ -9,7 +9,6 @@ import java.time.temporal.ChronoUnit;
 import static org.junit.Assert.assertEquals;
 
 public class RewardTest {
-    private int id;
     private String name;
     private String description;
     private RewardType type;
@@ -18,7 +17,6 @@ public class RewardTest {
     UniqueIdGenerator<Reward> rewardUniqueIdGenerator = new UniqueIdGenerator<>();
     @Before
     public void setUp() throws StringTooShortException, ValueAlreadyExistsException {
-        id = 1;
         name = "Best Reward";
         description = "Just for testing purposes";
         type = RewardType.BADGE;

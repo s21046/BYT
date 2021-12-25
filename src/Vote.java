@@ -13,7 +13,6 @@ public class Vote {
         if (task == null || explanation == null) { throw new IllegalArgumentException("Argument cannot be null"); }
         if (explanation.isEmpty()) { throw new StringTooShortException(); }
 
-        this.id = id;
         this.task = task;
         this.explanation = explanation;
         this.votedForId = votedForId;

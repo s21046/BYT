@@ -10,7 +10,6 @@ import java.util.*;
 import static org.junit.Assert.*;
 
 public class TaskTest {
-    private int id1, id2;
     private String name1, name2;
     private String desc1, desc2;
     private LocalDate startDate1, startDate2;
@@ -66,7 +65,6 @@ public class TaskTest {
 		assignees_list.add(a1); assignees_list.add(a2);
 		assignees_list_short.add(a1);
 
-		id1 = 1; id2 = 2;
 		name1 = "Create UI"; name2 = "Get some sleep";
 		desc1 = "We need to create a nice UI for our application";
 		desc2 = "Everyone needs some rest every now and then";
@@ -129,13 +127,6 @@ public class TaskTest {
 				LocalDate.now(), null, LocalDate.now().plusDays(1),
 				Status.APPROVED, programmers);
 	}
-
-	/*@Test(expected=IllegalArgumentException.class)
-	public void testConstructorWithNegativeId() throws StringTooShortException {
-		new Task( "Tasky task", "Appropriate description",
-				LocalDate.now(), null, LocalDate.now().plusDays(1),
-				Status.APPROVED, programmers);
-	}*/
 
 	@Test(expected=IllegalArgumentException.class)
 	public void testConstructorWithNullFields() throws StringTooShortException {
